@@ -183,9 +183,8 @@ function buildPartMatch(cleanQuery) {
 function App() {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
-  const [vin, setVin] = useState('');
   const [vinResult, setVinResult] = useState(null);
-  const [vinError, setVinError] = useState('');
+  const [vinDecoding, setVinDecoding] = useState(false);
   const [mode, setMode] = useState('All');
   const [showVehicleLookup, setShowVehicleLookup] = useState(false);
   const [vYear, setVYear] = useState('');
@@ -204,25 +203,30 @@ function App() {
   const fluidMatch = useMemo(() => Object.entries(fluidExamples).find(([k]) => lower.includes(k)), [lower]);
   const years      = useMemo(() => { const a = []; for (let y = 2025; y >= 1985; y--) a.push(String(y)); return a; }, []);
 
-  async function decodeVin() {
-    const cv = vin.trim().toUpperCase();
-    setVinResult(null); setVinError('');
-    if (!/^[A-HJ-NPR-Z0-9]{17}$/.test(cv)) { setVinError('Enter a valid 17-character VIN. VINs do not use I, O, or Q.'); return; }
-    try {
-      const res  = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${cv}?format=json`);
-      const data = await res.json();
-      const item = data?.Results?.[0];
-      if (!item) throw new Error();
-      setVinResult(item);
-      const aq = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(' ');
-      if (aq) setQuery(aq);
-    } catch { setVinError('VIN lookup failed. You can still search manually.'); }
+  async function runSearch() {
+    const q = cleanQuery;
+    if (!q) return;
+    setVinResult(null);
+    if (/^[A-HJ-NPR-Z0-9]{17}$/i.test(q)) {
+      setVinDecoding(true);
+      try {
+        const res  = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${q.toUpperCase()}?format=json`);
+        const data = await res.json();
+        const item = data?.Results?.[0];
+        if (item?.ModelYear) {
+          setVinResult(item);
+          const decoded = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(' ');
+          if (decoded) setQuery(decoded);
+        }
+      } catch { /* silent — search still runs with raw query */ }
+      setVinDecoding(false);
+    }
+    setSearched(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function runSearch() { if (!cleanQuery) return; setSearched(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
   function reset() {
-    setQuery(''); setSearched(false); setVin(''); setVinResult(null); setVinError('');
+    setQuery(''); setSearched(false); setVinResult(null); setVinDecoding(false);
     setVYear(''); setVMake(''); setVModel(''); setVEngine(''); setVCategory(''); setVPart('');
     setShowVehicleLookup(false);
   }
@@ -241,19 +245,20 @@ function App() {
 
   return (
     <main>
+      <img src={heroImg} alt="HoundMoto" className="heroImg" />
+
       <header className="hero">
-        <img src={heroImg} alt="HoundMoto" className="heroImg" />
         <div className="brandRow">
           <div className="logo">🐕‍🦺</div>
-          <div><h1>HoundMoto</h1><p>Free parts, fluid, VIN, and trouble-code helper.</p></div>
+          <div><h1>HoundMoto</h1><p>Parts, fluids, trouble codes, and vendor links.</p></div>
         </div>
-        <div className="warning"><strong>Important:</strong> HoundMoto does not sell parts and does not guarantee fitment. Always confirm fitment, engine, trim, and fluid specs with the retailer, owner's manual, service data, or a qualified mechanic.</div>
+        <div className="warning"><strong>Important:</strong> HoundMoto does not sell parts and does not guarantee fitment. Always confirm fitment with the retailer, owner's manual, or a qualified mechanic.</div>
         <div className="modePicker">
           {searchModes.map(m => <button key={m} className={`modeBtn${mode === m ? ' active' : ''}`} onClick={() => setMode(m)}>{m}</button>)}
         </div>
         <div className="searchPanel">
-          <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && runSearch()} placeholder="Year, make, model, part name, trouble code, or part number" />
-          <button onClick={runSearch}>Search</button>
+          <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && runSearch()} placeholder="Part, code, VIN, or year make model…" />
+          <button onClick={runSearch} disabled={vinDecoding}>{vinDecoding ? 'Decoding…' : 'Search'}</button>
           <button className="light" onClick={reset}>Reset</button>
         </div>
         <div className="chips">
@@ -303,21 +308,6 @@ function App() {
         </section>
       )}
 
-      <section className="card">
-        <h2>VIN Decoder</h2>
-        <p className="muted">Optional. Uses the public NHTSA database to identify your vehicle from its VIN.</p>
-        <div className="inlineForm">
-          <input value={vin} onChange={e => setVin(e.target.value)} placeholder="Enter your 17-character VIN number" maxLength={17} />
-          <button onClick={decodeVin}>Decode VIN</button>
-        </div>
-        {vinError && <p className="error">{vinError}</p>}
-        {vinResult && (
-          <div className="resultBox">
-            <strong>{vinResult.ModelYear} {vinResult.Make} {vinResult.Model}</strong>
-            <span>{vinResult.Trim || 'Trim not returned'}{vinResult.EngineCylinders ? `, ${vinResult.EngineCylinders} cylinders` : ''}</span>
-          </div>
-        )}
-      </section>
 
       {!searched && (
         <section className="card">
@@ -327,6 +317,18 @@ function App() {
 
       {searched && (
         <>
+          {/* VIN DECODED RESULT */}
+          {vinResult && (
+            <section className="card vinResultCard">
+              <h2>VIN Decoded</h2>
+              <div className="resultBox">
+                <strong>{vinResult.ModelYear} {vinResult.Make} {vinResult.Model}</strong>
+                <span>{vinResult.Trim || ''}{vinResult.EngineCylinders ? `, ${vinResult.EngineCylinders} cylinders` : ''}</span>
+              </div>
+              <p className="muted">Results below are for this vehicle.</p>
+            </section>
+          )}
+
           {/* 1. BEST MATCH */}
           <section className="card bestMatch">
             <div className="bestMatchHeader">
