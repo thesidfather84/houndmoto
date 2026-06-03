@@ -1,0 +1,88 @@
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#16202a;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:980px;margin:0 auto;padding:14px}.hero{position:sticky;top:0;z-index:5;background:#fff;border:1px solid #e5e7eb;border-bottom:5px solid #ea580c;border-radius:0 0 18px 18px;padding:16px;box-shadow:0 8px 30px rgba(15,23,42,.08)}.brandRow{display:flex;gap:12px;align-items:center}.logo{font-size:40px;background:#fff7ed;border:2px solid #fed7aa;border-radius:16px;padding:6px}h1{font-size:30px;line-height:1;margin:0;color:#111827}h2{font-size:20px;margin:0 0 10px}h3{font-size:16px;margin:6px 0 8px}p{margin:0 0 8px}.hero p,.muted{color:#64748b}.warning{margin-top:14px;background:#fff7ed;border:1px solid #fdba74;border-left:5px solid #ea580c;border-radius:12px;padding:12px;line-height:1.45}.searchPanel,.inlineForm{display:flex;gap:8px;margin-top:12px}.searchPanel input,.inlineForm input{flex:1;min-width:0;border:2px solid #e5e7eb;border-radius:12px;padding:13px 14px;font-size:16px;background:#fff}.searchPanel input:focus,.inlineForm input:focus{outline:none;border-color:#ea580c}button{border:0;border-radius:12px;background:#ea580c;color:#fff;font-weight:800;padding:12px 16px;cursor:pointer}button.light{background:#fff;color:#111827;border:2px solid #e5e7eb}.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 3px 18px rgba(15,23,42,.04)}.highlight{border-color:#fed7aa;background:#fffaf5}.checklist p{margin:8px 0}.retailerGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.retailer{display:block;text-decoration:none;color:#111827;border:2px solid #e5e7eb;border-radius:14px;padding:14px;background:#fff;transition:.15s}.retailer:hover{border-color:#ea580c;transform:translateY(-1px)}.retailer strong{display:block;margin-bottom:5px}.retailer span,.resultBox span{display:block;color:#64748b;font-size:14px;line-height:1.35}.fluid{padding:12px;border-left:5px solid #2563eb;background:#eff6ff;border-radius:12px;margin:8px 0}.fluid strong{display:block;color:#1e3a8a}.fluid span{font-size:14px;color:#1e40af}.pill{display:inline-block;background:#ffedd5;color:#9a3412;border:1px solid #fdba74;border-radius:999px;padding:6px 10px;font-weight:700}.error{color:#b91c1c;background:#fee2e2;border-radius:10px;padding:10px}.resultBox{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-top:10px}li{margin-bottom:8px}footer{text-align:center;color:#64748b;font-size:13px;padding:24px 8px}@media(max-width:640px){main{padding:0}.hero{border-radius:0}.searchPanel,.inlineForm{flex-direction:column}.card{border-radius:0;margin-top:10px;border-left:0;border-right:0}h1{font-size:25px}}
+
+/* Hero image */
+.heroImg{display:block;width:100%;max-height:260px;object-fit:contain;object-position:center;border-radius:18px;margin-bottom:24px;background:transparent}
+
+/* Mode picker */
+.modePicker{display:flex;gap:6px;margin-top:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.modePicker::-webkit-scrollbar{height:3px}
+.modePicker::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:999px}
+.modeBtn{border:2px solid #e5e7eb;border-radius:999px;background:#fff;color:#374151;font-size:13px;font-weight:600;padding:6px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.15s}
+.modeBtn:hover{border-color:#ea580c;color:#ea580c}
+.modeBtn.active{background:#ea580c;border-color:#ea580c;color:#fff}
+
+/* Suggestion chips */
+.chips{display:flex;gap:6px;margin-top:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1.5px solid #fed7aa;border-radius:999px;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.15s}
+.chip:hover{background:#ea580c;border-color:#ea580c;color:#fff}
+
+/* Vehicle lookup toggle */
+.vehicleToggle{display:block;width:100%;margin-top:10px;background:none;border:1.5px dashed #d1d5db;border-radius:12px;color:#64748b;font-size:13px;font-weight:600;padding:9px;cursor:pointer;text-align:center;transition:.15s}
+.vehicleToggle:hover{border-color:#ea580c;color:#ea580c;background:#fff7ed}
+
+/* Vehicle tree selects */
+.vehicleTree{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.vehicleTree select{flex:1;min-width:130px;border:2px solid #e5e7eb;border-radius:12px;padding:10px 12px;font-size:15px;background:#fff;cursor:pointer;color:#111827}
+.vehicleTree select:focus{outline:none;border-color:#ea580c}
+.vehicleTree select:disabled{background:#f9fafb;color:#9ca3af;cursor:not-allowed}
+.vehiclePreview{margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.vehiclePreview p{margin:0}
+
+/* Pill row */
+.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pillRow .pill{margin:0}
+
+/* Fitment warning (yellow) */
+.fitmentWarn{margin-top:12px;background:#fef9c3;border:1px solid #fde047;border-left:5px solid #ca8a04;border-radius:12px;padding:12px;line-height:1.45;color:#713f12}
+.fitmentWarn + p{margin-top:10px}
+
+@media(max-width:640px){
+  .heroImg{max-height:150px}
+  .vehicleTree{flex-direction:column}
+  .vehicleTree select{min-width:0;width:100%}
+  .vehiclePreview{flex-direction:column;align-items:flex-start}
+}
+
+/* Intro card */
+.introText{font-size:16px;color:#374151;line-height:1.6;margin:0}
+
+/* Best Match card */
+.bestMatch{border-color:#fed7aa;background:#fffaf5}
+.bestMatchHeader{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.bestMatchBadge{background:#ea580c;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.bestMatchTitle{font-size:20px;font-weight:700;color:#111827;margin:0}
+.bestMatchGrid{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.bestMatchItem{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px}
+.bestMatchItem.fitmentWarnInline{background:#fef9c3;border-color:#fde047;border-left:4px solid #ca8a04}
+.bestMatchLabel{display:block;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.bestMatchValue{display:block;font-size:14px;color:#16202a;line-height:1.55}
+.bestMatchActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.actionBtn{display:inline-block;text-decoration:none;border-radius:10px;background:#ea580c;color:#fff;font-weight:700;font-size:14px;padding:10px 18px;transition:.15s;border:2px solid #ea580c}
+.actionBtn:hover{background:#c2410c;border-color:#c2410c}
+.actionBtn.secondary{background:#fff;color:#ea580c}
+.actionBtn.secondary:hover{background:#fff7ed}
+
+/* Vendor price preview */
+.vendorList{display:flex;flex-direction:column;margin-top:4px}
+.vendorRow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #f1f5f9}
+.vendorRow:last-child{border-bottom:none}
+.vendorInfo{flex:1;min-width:0}
+.vendorName{display:block;font-weight:700;font-size:15px;color:#111827}
+.vendorNote{display:block;font-size:13px;color:#64748b;margin-top:2px}
+.priceBtn{display:inline-block;text-decoration:none;white-space:nowrap;background:#f0fdf4;color:#166534;border:1.5px solid #86efac;border-radius:8px;font-size:13px;font-weight:700;padding:7px 13px;transition:.15s;flex-shrink:0}
+.priceBtn:hover{background:#22c55e;color:#fff;border-color:#22c55e}
+
+/* Cross reference */
+.crossRefList{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.crossRefLink{display:flex;flex-direction:column;text-decoration:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:13px 16px;transition:.15s}
+.crossRefLink:hover{border-color:#ea580c;background:#fff7ed}
+.crossRefLabel{font-size:15px;font-weight:700;color:#ea580c;margin-bottom:3px}
+.crossRefNote{font-size:13px;color:#64748b;line-height:1.4}
+
+@media(max-width:640px){
+  .bestMatchActions{flex-direction:column}
+  .actionBtn{text-align:center}
+  .vendorRow{flex-direction:column;align-items:flex-start;gap:8px}
+  .priceBtn{align-self:flex-start}
+}
