@@ -61,7 +61,52 @@ const vehicleSpecs = [
     wipers: "22 inch driver / 22 inch passenger",
     bulbs: "Verify by trim before buying",
     notes: "Starter data. Always verify before repair."
-  }
+  },
+{
+  year: "2018",
+  make: "Toyota",
+  model: "Camry",
+  engine: "2.5L I4",
+  oilType: "0W-16",
+  oilCapacity: "4.8 quarts with filter",
+  transmissionFluid: "Toyota WS",
+  transmissionCapacity: "Service amount varies",
+  tireSize: "205/65R16",
+  batteryGroup: "H5",
+  wipers: "26 inch driver / 18 inch passenger",
+  bulbs: "Verify by trim",
+  notes: "Starter data. Always verify before repair."
+},
+{
+  year: "2015",
+  make: "Honda",
+  model: "Civic",
+  engine: "1.8L I4",
+  oilType: "0W-20",
+  oilCapacity: "3.9 quarts with filter",
+  transmissionFluid: "Honda CVT Fluid or ATF depending on transmission",
+  transmissionCapacity: "Service amount varies",
+  tireSize: "195/65R15",
+  batteryGroup: "51R",
+  wipers: "26 inch driver / 22 inch passenger",
+  bulbs: "Verify by trim",
+  notes: "Starter data. Always verify before repair."
+},
+{
+  year: "2014",
+  make: "Chevrolet",
+  model: "Cruze",
+  engine: "1.4L Turbo",
+  oilType: "5W-30",
+  oilCapacity: "4.25 quarts with filter",
+  transmissionFluid: "Dexron VI",
+  transmissionCapacity: "Service amount varies",
+  tireSize: "215/60R16",
+  batteryGroup: "47/H5",
+  wipers: "24 inch driver / 18 inch passenger",
+  bulbs: "Verify by trim",
+  notes: "Starter data. Always verify before repair."
+}
 ];
 
 const troubleCodes = [
