@@ -83,3 +83,36 @@
 @media(max-width:640px){
   .priceBtn{align-self:flex-start}
 }
+
+/* VIN hint */
+.vinHint{font-size:13px;color:#059669;font-weight:600;margin:6px 0 0;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:7px 12px}
+
+/* DTC manual link */
+.dtcManualLink{margin-top:12px}
+.dtcManualLink a{color:#ea580c;font-weight:600;font-size:14px;text-decoration:none}
+.dtcManualLink a:hover{text-decoration:underline}
+
+/* Lemon Manuals featured card */
+.lemonFeatured{display:block;text-decoration:none;background:linear-gradient(135deg,#fef3c7,#fff7ed);border:2px solid #f59e0b;border-radius:14px;padding:14px 16px;transition:.15s;margin-bottom:2px}
+.lemonFeatured:hover{border-color:#ea580c;background:linear-gradient(135deg,#fff7ed,#fff)}
+.lemonFeaturedTop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.lemonFeaturedTop strong{font-size:16px;color:#111827}
+.lemonBadge{font-size:11px;font-weight:700;background:#f59e0b;color:#fff;border-radius:999px;padding:2px 9px}
+.lemonFeaturedNote{font-size:13px;color:#92400e}
+
+/* VIN result card */
+.vinResultCard{border-color:#bbf7d0;background:#f0fdf4}
+
+/* Desktop two-column results */
+@media(min-width:769px){
+  .resultsCol{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  .resultsCol .card{margin-top:0}
+}
+
+/* Better mobile touch targets */
+@media(max-width:640px){
+  button{padding:14px 16px;font-size:15px}
+  .searchPanel input{padding:15px 14px;font-size:16px}
+  .vendorName{font-size:16px}
+  .priceBtn{padding:10px 16px;font-size:14px}
+}

@@ -52,11 +52,37 @@ const fluidExamples = {
 };
 
 const dtc = {
-  p0300: { title: 'Random/multiple cylinder misfire',                          desc: 'The engine misfired — one or more cylinders did not fire correctly. This can feel like rough idling, shaking, or sudden loss of power.',                                                        checks: ['Check spark plugs and ignition coils', 'Check for vacuum leaks', 'Check fuel pressure and injectors', 'Check compression if misfire persists'],            parts: ['Spark plugs', 'Ignition coils', 'Fuel injectors'] },
-  p0420: { title: 'Catalyst system efficiency below threshold',                desc: 'The catalytic converter is not cleaning exhaust gases as well as it should. Could be the converter itself, exhaust leaks, or oxygen sensors.',                                               checks: ['Check for exhaust leaks first', 'Compare upstream and downstream O2 sensor data', 'Confirm converter failure before replacing it'],                          parts: ['Catalytic converter', 'Upstream O2 sensor', 'Downstream O2 sensor'] },
-  p0171: { title: 'System too lean — Bank 1',                                  desc: 'The engine is getting too much air or not enough fuel on one side. Common causes are air leaks or a dirty sensor.',                                                                           checks: ['Inspect intake and vacuum hoses for leaks', 'Clean or replace the MAF sensor', 'Check fuel pressure', 'Inspect PCV hoses'],                               parts: ['MAF sensor', 'Vacuum hoses', 'Fuel pressure regulator', 'Fuel injectors'] },
-  p0128: { title: 'Coolant temperature below thermostat regulating temperature', desc: 'The engine is not reaching normal operating temperature. A stuck-open thermostat is the most common cause.',                                                                             checks: ['Replace thermostat — most likely cause', 'Check coolant level', 'Review coolant temp sensor live data'],                                                    parts: ['Thermostat', 'Coolant temperature sensor'] },
-  p0442: { title: 'Small EVAP leak detected',                                  desc: 'A small leak was found in the system that traps fuel vapors. A loose or cracked gas cap is the most common cause.',                                                                           checks: ['Tighten or replace the gas cap first', 'Inspect purge valve and vent valve', 'Smoke test the EVAP system to find leaks'],                                parts: ['Gas cap', 'Purge valve', 'EVAP canister vent valve'] },
+  // Misfires
+  p0300: { title: 'Random / multiple cylinder misfire',     desc: 'The engine misfired in more than one cylinder, or the misfire is random. This can feel like rough idling, shaking, or sudden loss of power.',                                           checks: ['Check all spark plugs and ignition coils', 'Check for vacuum leaks', 'Check fuel pressure and injectors', 'Check compression if misfire continues'],                           parts: ['Spark plugs', 'Ignition coils', 'Fuel injectors'] },
+  p0301: { title: 'Cylinder 1 misfire detected',            desc: 'Cylinder 1 is not firing correctly. This causes rough idle, shaking, and the misfire light. Check the spark plug, coil, and injector on cylinder 1 first.',                            checks: ['Replace or test spark plug on cylinder 1', 'Swap coil from cylinder 1 with another — if misfire moves, coil is bad', 'Test injector on cylinder 1 with a noid light', 'Do a compression test on cylinder 1'], parts: ['Spark plug — cyl 1', 'Ignition coil — cyl 1', 'Fuel injector — cyl 1'] },
+  p0302: { title: 'Cylinder 2 misfire detected',            desc: 'Cylinder 2 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 2', 'Swap coil from cylinder 2 with another — if misfire moves, coil is bad', 'Test injector on cylinder 2', 'Compression test on cylinder 2'], parts: ['Spark plug — cyl 2', 'Ignition coil — cyl 2', 'Fuel injector — cyl 2'] },
+  p0303: { title: 'Cylinder 3 misfire detected',            desc: 'Cylinder 3 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 3', 'Swap coil from cylinder 3 with another', 'Test injector on cylinder 3', 'Compression test on cylinder 3'],               parts: ['Spark plug — cyl 3', 'Ignition coil — cyl 3', 'Fuel injector — cyl 3'] },
+  p0304: { title: 'Cylinder 4 misfire detected',            desc: 'Cylinder 4 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 4', 'Swap coil from cylinder 4 with another', 'Test injector on cylinder 4', 'Compression test on cylinder 4'],               parts: ['Spark plug — cyl 4', 'Ignition coil — cyl 4', 'Fuel injector — cyl 4'] },
+  p0305: { title: 'Cylinder 5 misfire detected',            desc: 'Cylinder 5 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 5', 'Swap coil from cylinder 5 with another', 'Test injector on cylinder 5', 'Compression test on cylinder 5'],               parts: ['Spark plug — cyl 5', 'Ignition coil — cyl 5', 'Fuel injector — cyl 5'] },
+  p0306: { title: 'Cylinder 6 misfire detected',            desc: 'Cylinder 6 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 6', 'Swap coil from cylinder 6 with another', 'Test injector on cylinder 6', 'Compression test on cylinder 6'],               parts: ['Spark plug — cyl 6', 'Ignition coil — cyl 6', 'Fuel injector — cyl 6'] },
+  p0307: { title: 'Cylinder 7 misfire detected',            desc: 'Cylinder 7 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 7', 'Swap coil from cylinder 7 with another', 'Test injector on cylinder 7', 'Compression test on cylinder 7'],               parts: ['Spark plug — cyl 7', 'Ignition coil — cyl 7', 'Fuel injector — cyl 7'] },
+  p0308: { title: 'Cylinder 8 misfire detected',            desc: 'Cylinder 8 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 8', 'Swap coil from cylinder 8 with another', 'Test injector on cylinder 8', 'Compression test on cylinder 8'],               parts: ['Spark plug — cyl 8', 'Ignition coil — cyl 8', 'Fuel injector — cyl 8'] },
+  // Fuel / air metering
+  p0101: { title: 'MAF sensor range / performance',         desc: 'The mass air flow sensor reading is out of the expected range. A dirty or failing MAF sensor causes rough running and poor fuel economy.',                                              checks: ['Clean MAF sensor with MAF cleaner spray — do not touch the wire', 'Check air filter and intake tube for leaks', 'Inspect MAF connector and wiring', 'Replace MAF if cleaning fails'], parts: ['MAF sensor', 'Air filter', 'Intake duct'] },
+  p0171: { title: 'System too lean — Bank 1',               desc: 'The engine is getting too much air or not enough fuel on Bank 1. Common causes are vacuum leaks or a dirty MAF sensor.',                                                                checks: ['Inspect intake and vacuum hoses for leaks', 'Clean or replace the MAF sensor', 'Check fuel pressure', 'Inspect PCV hoses'],                               parts: ['MAF sensor', 'Vacuum hoses', 'Fuel pressure regulator', 'Fuel injectors'] },
+  p0172: { title: 'System too rich — Bank 1',               desc: 'The engine is running with too much fuel on Bank 1. Causes include leaking injectors, a faulty O2 sensor, or high fuel pressure.',                                                     checks: ['Check for fouled or black spark plugs', 'Test injectors for leaking at rest', 'Check O2 sensor readings with a scanner', 'Check fuel pressure regulator'],  parts: ['Fuel injectors', 'O2 sensor', 'Fuel pressure regulator'] },
+  p0174: { title: 'System too lean — Bank 2',               desc: 'Same as P0171 but on Bank 2 of a V-engine. Check the same components on the opposite bank.',                                                                                           checks: ['Inspect Bank 2 intake and vacuum hoses', 'Clean or replace MAF sensor', 'Check fuel pressure', 'Inspect Bank 2 PCV hoses'],                               parts: ['MAF sensor', 'Vacuum hoses', 'Fuel injectors'] },
+  p0175: { title: 'System too rich — Bank 2',               desc: 'Same as P0172 but on Bank 2.',                                                                                                                                                         checks: ['Check spark plugs on Bank 2 for fouling', 'Test Bank 2 injectors for leaking', 'Check O2 sensor on Bank 2', 'Check fuel pressure'],                        parts: ['Fuel injectors', 'O2 sensor — Bank 2'] },
+  // Sensors
+  p0128: { title: 'Coolant temp below thermostat regulating temp', desc: 'The engine is not reaching normal operating temperature. A stuck-open thermostat is the most common cause.',                                                                    checks: ['Replace thermostat — most likely cause', 'Check coolant level', 'Review coolant temp sensor live data with a scanner'],                                    parts: ['Thermostat', 'Coolant temperature sensor'] },
+  p0335: { title: 'Crankshaft position sensor circuit malfunction', desc: 'The crankshaft position sensor signal is missing or erratic. This can cause a no-start or stalling.',                                                                          checks: ['Check sensor connector and wiring for damage or corrosion', 'Measure sensor resistance — compare to spec in service manual', 'Inspect the reluctor ring on the crankshaft for damage', 'Replace sensor if wiring checks out'], parts: ['Crankshaft position sensor'] },
+  p0340: { title: 'Camshaft position sensor circuit — Bank 1',     desc: 'The camshaft position sensor signal for Bank 1 is missing or erratic. Can cause rough running or no-start.',                                                                    checks: ['Inspect cam sensor connector and wiring', 'Check for oil leaks contaminating the sensor', 'Test sensor output voltage', 'Replace sensor'],                 parts: ['Camshaft position sensor', 'Timing components'] },
+  // Catalytic converter
+  p0420: { title: 'Catalyst system efficiency below threshold',     desc: 'The catalytic converter is not cleaning exhaust gases as well as it should. Could be the converter, exhaust leaks, or O2 sensors.',                                            checks: ['Check for exhaust leaks first — a leak can fake this code', 'Compare upstream and downstream O2 sensor data with a scanner', 'Confirm converter failure before replacing it'], parts: ['Catalytic converter', 'Upstream O2 sensor', 'Downstream O2 sensor'] },
+  p0430: { title: 'Catalyst system efficiency below threshold — Bank 2', desc: 'Same as P0420 but for Bank 2 on a V-engine.',                                                                                                                              checks: ['Check for exhaust leaks on Bank 2', 'Compare Bank 2 O2 sensor readings', 'Confirm converter failure before replacing'],                                   parts: ['Catalytic converter — Bank 2', 'O2 sensors — Bank 2'] },
+  // EVAP
+  p0440: { title: 'EVAP system malfunction',                desc: 'The evaporative emission system has a general fault. Could be a leak, a stuck valve, or sensor issue.',                                                                                 checks: ['Tighten or replace the gas cap first', 'Inspect EVAP hoses for cracks', 'Test purge and vent solenoids'],                                                 parts: ['Gas cap', 'Purge solenoid', 'EVAP vent valve'] },
+  p0442: { title: 'Small EVAP system leak detected',        desc: 'A small leak was found in the fuel vapor system. A loose or worn gas cap is the most common cause.',                                                                                    checks: ['Tighten or replace the gas cap first', 'Inspect purge valve and vent valve', 'Smoke test the EVAP system to find the leak'],                             parts: ['Gas cap', 'Purge valve', 'EVAP canister vent valve'] },
+  p0455: { title: 'Large EVAP system leak detected',        desc: 'A large leak in the fuel vapor system. A missing or cracked gas cap is usually the cause, but major hose damage is also possible.',                                                     checks: ['Replace gas cap first', 'Inspect all EVAP hoses for cracks or disconnection', 'Smoke test EVAP system'],                                                 parts: ['Gas cap', 'EVAP hoses', 'Purge valve'] },
+  p0456: { title: 'Very small EVAP system leak detected',   desc: 'An extremely tiny leak in the EVAP system. Very hard to find. Often a slightly damaged gas cap seal.',                                                                                  checks: ['Try a new gas cap first', 'Smoke test EVAP system to find the leak', 'Check EVAP canister and vent hoses'],                                               parts: ['Gas cap', 'EVAP canister', 'Vent valve'] },
+  // Transmission
+  p0700: { title: 'Transmission control system malfunction', desc: 'The transmission control module detected a fault. Usually accompanied by other P07XX codes that identify the exact problem.',                                                          checks: ['Scan for additional P07XX transmission codes', 'Check transmission fluid level and condition', 'Inspect wiring harness connections at the transmission', 'May need a transmission specialist'], parts: ['Transmission fluid', 'Solenoids', 'Transmission control module'] },
+  p0741: { title: 'Torque converter clutch — stuck off',    desc: 'The torque converter clutch is not engaging properly. Can cause rough shifts or poor fuel economy at highway speed.',                                                                    checks: ['Check transmission fluid level and condition', 'Inspect fluid for debris — dark or burnt fluid means damage', 'Scan for other transmission codes', 'May need a transmission service or rebuild'], parts: ['Transmission fluid', 'TCC solenoid', 'Torque converter'] },
 };
 
 const partLibrary = [
@@ -159,15 +185,41 @@ function detectPartNumber(q) {
   return null;
 }
 
+function lemonManualsUrl(make, year) {
+  const base = 'https://lemon-manuals.la/';
+  if (make && year) return `${base}${encodeURIComponent(make)}/${year}/`;
+  if (make)         return `${base}${encodeURIComponent(make)}/`;
+  return base;
+}
+
+function dtcCategory(code) {
+  const c = code.toLowerCase();
+  if (c.startsWith('p00') || c.startsWith('p01') || c.startsWith('p02')) return 'fuel and air metering';
+  if (c.startsWith('p03')) return 'ignition system or misfire';
+  if (c.startsWith('p04')) return 'auxiliary emission controls';
+  if (c.startsWith('p05')) return 'vehicle speed or idle control';
+  if (c.startsWith('p06')) return 'computer output circuits';
+  if (c.startsWith('p07') || c.startsWith('p08')) return 'transmission system';
+  if (c.startsWith('b')) return 'body system';
+  if (c.startsWith('c')) return 'chassis or ABS system';
+  if (c.startsWith('u')) return 'network communication';
+  return 'vehicle system';
+}
+
 function buildPartMatch(cleanQuery) {
   const lower = cleanQuery.toLowerCase();
   const code  = getDtc(cleanQuery);
   const year  = getYear(cleanQuery);
   const pn    = detectPartNumber(cleanQuery);
 
-  if (code && dtc[code]) {
-    const d = dtc[code];
-    return { kind: 'dtc', name: `Code ${code.toUpperCase()} — ${d.title}`, vehicleFit: year ? `Year ${year} found in your search` : 'Applies to any vehicle showing this code', whatItDoes: d.desc, aka: null, warn: 'Fix the cause, not just the code. Clear and verify after repair.', parts: d.parts };
+  if (code) {
+    if (dtc[code]) {
+      const d = dtc[code];
+      return { kind: 'dtc', name: `Code ${code.toUpperCase()} — ${d.title}`, vehicleFit: year ? `Year ${year} found in your search` : 'Applies to any vehicle showing this code', whatItDoes: d.desc, aka: null, warn: 'Fix the cause, not just the code. Clear and verify after repair.', parts: d.parts };
+    }
+    // Unknown code — provide category-based guidance
+    const cat = dtcCategory(code);
+    return { kind: 'dtc', name: `Code ${code.toUpperCase()}`, vehicleFit: year ? `Year ${year} found in your search` : 'Applies to any vehicle showing this code', whatItDoes: `This is a ${cat} code. Use a scan tool to view live data and look for additional related codes before replacing any parts.`, aka: null, warn: 'Look up this exact code in a service manual for your specific vehicle — procedures vary by make and model.', parts: [] };
   }
   if (pn) {
     return { kind: 'partNumber', name: `Part Number: ${cleanQuery}`, vehicleFit: 'Verify this part fits your specific vehicle before ordering', whatItDoes: `Identified as a possible ${pn.likelyType}. Use cross-reference links to find OEM and aftermarket equivalents.`, aka: 'Part numbers vary by manufacturer. Cross-reference tools below can help.', warn: 'The same part number may not fit all vehicles. Confirm year, make, model, and engine compatibility.', parts: [] };
@@ -198,10 +250,18 @@ function App() {
   const lower      = cleanQuery.toLowerCase();
   const code       = getDtc(cleanQuery);
   const tireSize   = getTireSize(cleanQuery);
+  const vinHint    = /^[A-HJ-NPR-Z0-9]{17}$/i.test(query.trim()) && !searched;
 
   const partMatch  = useMemo(() => buildPartMatch(cleanQuery), [cleanQuery]);
   const fluidMatch = useMemo(() => Object.entries(fluidExamples).find(([k]) => lower.includes(k)), [lower]);
   const years      = useMemo(() => { const a = []; for (let y = 2025; y >= 1985; y--) a.push(String(y)); return a; }, []);
+
+  const lemonUrl   = useMemo(() => {
+    if (vinResult?.Make && vinResult?.ModelYear) return lemonManualsUrl(vinResult.Make, vinResult.ModelYear);
+    const detectedMake = vehicleMakes.find(m => lower.includes(m.toLowerCase()));
+    const detectedYear = getYear(cleanQuery);
+    return lemonManualsUrl(detectedMake, detectedYear);
+  }, [vinResult, lower, cleanQuery]);
 
   async function runSearch() {
     const q = cleanQuery;
@@ -240,7 +300,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  const showTrouble = (mode === 'All' || mode === 'Trouble Code') && code && dtc[code];
+  const showTrouble = (mode === 'All' || mode === 'Trouble Code') && !!code;
   const showFluid   = mode === 'All' || mode === 'Fluid Spec';
 
   return (
@@ -257,10 +317,11 @@ function App() {
           {searchModes.map(m => <button key={m} className={`modeBtn${mode === m ? ' active' : ''}`} onClick={() => setMode(m)}>{m}</button>)}
         </div>
         <div className="searchPanel">
-          <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && runSearch()} placeholder="Part, code, VIN, or year make model…" />
-          <button onClick={runSearch} disabled={vinDecoding}>{vinDecoding ? 'Decoding…' : 'Search'}</button>
+          <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && runSearch()} placeholder="Part, trouble code, VIN, or year make model…" />
+          <button onClick={runSearch} disabled={vinDecoding}>{vinDecoding ? 'Decoding VIN…' : 'Search'}</button>
           <button className="light" onClick={reset}>Reset</button>
         </div>
+        {vinHint && <p className="vinHint">🔍 VIN detected — press Search to look up this vehicle</p>}
         <div className="chips">
           {suggestions.map(s => <button key={s} className="chip" onClick={() => applySuggestion(s)}>{s}</button>)}
         </div>
@@ -369,82 +430,106 @@ function App() {
           </section>
 
           {/* 2. TROUBLE CODE DETAILS */}
-          {showTrouble && (
+          {showTrouble && dtc[code] && (
             <section className="card">
               <h2>Diagnostic Steps for {code.toUpperCase()}</h2>
-              <p className="muted">Work through these in order before buying any parts.</p>
+              <p className="muted">Work through these steps in order before buying any parts.</p>
               <ul>{dtc[code].checks.map(item => <li key={item}>{item}</li>)}</ul>
+              <div className="dtcManualLink">
+                <a href={`${lemonUrl}`} target="_blank" rel="noreferrer">📖 Find service manual for this vehicle on Lemon Manuals →</a>
+              </div>
             </section>
           )}
-
-          {/* 3. VENDOR PRICE PREVIEW */}
-          <section className="card" id="prices">
-            <h2>Check Prices at 9 Vendors</h2>
-            <p className="muted">HoundMoto does not know the current prices. Click any button to check live pricing at that store.</p>
-            <div className="vendorList">
-              {vendors.map(v => (
-                <div className="vendorRow" key={v.name}>
-                  <div className="vendorInfo">
-                    <span className="vendorName">{v.name}</span>
-                    <span className="vendorNote">{v.note}</span>
-                  </div>
-                  <a className="priceBtn" href={v.url(cleanQuery)} target="_blank" rel="noreferrer">Check Live Price →</a>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* 4. CROSS REFERENCE HELP */}
-          <section className="card" id="crossref">
-            <h2>Cross Reference Help</h2>
-            <p className="muted">Find the same part under a different brand name or OEM number.</p>
-            <div className="crossRefList">
-              <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' OEM part number equivalent')}`} target="_blank" rel="noreferrer">
-                <span className="crossRefLabel">OEM Equivalent Search</span>
-                <span className="crossRefNote">Find the original manufacturer part number for this part</span>
-              </a>
-              <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' aftermarket cross reference')}`} target="_blank" rel="noreferrer">
-                <span className="crossRefLabel">Aftermarket Equivalent Search</span>
-                <span className="crossRefNote">Find aftermarket brands that make the same part</span>
-              </a>
-              <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' cross reference')}`} target="_blank" rel="noreferrer">
-                <span className="crossRefLabel">Google Cross Reference</span>
-                <span className="crossRefNote">General cross-reference search for this part or number</span>
-              </a>
-              <a className="crossRefLink" href={`https://www.amazon.com/s?k=${encodeURIComponent(cleanQuery + ' auto part')}`} target="_blank" rel="noreferrer">
-                <span className="crossRefLabel">Amazon Part Search</span>
-                <span className="crossRefNote">Browse Amazon listings — verify fitment before buying</span>
-              </a>
-              <a className="crossRefLink" href={`https://www.rockauto.com/en/partsearch/?partnum=${encodeURIComponent(cleanQuery)}`} target="_blank" rel="noreferrer">
-                <span className="crossRefLabel">RockAuto Part Number Search</span>
-                <span className="crossRefNote">RockAuto lists parts by vehicle — use their vehicle selector for best results</span>
-              </a>
-            </div>
-          </section>
-
-          {/* 5. REPAIR INFO */}
-          <section className="card" id="repair">
-            <h2>Repair Guides &amp; Manuals</h2>
-            <p className="muted">External sites for guides and manuals. HoundMoto does not host or copy their content.</p>
-            <div className="retailerGrid">
-              {repairResources.map(r => (
-                <a className="retailer" key={r.name} href={r.url(cleanQuery)} target="_blank" rel="noreferrer">
-                  <strong>{r.name}</strong><span>{r.note}</span>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          {/* 6. FLUID SPECS */}
-          {showFluid && (
+          {showTrouble && !dtc[code] && (
             <section className="card">
-              <h2>Fluid Specs</h2>
-              {fluidMatch
-                ? <div>{fluidMatch[1].map(([n, s]) => <div className="fluid" key={n}><strong>{n}</strong><span>{s}</span></div>)}</div>
-                : <p className="muted">No exact fluid data loaded for this vehicle yet. Use vendor links above and verify against your owner's manual before adding anything.</p>
-              }
+              <h2>Code {code.toUpperCase()} — Unknown Code</h2>
+              <p className="muted">This code is not in our database yet. Use the links below to look it up in a service manual or search engine.</p>
+              <div className="dtcManualLink">
+                <a href={`https://www.google.com/search?q=${encodeURIComponent(code.toUpperCase() + ' trouble code diagnosis')}`} target="_blank" rel="noreferrer">🔍 Search Google for {code.toUpperCase()} diagnosis →</a>
+              </div>
+              <div className="dtcManualLink">
+                <a href={lemonUrl} target="_blank" rel="noreferrer">📖 Find service manual on Lemon Manuals →</a>
+              </div>
             </section>
           )}
+
+          {/* 3 + 4. VENDOR & CROSS REFERENCE — two columns on desktop */}
+          <div className="resultsCol">
+            <section className="card" id="prices">
+              <h2>Check Prices at 9 Vendors</h2>
+              <p className="muted">Click any button to check live pricing at that store.</p>
+              <div className="vendorList">
+                {vendors.map(v => (
+                  <div className="vendorRow" key={v.name}>
+                    <div className="vendorInfo">
+                      <span className="vendorName">{v.name}</span>
+                      <span className="vendorNote">{v.note}</span>
+                    </div>
+                    <a className="priceBtn" href={v.url(cleanQuery)} target="_blank" rel="noreferrer">Check Price →</a>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="card" id="crossref">
+              <h2>Cross Reference</h2>
+              <p className="muted">Find this part under a different brand or OEM number.</p>
+              <div className="crossRefList">
+                <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' OEM part number equivalent')}`} target="_blank" rel="noreferrer">
+                  <span className="crossRefLabel">OEM Equivalent Search</span>
+                  <span className="crossRefNote">Find the original manufacturer part number</span>
+                </a>
+                <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' aftermarket cross reference')}`} target="_blank" rel="noreferrer">
+                  <span className="crossRefLabel">Aftermarket Equivalent</span>
+                  <span className="crossRefNote">Find aftermarket brands that make this part</span>
+                </a>
+                <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(cleanQuery + ' cross reference')}`} target="_blank" rel="noreferrer">
+                  <span className="crossRefLabel">Google Cross Reference</span>
+                  <span className="crossRefNote">General cross-reference search</span>
+                </a>
+                <a className="crossRefLink" href={`https://www.amazon.com/s?k=${encodeURIComponent(cleanQuery + ' auto part')}`} target="_blank" rel="noreferrer">
+                  <span className="crossRefLabel">Amazon Part Search</span>
+                  <span className="crossRefNote">Check Amazon — verify fitment before buying</span>
+                </a>
+                <a className="crossRefLink" href={`https://www.rockauto.com/en/partsearch/?partnum=${encodeURIComponent(cleanQuery)}`} target="_blank" rel="noreferrer">
+                  <span className="crossRefLabel">RockAuto Part Search</span>
+                  <span className="crossRefNote">Use their vehicle selector for best results</span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          {/* 5 + 6. REPAIR INFO & FLUID SPECS — two columns on desktop */}
+          <div className="resultsCol">
+            <section className="card" id="repair">
+              <h2>Repair Guides &amp; Manuals</h2>
+              <p className="muted">Free OEM service manuals and DIY guides. HoundMoto does not host their content.</p>
+              <a className="lemonFeatured" href={lemonUrl} target="_blank" rel="noreferrer">
+                <div className="lemonFeaturedTop">
+                  <strong>Lemon Manuals</strong>
+                  <span className="lemonBadge">Free · 1960–2025</span>
+                </div>
+                <span className="lemonFeaturedNote">
+                  {lemonUrl !== 'https://lemon-manuals.la/'
+                    ? 'View service manuals for your vehicle →'
+                    : 'Browse OEM service manuals by make and year →'}
+                </span>
+              </a>
+              <a className="retailer" href={repairResources[0].url(cleanQuery)} target="_blank" rel="noreferrer" style={{marginTop:'8px'}}>
+                <strong>{repairResources[0].name}</strong><span>{repairResources[0].note}</span>
+              </a>
+            </section>
+
+            {showFluid && (
+              <section className="card">
+                <h2>Fluid Specs</h2>
+                {fluidMatch
+                  ? <div>{fluidMatch[1].map(([n, s]) => <div className="fluid" key={n}><strong>{n}</strong><span>{s}</span></div>)}</div>
+                  : <p className="muted">No fluid data loaded for this vehicle yet. Check your owner's manual or use the vendor links above.</p>
+                }
+              </section>
+            )}
+          </div>
 
           {/* 7. MODE PLACEHOLDERS */}
           {mode === 'Tire Size' && (
