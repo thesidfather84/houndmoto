@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import heroImg from './houndmoto-hero-clean.png';
 
 const suggestions = [
   'P0300', 'PKJ16CR-L11', '2006 Nissan Altima starter', '2011 F-150 5.0 oil capacity',
@@ -52,7 +51,6 @@ const fluidExamples = {
 };
 
 const dtc = {
-  // Misfires
   p0300: { title: 'Random / multiple cylinder misfire',     desc: 'The engine misfired in more than one cylinder, or the misfire is random. This can feel like rough idling, shaking, or sudden loss of power.',                                           checks: ['Check all spark plugs and ignition coils', 'Check for vacuum leaks', 'Check fuel pressure and injectors', 'Check compression if misfire continues'],                           parts: ['Spark plugs', 'Ignition coils', 'Fuel injectors'] },
   p0301: { title: 'Cylinder 1 misfire detected',            desc: 'Cylinder 1 is not firing correctly. This causes rough idle, shaking, and the misfire light. Check the spark plug, coil, and injector on cylinder 1 first.',                            checks: ['Replace or test spark plug on cylinder 1', 'Swap coil from cylinder 1 with another — if misfire moves, coil is bad', 'Test injector on cylinder 1 with a noid light', 'Do a compression test on cylinder 1'], parts: ['Spark plug — cyl 1', 'Ignition coil — cyl 1', 'Fuel injector — cyl 1'] },
   p0302: { title: 'Cylinder 2 misfire detected',            desc: 'Cylinder 2 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 2', 'Swap coil from cylinder 2 with another — if misfire moves, coil is bad', 'Test injector on cylinder 2', 'Compression test on cylinder 2'], parts: ['Spark plug — cyl 2', 'Ignition coil — cyl 2', 'Fuel injector — cyl 2'] },
@@ -62,25 +60,20 @@ const dtc = {
   p0306: { title: 'Cylinder 6 misfire detected',            desc: 'Cylinder 6 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 6', 'Swap coil from cylinder 6 with another', 'Test injector on cylinder 6', 'Compression test on cylinder 6'],               parts: ['Spark plug — cyl 6', 'Ignition coil — cyl 6', 'Fuel injector — cyl 6'] },
   p0307: { title: 'Cylinder 7 misfire detected',            desc: 'Cylinder 7 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 7', 'Swap coil from cylinder 7 with another', 'Test injector on cylinder 7', 'Compression test on cylinder 7'],               parts: ['Spark plug — cyl 7', 'Ignition coil — cyl 7', 'Fuel injector — cyl 7'] },
   p0308: { title: 'Cylinder 8 misfire detected',            desc: 'Cylinder 8 is not firing correctly.',                                                                                                                                                   checks: ['Replace or test spark plug on cylinder 8', 'Swap coil from cylinder 8 with another', 'Test injector on cylinder 8', 'Compression test on cylinder 8'],               parts: ['Spark plug — cyl 8', 'Ignition coil — cyl 8', 'Fuel injector — cyl 8'] },
-  // Fuel / air metering
   p0101: { title: 'MAF sensor range / performance',         desc: 'The mass air flow sensor reading is out of the expected range. A dirty or failing MAF sensor causes rough running and poor fuel economy.',                                              checks: ['Clean MAF sensor with MAF cleaner spray — do not touch the wire', 'Check air filter and intake tube for leaks', 'Inspect MAF connector and wiring', 'Replace MAF if cleaning fails'], parts: ['MAF sensor', 'Air filter', 'Intake duct'] },
   p0171: { title: 'System too lean — Bank 1',               desc: 'The engine is getting too much air or not enough fuel on Bank 1. Common causes are vacuum leaks or a dirty MAF sensor.',                                                                checks: ['Inspect intake and vacuum hoses for leaks', 'Clean or replace the MAF sensor', 'Check fuel pressure', 'Inspect PCV hoses'],                               parts: ['MAF sensor', 'Vacuum hoses', 'Fuel pressure regulator', 'Fuel injectors'] },
   p0172: { title: 'System too rich — Bank 1',               desc: 'The engine is running with too much fuel on Bank 1. Causes include leaking injectors, a faulty O2 sensor, or high fuel pressure.',                                                     checks: ['Check for fouled or black spark plugs', 'Test injectors for leaking at rest', 'Check O2 sensor readings with a scanner', 'Check fuel pressure regulator'],  parts: ['Fuel injectors', 'O2 sensor', 'Fuel pressure regulator'] },
   p0174: { title: 'System too lean — Bank 2',               desc: 'Same as P0171 but on Bank 2 of a V-engine. Check the same components on the opposite bank.',                                                                                           checks: ['Inspect Bank 2 intake and vacuum hoses', 'Clean or replace MAF sensor', 'Check fuel pressure', 'Inspect Bank 2 PCV hoses'],                               parts: ['MAF sensor', 'Vacuum hoses', 'Fuel injectors'] },
   p0175: { title: 'System too rich — Bank 2',               desc: 'Same as P0172 but on Bank 2.',                                                                                                                                                         checks: ['Check spark plugs on Bank 2 for fouling', 'Test Bank 2 injectors for leaking', 'Check O2 sensor on Bank 2', 'Check fuel pressure'],                        parts: ['Fuel injectors', 'O2 sensor — Bank 2'] },
-  // Sensors
   p0128: { title: 'Coolant temp below thermostat regulating temp', desc: 'The engine is not reaching normal operating temperature. A stuck-open thermostat is the most common cause.',                                                                    checks: ['Replace thermostat — most likely cause', 'Check coolant level', 'Review coolant temp sensor live data with a scanner'],                                    parts: ['Thermostat', 'Coolant temperature sensor'] },
   p0335: { title: 'Crankshaft position sensor circuit malfunction', desc: 'The crankshaft position sensor signal is missing or erratic. This can cause a no-start or stalling.',                                                                          checks: ['Check sensor connector and wiring for damage or corrosion', 'Measure sensor resistance — compare to spec in service manual', 'Inspect the reluctor ring on the crankshaft for damage', 'Replace sensor if wiring checks out'], parts: ['Crankshaft position sensor'] },
   p0340: { title: 'Camshaft position sensor circuit — Bank 1',     desc: 'The camshaft position sensor signal for Bank 1 is missing or erratic. Can cause rough running or no-start.',                                                                    checks: ['Inspect cam sensor connector and wiring', 'Check for oil leaks contaminating the sensor', 'Test sensor output voltage', 'Replace sensor'],                 parts: ['Camshaft position sensor', 'Timing components'] },
-  // Catalytic converter
   p0420: { title: 'Catalyst system efficiency below threshold',     desc: 'The catalytic converter is not cleaning exhaust gases as well as it should. Could be the converter, exhaust leaks, or O2 sensors.',                                            checks: ['Check for exhaust leaks first — a leak can fake this code', 'Compare upstream and downstream O2 sensor data with a scanner', 'Confirm converter failure before replacing it'], parts: ['Catalytic converter', 'Upstream O2 sensor', 'Downstream O2 sensor'] },
   p0430: { title: 'Catalyst system efficiency below threshold — Bank 2', desc: 'Same as P0420 but for Bank 2 on a V-engine.',                                                                                                                              checks: ['Check for exhaust leaks on Bank 2', 'Compare Bank 2 O2 sensor readings', 'Confirm converter failure before replacing'],                                   parts: ['Catalytic converter — Bank 2', 'O2 sensors — Bank 2'] },
-  // EVAP
   p0440: { title: 'EVAP system malfunction',                desc: 'The evaporative emission system has a general fault. Could be a leak, a stuck valve, or sensor issue.',                                                                                 checks: ['Tighten or replace the gas cap first', 'Inspect EVAP hoses for cracks', 'Test purge and vent solenoids'],                                                 parts: ['Gas cap', 'Purge solenoid', 'EVAP vent valve'] },
   p0442: { title: 'Small EVAP system leak detected',        desc: 'A small leak was found in the fuel vapor system. A loose or worn gas cap is the most common cause.',                                                                                    checks: ['Tighten or replace the gas cap first', 'Inspect purge valve and vent valve', 'Smoke test the EVAP system to find the leak'],                             parts: ['Gas cap', 'Purge valve', 'EVAP canister vent valve'] },
   p0455: { title: 'Large EVAP system leak detected',        desc: 'A large leak in the fuel vapor system. A missing or cracked gas cap is usually the cause, but major hose damage is also possible.',                                                     checks: ['Replace gas cap first', 'Inspect all EVAP hoses for cracks or disconnection', 'Smoke test EVAP system'],                                                 parts: ['Gas cap', 'EVAP hoses', 'Purge valve'] },
   p0456: { title: 'Very small EVAP system leak detected',   desc: 'An extremely tiny leak in the EVAP system. Very hard to find. Often a slightly damaged gas cap seal.',                                                                                  checks: ['Try a new gas cap first', 'Smoke test EVAP system to find the leak', 'Check EVAP canister and vent hoses'],                                               parts: ['Gas cap', 'EVAP canister', 'Vent valve'] },
-  // Transmission
   p0700: { title: 'Transmission control system malfunction', desc: 'The transmission control module detected a fault. Usually accompanied by other P07XX codes that identify the exact problem.',                                                          checks: ['Scan for additional P07XX transmission codes', 'Check transmission fluid level and condition', 'Inspect wiring harness connections at the transmission', 'May need a transmission specialist'], parts: ['Transmission fluid', 'Solenoids', 'Transmission control module'] },
   p0741: { title: 'Torque converter clutch — stuck off',    desc: 'The torque converter clutch is not engaging properly. Can cause rough shifts or poor fuel economy at highway speed.',                                                                    checks: ['Check transmission fluid level and condition', 'Inspect fluid for debris — dark or burnt fluid means damage', 'Scan for other transmission codes', 'May need a transmission service or rebuild'], parts: ['Transmission fluid', 'TCC solenoid', 'Torque converter'] },
 };
@@ -158,18 +151,6 @@ const partCategories = {
   'Interior & HVAC':      ['Cabin air filter','AC compressor','Heater core','Blower motor','Wiper blades'],
 };
 
-// FUTURE: Cross-reference database — maps part numbers to equivalents across brands
-// const crossReferenceDb = {}; // { [partNumber]: [{ brand, partNumber, notes }] }
-
-// FUTURE: Fluid specification database — full OEM vehicle coverage
-// const fluidSpecDb = {}; // { [vehicleKey]: { oil, coolant, transmission, brakeFluid, powerSteering } }
-
-// FUTURE: Tire fitment database — OEM and compatible sizes per vehicle
-// const tireDb = {}; // { [vehicleKey]: { oemSize, optional: string[], loadRating, rimDiameter } }
-
-// FUTURE: Battery lookup database — group size, CCA, and reserve capacity per vehicle
-// const batteryDb = {}; // { [vehicleKey]: { groupSize, minCca, reserveCapacity } }
-
 function normalize(v) { return v.trim().replace(/\s+/g, ' '); }
 function getYear(q) { const m = q.match(/\b(19[8-9]\d|20[0-3]\d)\b/); return m ? m[0] : ''; }
 function getDtc(q) { const m = q.toLowerCase().match(/\b[pbcup][0-9a-f]{4}\b/); return m ? m[0] : ''; }
@@ -217,7 +198,6 @@ function buildPartMatch(cleanQuery) {
       const d = dtc[code];
       return { kind: 'dtc', name: `Code ${code.toUpperCase()} — ${d.title}`, vehicleFit: year ? `Year ${year} found in your search` : 'Applies to any vehicle showing this code', whatItDoes: d.desc, aka: null, warn: 'Fix the cause, not just the code. Clear and verify after repair.', parts: d.parts };
     }
-    // Unknown code — provide category-based guidance
     const cat = dtcCategory(code);
     return { kind: 'dtc', name: `Code ${code.toUpperCase()}`, vehicleFit: year ? `Year ${year} found in your search` : 'Applies to any vehicle showing this code', whatItDoes: `This is a ${cat} code. Use a scan tool to view live data and look for additional related codes before replacing any parts.`, aka: null, warn: 'Look up this exact code in a service manual for your specific vehicle — procedures vary by make and model.', parts: [] };
   }
@@ -305,8 +285,6 @@ function App() {
 
   return (
     <main>
-      <img src={heroImg} alt="HoundMoto" className="heroImg" />
-
       <header className="hero">
         <div className="brandRow">
           <div className="logo">🐕‍🦺</div>
@@ -369,7 +347,6 @@ function App() {
         </section>
       )}
 
-
       {!searched && (
         <section className="card">
           <p className="introText">Search parts, trouble codes, fluid specs, repair resources, and vendor price links in one place.</p>
@@ -378,7 +355,6 @@ function App() {
 
       {searched && (
         <>
-          {/* VIN DECODED RESULT */}
           {vinResult && (
             <section className="card vinResultCard">
               <h2>VIN Decoded</h2>
@@ -390,7 +366,6 @@ function App() {
             </section>
           )}
 
-          {/* 1. BEST MATCH */}
           <section className="card bestMatch">
             <div className="bestMatchHeader">
               <span className="bestMatchBadge">Best Match</span>
@@ -429,7 +404,6 @@ function App() {
             </div>
           </section>
 
-          {/* 2. TROUBLE CODE DETAILS */}
           {showTrouble && dtc[code] && (
             <section className="card">
               <h2>Diagnostic Steps for {code.toUpperCase()}</h2>
@@ -453,7 +427,6 @@ function App() {
             </section>
           )}
 
-          {/* 3 + 4. VENDOR & CROSS REFERENCE — two columns on desktop */}
           <div className="resultsCol">
             <section className="card" id="prices">
               <h2>Check Prices at 9 Vendors</h2>
@@ -499,7 +472,6 @@ function App() {
             </section>
           </div>
 
-          {/* 5 + 6. REPAIR INFO & FLUID SPECS — two columns on desktop */}
           <div className="resultsCol">
             <section className="card" id="repair">
               <h2>Repair Guides &amp; Manuals</h2>
@@ -531,7 +503,6 @@ function App() {
             )}
           </div>
 
-          {/* 7. MODE PLACEHOLDERS */}
           {mode === 'Tire Size' && (
             <section className="card">
               <h2>Tire Size</h2>
