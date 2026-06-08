@@ -380,6 +380,236 @@ const baseVehicleSpecs = [
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
     notes: "Starter data. Always verify before repair."
   },
+
+  // ─── Chevrolet Suburban ───────────────────────────────────────────────────────
+  {
+    year: "2000", make: "Chevrolet", model: "Suburban 1500", engine: "5.3L V8",
+    aliases: ["suburban", "chevy suburban"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron III (early) / Dexron VI (preferred)", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R16", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Intake manifold gasket (5.3L), front wheel bearings, door lock actuators, HVAC blend door actuator",
+    dtcNotes: "P0300 misfires (coil issues common), P0449/P0455 EVAP, P0128 thermostat",
+    maintenanceNotes: "Flush transmission fluid every 50k mi. 4WD front diff and transfer case fluid every 30k mi.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2007", make: "Chevrolet", model: "Suburban 1500", engine: "5.3L V8",
+    aliases: ["suburban", "chevy suburban"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R17", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM (Active Fuel Management) lifter failures on 5.3L, water pump, front CV axles",
+    dtcNotes: "P0300 (lifter/AFM misfire), P0449 EVAP vent valve, P0128 thermostat",
+    maintenanceNotes: "Many owners disable AFM with a tune or AFM Disabler to prevent lifter failure. Transmission flush every 50k.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2015", make: "Chevrolet", model: "Suburban", engine: "5.3L V8",
+    aliases: ["suburban", "chevy suburban"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "265/65R18", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failures (5.3L), sunroof drains clogging, trailer brake wiring issues",
+    dtcNotes: "P0300 (AFM lifters), P0449 EVAP, P0016 cam/crank correlation (timing chain)",
+    maintenanceNotes: "0W-20 required. AFM lifter failures are common — consider disabling AFM proactively.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── Chevrolet Tahoe ─────────────────────────────────────────────────────────
+  {
+    year: "2002", make: "Chevrolet", model: "Tahoe", engine: "5.3L V8",
+    aliases: ["tahoe", "chevy tahoe"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron III (or Dexron VI preferred)", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R16", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Intake manifold gaskets, power window regulators, 4WD actuator, AC compressor",
+    dtcNotes: "P0300 misfires (coil issues), P0449 EVAP, P0128 thermostat",
+    maintenanceNotes: "Transmission fluid flush every 50k. 4WD front differential fluid every 30k.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2014", make: "Chevrolet", model: "Tahoe", engine: "5.3L V8",
+    aliases: ["tahoe", "chevy tahoe"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "255/65R18", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failure (5.3L), climate control screens, power liftgate",
+    dtcNotes: "P0300 (AFM lifters), P0449 EVAP, P0016 cam-crank correlation",
+    maintenanceNotes: "AFM (Active Fuel Management) lifter failure is common on this generation. Consider disabling AFM.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2020", make: "Chevrolet", model: "Tahoe", engine: "5.3L V8",
+    aliases: ["tahoe", "chevy tahoe"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron HP", transmissionCapacity: "Varies by service type",
+    tireSize: "275/60R20", batteryGroup: "Group H7 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "DFM (Dynamic Fuel Management) issues, 10-speed transmission harsh shifts, air suspension (if equipped)",
+    dtcNotes: "P0300 (DFM), P0700 transmission codes, P016X cam/crank correlation",
+    maintenanceNotes: "Uses Dexron HP in 10-speed transmission — critical to use correct fluid. DFM is an evolution of AFM.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── GMC Sierra 1500 ─────────────────────────────────────────────────────────
+  {
+    year: "2005", make: "GMC", model: "Sierra 1500", engine: "5.3L V8",
+    aliases: ["gmc sierra", "sierra", "sierra 1500"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron III or Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Intake manifold gasket, front wheel bearings, door lock actuators, throttle position sensor",
+    dtcNotes: "P0300 misfires (coil issues), P0449 EVAP, P0128 thermostat, P0463 fuel level sensor",
+    maintenanceNotes: "Mechanically identical to Chevrolet Silverado same year. Same service intervals apply.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2014", make: "GMC", model: "Sierra 1500", engine: "5.3L V8",
+    aliases: ["gmc sierra", "sierra", "sierra 1500"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failure (5.3L), transmission shift quality, power window regulators",
+    dtcNotes: "P0300 (AFM lifters), P0449 EVAP, P0016 cam/crank correlation",
+    maintenanceNotes: "Mechanically identical to Chevrolet Silverado 1500 same year. AFM disable worth considering.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2019", make: "GMC", model: "Sierra 1500", engine: "5.3L V8",
+    aliases: ["gmc sierra", "sierra", "sierra 1500"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron HP", transmissionCapacity: "Varies by service type",
+    tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group H7 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "10-speed transmission harsh shifts (TSB available), DFM lifter issues",
+    dtcNotes: "P0300 (DFM), P0700 transmission, P016X cam/crank correlation",
+    maintenanceNotes: "Dexron HP required in 10-speed — using wrong fluid causes shift issues. Transmission relearn procedure after fluid change.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── GMC Yukon ───────────────────────────────────────────────────────────────
+  {
+    year: "2007", make: "GMC", model: "Yukon", engine: "5.3L V8",
+    aliases: ["gmc yukon", "yukon"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "265/65R18", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failures (5.3L), water pump, front CV axles, door lock actuators",
+    dtcNotes: "P0300 (AFM), P0449 EVAP vent valve, P0128 thermostat",
+    maintenanceNotes: "Mechanically identical to Chevrolet Tahoe same year. AFM disable recommended proactively.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2015", make: "GMC", model: "Yukon", engine: "5.3L V8",
+    aliases: ["gmc yukon", "yukon"],
+    oilType: "0W-20", oilCapacity: "8 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "265/65R18", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failures, sunroof drain blockage, power liftgate",
+    dtcNotes: "P0300 (AFM), P0016 cam/crank correlation, P0449 EVAP",
+    maintenanceNotes: "Mechanically identical to Chevrolet Tahoe 2015. AFM disable strongly recommended.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── GMC Yukon XL ────────────────────────────────────────────────────────────
+  {
+    year: "2007", make: "GMC", model: "Yukon XL", engine: "5.3L V8",
+    aliases: ["yukon xl", "gmc yukon xl", "suburban equivalent"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R17", batteryGroup: "Group 78 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "AFM lifter failures (5.3L), water pump, door lock actuators",
+    dtcNotes: "P0300 (AFM lifters), P0449 EVAP, P0128 thermostat",
+    maintenanceNotes: "Essentially the same vehicle as the Chevrolet Suburban. Same service procedures apply.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── Ford Expedition ─────────────────────────────────────────────────────────
+  {
+    year: "2004", make: "Ford", model: "Expedition", engine: "5.4L V8",
+    aliases: ["expedition", "ford expedition", "ford suv"],
+    oilType: "5W-20", oilCapacity: "7 quarts with filter",
+    transmissionFluid: "Mercon V", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R17", batteryGroup: "Group 65 commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Spark plug blowout (5.4L 3-valve), cam phaser noise, timing chain stretch, rear liftgate struts",
+    dtcNotes: "P0340/P0345 cam sensors (phaser), P0300 misfires, P0022 cam timing",
+    maintenanceNotes: "The 5.4L 3-valve is known for spark plugs breaking off on removal — use penetrant and heat before attempting plug changes.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2015", make: "Ford", model: "Expedition", engine: "3.5L EcoBoost V6",
+    aliases: ["expedition", "ford expedition"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Mercon LV", transmissionCapacity: "Varies by service type",
+    tireSize: "275/55R20", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Turbocharger hose connections, carbon buildup on direct injection valves, rear AC issues",
+    dtcNotes: "P0087 fuel rail pressure (fuel pump), P0171/P0174 lean (turbo boost leak)",
+    maintenanceNotes: "EcoBoost benefits from walnut blasting (carbon buildup on intake valves) every 60-80k mi.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2021", make: "Ford", model: "Expedition", engine: "3.5L EcoBoost V6",
+    aliases: ["expedition", "ford expedition"],
+    oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    transmissionFluid: "Mercon ULV", transmissionCapacity: "Varies by service type",
+    tireSize: "275/55R20", batteryGroup: "Group H7 / 94R commonly used",
+    wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "10-speed transmission harsh/delayed shifts (TSB), panoramic roof noise, electrical gremlins",
+    dtcNotes: "P0087 fuel pressure, P0171/P0174 lean condition, P0700 transmission codes",
+    maintenanceNotes: "Mercon ULV required — critical to use correct transmission fluid. Relearn procedure recommended after fluid change.",
+    notes: "Starter data. Always verify before repair."
+  },
+
+  // ─── Nissan Frontier ─────────────────────────────────────────────────────────
+  {
+    year: "2005", make: "Nissan", model: "Frontier", engine: "4.0L V6",
+    aliases: ["nissan frontier", "frontier", "nissan pickup"],
+    oilType: "5W-30", oilCapacity: "5.6 quarts with filter",
+    transmissionFluid: "Nissan Matic-S or Dexron III (auto)", transmissionCapacity: "Varies by service type",
+    tireSize: "265/75R16 (typical 4x4)", batteryGroup: "Group 35 commonly used",
+    wipers: "20 inch driver / 18 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Timing chain stretch (2005-2010 4.0L known issue), radiator failure causing coolant/trans fluid mixing",
+    dtcNotes: "P0011/P0021 cam timing (stretched chain), P0300 misfires, P0340 cam sensor",
+    maintenanceNotes: "The 2005-2010 4.0L has a known timing chain and radiator issue. Check for milky transmission fluid — indicates radiator coolant tube failure.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2016", make: "Nissan", model: "Frontier", engine: "4.0L V6",
+    aliases: ["nissan frontier", "frontier", "nissan pickup"],
+    oilType: "5W-30", oilCapacity: "5.6 quarts with filter",
+    transmissionFluid: "Nissan Matic-S or equivalent", transmissionCapacity: "Varies by service type",
+    tireSize: "265/75R16 (typical 4x4)", batteryGroup: "Group 35 commonly used",
+    wipers: "20 inch driver / 18 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Timing chain (less severe than earlier generation), heat shield rattle, AC compressor",
+    dtcNotes: "P0011/P0021 cam timing, P0340 cam sensor, P0300 misfires",
+    maintenanceNotes: "Spark plugs at 105k per schedule — Iridium plugs recommended. Keep trans fluid fresh to prevent shift issues.",
+    notes: "Starter data. Always verify before repair."
+  },
+  {
+    year: "2022", make: "Nissan", model: "Frontier", engine: "3.8L V6",
+    aliases: ["nissan frontier", "frontier", "nissan pickup"],
+    oilType: "0W-20", oilCapacity: "5.4 quarts with filter",
+    transmissionFluid: "Nissan Matic-S8 or equivalent", transmissionCapacity: "Varies by service type",
+    tireSize: "265/70R16 (typical 4x4)", batteryGroup: "Group 35 commonly used",
+    wipers: "22 inch driver / 18 inch passenger", bulbs: "Verify by trim",
+    commonFailures: "Still early in production life — check for current TSBs",
+    dtcNotes: "Check current Nissan TSBs for this generation",
+    maintenanceNotes: "New engine and 9-speed transmission for this generation. Use Nissan-specified fluids to avoid shift quality issues.",
+    notes: "Starter data. Always verify before repair."
+  },
 ];
 
 const _existingKeys = new Set(
@@ -398,22 +628,66 @@ function cleanText(value) {
     .replace(/[^a-z0-9]/g, "");
 }
 
-function searchVehicle(vehicle, query) {
-  const q = query.toLowerCase();
-  const cleanQuery = cleanText(query);
-  const searchable = [
-    vehicle.year, vehicle.make, vehicle.model, vehicle.engine,
-    vehicle.oilType, vehicle.oilCapacity, vehicle.transmissionFluid,
-    vehicle.tireSize, vehicle.batteryGroup, vehicle.wipers, vehicle.bulbs,
-  ].join(" ");
-  return (
-    searchable.toLowerCase().includes(q) ||
-    cleanText(searchable).includes(cleanQuery)
-  );
+// Normalize make abbreviations before searching
+const MAKE_NORM = {
+  chevy: "chevrolet", chev: "chevrolet", chev: "chevrolet",
+  gm: "gmc", vw: "volkswagen", merc: "mercury",
+};
+
+function normalizeQuery(raw) {
+  return raw
+    .toLowerCase()
+    .replace(/\s*-\s*/g, " ")   // f-150 → f 150
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .map((t) => MAKE_NORM[t] || t)
+    .join(" ");
+}
+
+const YEAR_RE = /\b(19|20)\d{2}\b/;
+
+// Returns "exact", "related", or null (no match).
+// Only matches on identity fields (year/make/model/engine/aliases) — never on fluid brand names.
+function matchVehicle(vehicle, rawQuery) {
+  const norm = normalizeQuery(rawQuery);
+  const tokens = norm.split(" ").filter(Boolean);
+  const cleanQ = cleanText(norm);
+
+  const identityParts = [vehicle.year, vehicle.make, vehicle.model, vehicle.engine]
+    .concat(vehicle.aliases || []);
+  const identityLow  = identityParts.join(" ").toLowerCase();
+  const identityClean = cleanText(identityParts.join(" "));
+
+  // --- Exact: full normalised query appears in identity ---
+  if (identityLow.includes(norm) || identityClean.includes(cleanQ)) return "exact";
+
+  // --- Exact: every token found in identity (handles "chevy silverado 2014") ---
+  if (tokens.length > 0 && tokens.every((t) => identityClean.includes(cleanText(t)))) return "exact";
+
+  // --- Related: query contains a year that doesn't match, but make+model does ---
+  const queryYear = (rawQuery.match(YEAR_RE) || [])[0];
+  if (queryYear && vehicle.year !== queryYear) {
+    const noYear = tokens.filter((t) => !YEAR_RE.test(t));
+    const makeModelClean = cleanText([vehicle.make, vehicle.model].join(" "));
+    if (
+      noYear.length > 0 &&
+      noYear.every((t) => makeModelClean.includes(cleanText(t)))
+    ) return "related";
+  }
+
+  // --- Exact: model-only search with no year in query ---
+  if (!queryYear) {
+    const makeModelClean = cleanText([vehicle.make, vehicle.model].join(" "));
+    if (makeModelClean.includes(cleanQ)) return "exact";
+    if (tokens.every((t) => makeModelClean.includes(cleanText(t)))) return "exact";
+  }
+
+  return null;
 }
 
 function looksLikeVehicleQuery(query) {
-  return /\b(19|20)\d{2}\b/.test(query) ||
+  return YEAR_RE.test(query) ||
     /\b(ford|chevy|chevrolet|toyota|honda|dodge|ram|jeep|nissan|bmw|hyundai|subaru|kia|volkswagen|vw|mazda|mitsubishi|gmc|buick|cadillac|lincoln|mercury|pontiac|oldsmobile|saturn|chrysler|acura|lexus|infiniti|volvo|audi|mercedes|benz|porsche|tesla)\b/i.test(query);
 }
 
@@ -439,7 +713,13 @@ function App() {
 
   const results = useMemo(() => {
     if (!trimmedQuery) return { vehicles: [], codes: [], tips: [] };
-    const vehicles = vehicleSpecs.filter((v) => searchVehicle(v, trimmedQuery));
+    const raw = vehicleSpecs
+      .map((v) => ({ ...v, _confidence: matchVehicle(v, trimmedQuery) }))
+      .filter((v) => v._confidence !== null);
+    const vehicles = [
+      ...raw.filter((v) => v._confidence === "exact"),
+      ...raw.filter((v) => v._confidence === "related"),
+    ];
     const codes = troubleCodes.filter((item) => {
       const searchable = `${item.code} ${item.title} ${item.causes}`;
       return (
@@ -586,8 +866,14 @@ function App() {
           className="panel"
           key={`${vehicle.year}-${vehicle.make}-${vehicle.model}-${vehicle.engine}`}
         >
+          {vehicle._confidence === "related" && (
+            <div className="confidenceBadge related">
+              Related match — we have {vehicle.year} data but not your exact year. Verify specs before service.
+            </div>
+          )}
           <h2>{vehicle.year} {vehicle.make} {vehicle.model}</h2>
           <p className="sub">{vehicle.engine}</p>
+
           <div className="grid">
             <Info title="Oil Type" value={vehicle.oilType} />
             <Info title="Oil Capacity" value={vehicle.oilCapacity} />
@@ -598,6 +884,26 @@ function App() {
             <Info title="Wipers" value={vehicle.wipers} />
             <Info title="Bulbs" value={vehicle.bulbs} />
           </div>
+
+          {vehicle.commonFailures && (
+            <div className="extraInfo">
+              <strong>Common Failures</strong>
+              <span>{vehicle.commonFailures}</span>
+            </div>
+          )}
+          {vehicle.maintenanceNotes && (
+            <div className="extraInfo">
+              <strong>Maintenance Notes</strong>
+              <span>{vehicle.maintenanceNotes}</span>
+            </div>
+          )}
+          {vehicle.dtcNotes && (
+            <div className="extraInfo">
+              <strong>Common DTCs</strong>
+              <span>{vehicle.dtcNotes}</span>
+            </div>
+          )}
+
           <p className="note">{vehicle.notes}</p>
           <a className="button" href="https://www.bidwrenx.com">
             Need repair help? Post this job on BidWrenx

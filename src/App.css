@@ -504,6 +504,48 @@ p {
   }
 }
 
+/* ── Coverage confidence badges ──────────────────────────────────────────── */
+
+.confidenceBadge {
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+
+.confidenceBadge.related {
+  background: #1c1a07;
+  border: 1px solid #ca8a0460;
+  color: #fbbf24;
+}
+
+/* Extra info rows (commonFailures, maintenanceNotes, dtcNotes) */
+.extraInfo {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.extraInfo strong {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.extraInfo span {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 /* ── Dog branding ─────────────────────────────────────────────────────────── */
 
 .searchWrap {
