@@ -4,6 +4,7 @@ import { TipSubmitForm } from "./TipSubmitForm";
 import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
 import { troubleCodes } from "./dtcCodes";
+import { vehicleCoverage } from "./vehicleCoverageData";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
 import {
   vendors, repairResources,
@@ -24,6 +25,7 @@ const baseVehicleSpecs = [
   {
     year: "2000", make: "Mercury", model: "Grand Marquis", engine: "4.6L V8",
     oilType: "5W-20 or 5W-30, verify oil cap/manual", oilCapacity: "About 5 quarts with filter",
+    coolantCapacity: "About 12 quarts",
     transmissionFluid: "Mercon V", transmissionCapacity: "Varies by service type",
     tireSize: "Common size P225/60R16, verify door sticker", batteryGroup: "Group 65 commonly used",
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim before buying",
@@ -32,6 +34,7 @@ const baseVehicleSpecs = [
   {
     year: "2018", make: "Ford", model: "F-150", engine: "5.0L V8",
     oilType: "5W-20 or 5W-30 depending on spec, verify manual", oilCapacity: "About 8.8 quarts with filter",
+    coolantCapacity: "About 23.5 quarts (5.0L V8)",
     transmissionFluid: "Mercon ULV for 10-speed, verify transmission", transmissionCapacity: "Service amount varies",
     tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group H7 / 94R commonly used on many trims",
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Varies by halogen/LED trim",
@@ -40,6 +43,7 @@ const baseVehicleSpecs = [
   {
     year: "2014", make: "Chevrolet", model: "Silverado 1500", engine: "5.3L V8",
     oilType: "0W-20, verify manual", oilCapacity: "About 8 quarts with filter",
+    coolantCapacity: "About 14 quarts (Dex-Cool)",
     transmissionFluid: "Dexron VI, verify transmission", transmissionCapacity: "Service amount varies",
     tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group H7 / 94R commonly used on many trims",
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim before buying",
@@ -48,6 +52,7 @@ const baseVehicleSpecs = [
   {
     year: "2018", make: "Toyota", model: "Camry", engine: "2.5L I4",
     oilType: "0W-16", oilCapacity: "4.8 quarts with filter",
+    coolantCapacity: "About 6.6 quarts",
     transmissionFluid: "Toyota WS", transmissionCapacity: "Service amount varies",
     tireSize: "205/65R16", batteryGroup: "H5",
     wipers: "26 inch driver / 18 inch passenger", bulbs: "Verify by trim",
@@ -56,6 +61,7 @@ const baseVehicleSpecs = [
   {
     year: "2015", make: "Honda", model: "Civic", engine: "1.8L I4",
     oilType: "0W-20", oilCapacity: "3.9 quarts with filter",
+    coolantCapacity: "About 5.6 quarts",
     transmissionFluid: "Honda CVT Fluid or ATF depending on transmission", transmissionCapacity: "Service amount varies",
     tireSize: "195/65R15", batteryGroup: "51R",
     wipers: "26 inch driver / 22 inch passenger", bulbs: "Verify by trim",
@@ -64,6 +70,7 @@ const baseVehicleSpecs = [
   {
     year: "2014", make: "Chevrolet", model: "Cruze", engine: "1.4L Turbo",
     oilType: "5W-30", oilCapacity: "4.25 quarts with filter",
+    coolantCapacity: "About 6.5 quarts (Dex-Cool)",
     transmissionFluid: "Dexron VI", transmissionCapacity: "Service amount varies",
     tireSize: "215/60R16", batteryGroup: "47/H5",
     wipers: "24 inch driver / 18 inch passenger", bulbs: "Verify by trim",
@@ -227,6 +234,7 @@ const baseVehicleSpecs = [
   {
     year: "2012", make: "Chevrolet", model: "Silverado 1500", engine: "5.3L V8",
     oilType: "5W-30", oilCapacity: "6 quarts with filter",
+    coolantCapacity: "About 15 quarts (Dex-Cool)",
     transmissionFluid: "Dexron VI", transmissionCapacity: "Varies by service type",
     tireSize: "Varies by trim, verify door sticker", batteryGroup: "Group H7 / 94R commonly used",
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
@@ -635,9 +643,16 @@ function cleanText(value) {
 
 // Normalize make abbreviations before searching
 const MAKE_NORM = {
-  chevy: "chevrolet", chev: "chevrolet", chev: "chevrolet",
+  chevy: "chevrolet", chev: "chevrolet",
   gm: "gmc", vw: "volkswagen", merc: "mercury",
 };
+
+// Words that indicate WHAT the user wants (spec type) — not WHICH vehicle.
+// Filtering these lets "f150 oil", "camry transmission fluid", "silverado coolant" all resolve correctly.
+const SPEC_WORDS = new Set([
+  "oil", "coolant", "antifreeze", "fluid", "capacity", "type",
+  "size", "tire", "wiper", "filter", "change", "flush", "transmission",
+]);
 
 function normalizeQuery(raw) {
   return raw
@@ -654,41 +669,69 @@ const YEAR_RE = /\b(19|20)\d{2}\b/;
 
 // Returns "exact", "related", or null (no match).
 // Only matches on identity fields (year/make/model/engine/aliases) — never on fluid brand names.
+// SPEC_WORDS (oil, coolant, fluid, etc.) are stripped before token matching so that
+// "2015 suburban coolant" and "f150 oil capacity" resolve to the correct vehicle.
 function matchVehicle(vehicle, rawQuery) {
   const norm = normalizeQuery(rawQuery);
   const tokens = norm.split(" ").filter(Boolean);
   const cleanQ = cleanText(norm);
+  // Identity-only tokens: strip spec-type words so they don't block vehicle matching
+  const idTokens = tokens.filter((t) => !SPEC_WORDS.has(t));
 
   const identityParts = [vehicle.year, vehicle.make, vehicle.model, vehicle.engine]
     .concat(vehicle.aliases || []);
   const identityLow  = identityParts.join(" ").toLowerCase();
   const identityClean = cleanText(identityParts.join(" "));
 
-  // --- Exact: full normalised query appears in identity ---
+  // --- Exact: full normalised query appears in identity (whole-string fast path) ---
   if (identityLow.includes(norm) || identityClean.includes(cleanQ)) return "exact";
 
-  // --- Exact: every token found in identity (handles "chevy silverado 2014") ---
-  if (tokens.length > 0 && tokens.every((t) => identityClean.includes(cleanText(t)))) return "exact";
+  // --- Exact: every identity token found in identity ---
+  if (idTokens.length > 0 && idTokens.every((t) => identityClean.includes(cleanText(t)))) return "exact";
 
-  // --- Related: query contains a year that doesn't match, but make+model does ---
+  // --- Related: query has a year that differs, but make+model matches ---
   const queryYear = (rawQuery.match(YEAR_RE) || [])[0];
   if (queryYear && vehicle.year !== queryYear) {
-    const noYear = tokens.filter((t) => !YEAR_RE.test(t));
+    const noYear = idTokens.filter((t) => !YEAR_RE.test(t));
     const makeModelClean = cleanText([vehicle.make, vehicle.model].join(" "));
-    if (
-      noYear.length > 0 &&
-      noYear.every((t) => makeModelClean.includes(cleanText(t)))
-    ) return "related";
+    if (noYear.length > 0 && noYear.every((t) => makeModelClean.includes(cleanText(t)))) return "related";
   }
 
   // --- Exact: model-only search with no year in query ---
   if (!queryYear) {
     const makeModelClean = cleanText([vehicle.make, vehicle.model].join(" "));
-    if (makeModelClean.includes(cleanQ)) return "exact";
-    if (tokens.every((t) => makeModelClean.includes(cleanText(t)))) return "exact";
+    const idCleanQ = cleanText(idTokens.join(" "));
+    if (idCleanQ.length > 0 && makeModelClean.includes(idCleanQ)) return "exact";
+    if (idTokens.length > 0 && idTokens.every((t) => makeModelClean.includes(cleanText(t)))) return "exact";
   }
 
   return null;
+}
+
+// Finds generation-based coverage records when no exact vehicleSpecs year exists.
+// Strips spec words and year before comparing make/model/aliases, then checks year range.
+function matchCoverage(rawQuery) {
+  const norm = normalizeQuery(rawQuery);
+  const allTokens = norm.split(" ").filter(Boolean);
+  const queryYear = (rawQuery.match(YEAR_RE) || [])[0];
+  const queryYearNum = queryYear ? parseInt(queryYear, 10) : null;
+
+  // Identity tokens only — no spec words, no years
+  const idTokens = allTokens.filter((t) => !SPEC_WORDS.has(t) && !YEAR_RE.test(t));
+  if (idTokens.length === 0) return [];
+
+  return vehicleCoverage
+    .filter((cov) => {
+      const identityClean = cleanText(
+        [cov.make, cov.model, ...(cov.aliases || [])].join(" ")
+      );
+      if (!idTokens.every((t) => identityClean.includes(cleanText(t)))) return false;
+      if (queryYearNum !== null) {
+        return queryYearNum >= cov.yearStart && queryYearNum <= cov.yearEnd;
+      }
+      return true;
+    })
+    .map((cov) => ({ ...cov, _confidence: "coverage", _queryYear: queryYear || null }));
 }
 
 function looksLikeVehicleQuery(query) {
@@ -731,7 +774,7 @@ function App() {
   const trimmedQuery = query.trim();
 
   const results = useMemo(() => {
-    if (!trimmedQuery) return { vehicles: [], codes: [], tips: [] };
+    if (!trimmedQuery) return { vehicles: [], codes: [], tips: [], coverage: [] };
     const raw = vehicleSpecs
       .map((v) => ({ ...v, _confidence: matchVehicle(v, trimmedQuery) }))
       .filter((v) => v._confidence !== null);
@@ -739,6 +782,8 @@ function App() {
       ...raw.filter((v) => v._confidence === "exact"),
       ...raw.filter((v) => v._confidence === "related"),
     ];
+    // Coverage fallback: only used when no vehicleSpecs records match at all
+    const coverage = vehicles.length === 0 ? matchCoverage(trimmedQuery) : [];
     const codes = troubleCodes.filter((item) => {
       const searchable = `${item.code} ${item.title} ${item.causes}`;
       return (
@@ -747,7 +792,7 @@ function App() {
       );
     });
     const matchedTips = searchTips(tips, trimmedQuery);
-    return { vehicles, codes, tips: matchedTips };
+    return { vehicles, codes, tips: matchedTips, coverage };
   }, [trimmedQuery, tips]);
 
   const partMatch = useMemo(() => buildPartMatch(trimmedQuery), [trimmedQuery]);
@@ -761,7 +806,8 @@ function App() {
   }, [vinResult, trimmedQuery]);
 
   const hasResults =
-    results.vehicles.length > 0 || results.codes.length > 0 || results.tips.length > 0;
+    results.vehicles.length > 0 || results.codes.length > 0 ||
+    results.tips.length > 0 || results.coverage.length > 0;
 
   function handleTipSubmit(tipData) {
     const updated = saveTip(tipData);
@@ -1044,6 +1090,7 @@ function App() {
           <div className="grid">
             <Info title="Oil Type" value={vehicle.oilType} />
             <Info title="Oil Capacity" value={vehicle.oilCapacity} />
+            <Info title="Coolant Capacity" value={vehicle.coolantCapacity} />
             <Info title="Transmission Fluid" value={vehicle.transmissionFluid} />
             <Info title="Transmission Capacity" value={vehicle.transmissionCapacity} />
             <Info title="Tire Size" value={vehicle.tireSize} />
@@ -1089,6 +1136,52 @@ function App() {
           <p className="note">
             Trouble code info is a starting point only. Diagnose before replacing parts.
           </p>
+        </section>
+      ))}
+
+      {results.coverage.map((cov, i) => (
+        <section className="panel" key={`cov-${cov.make}-${cov.model}-${cov.yearStart}-${i}`}>
+          <div className="confidenceBadge related">
+            Generation estimate ({cov.yearStart}–{cov.yearEnd}{cov.generation ? `, ${cov.generation}` : ""})
+            — specs vary by trim and engine. Verify against your owner's manual before service.
+          </div>
+          <h2>
+            {cov._queryYear || `${cov.yearStart}–${cov.yearEnd}`} {cov.make} {cov.model}
+          </h2>
+          <p className="sub">{cov.engine}</p>
+          <div className="grid">
+            <Info title="Oil Type" value={cov.oilType} />
+            <Info title="Oil Capacity" value={cov.oilCapacity} />
+            <Info title="Coolant Capacity" value={cov.coolantCapacity} />
+            <Info title="Transmission Fluid" value={cov.transmissionFluid} />
+            <Info title="Transmission Capacity" value={cov.transmissionCapacity} />
+            <Info title="Tire Size" value={cov.tireSize} />
+            <Info title="Battery Group" value={cov.batteryGroup} />
+            <Info title="Wipers" value={cov.wipers} />
+            <Info title="Bulbs" value={cov.bulbs} />
+          </div>
+          {cov.commonFailures && (
+            <div className="extraInfo">
+              <strong>Common Failures</strong>
+              <span>{cov.commonFailures}</span>
+            </div>
+          )}
+          {cov.maintenanceNotes && (
+            <div className="extraInfo">
+              <strong>Maintenance Notes</strong>
+              <span>{cov.maintenanceNotes}</span>
+            </div>
+          )}
+          {cov.dtcNotes && (
+            <div className="extraInfo">
+              <strong>Common DTCs</strong>
+              <span>{cov.dtcNotes}</span>
+            </div>
+          )}
+          <p className="note">{cov.notes}</p>
+          <a className="button" href="https://www.bidwrenx.com">
+            Need repair help? Post this job on BidWrenx
+          </a>
         </section>
       ))}
 

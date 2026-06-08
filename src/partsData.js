@@ -2,7 +2,26 @@
 // (merged from the original main.jsx so no live feature is lost)
 
 export const vendors = [
-  { name: "RockAuto",            note: "Huge selection, multiple brands, great pricing",   url: (q) => `https://www.rockauto.com/en/partsearch/?partnum=${encodeURIComponent(q)}` },
+  {
+    name: "RockAuto",
+    note: "Huge selection — confirm vehicle fitment in their catalog",
+    url: (q) => {
+      const yearM = q.match(/\b(19[7-9]\d|20[0-2]\d)\b/);
+      const year = yearM ? yearM[0] : "";
+      const makes = ["Ford","Chevrolet","Toyota","Honda","Nissan","Dodge","Ram","Jeep","GMC",
+        "Hyundai","Kia","Subaru","Mazda","Volkswagen","BMW","Mercedes","Buick","Cadillac",
+        "Chrysler","Lincoln","Mercury","Mitsubishi","Acura","Lexus","Infiniti","Volvo","Audi"];
+      const make = makes.find((m) => q.toLowerCase().includes(m.toLowerCase())) || "";
+      if (year && make) {
+        const modelPart = q.toLowerCase()
+          .replace(year, "").replace(make.toLowerCase(), "")
+          .replace(/\b(oil|fluid|coolant|filter|tire|battery|wiper|transmission|capacity|type|size|change|flush)\b/g, "")
+          .trim().replace(/\s+/g, "+").replace(/[^a-z0-9+\-]/g, "").replace(/\++$/, "");
+        return `https://www.rockauto.com/en/catalog/${make.toLowerCase()},${year},${modelPart},`;
+      }
+      return `https://www.rockauto.com/en/partsearch/?partnum=${encodeURIComponent(q)}`;
+    },
+  },
   { name: "AutoZone",            note: "Local store pickup, same-day availability",         url: (q) => `https://www.autozone.com/searchresult?searchText=${encodeURIComponent(q)}` },
   { name: "O'Reilly Auto Parts", note: "Local stores, often has free loaner tools",         url: (q) => `https://www.oreillyauto.com/search?q=${encodeURIComponent(q)}` },
   { name: "Advance Auto Parts",  note: "Frequent online coupons, local pickup",             url: (q) => `https://shop.advanceautoparts.com/find/searchResults.html?searchTerm=${encodeURIComponent(q)}` },
