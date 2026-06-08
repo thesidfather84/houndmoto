@@ -155,6 +155,331 @@ p {
   text-decoration: none;
 }
 
+/* Submit tip button in quick links */
+.submitTipBtn {
+  border: 1px solid #facc15 !important;
+  color: #facc15 !important;
+  background: transparent !important;
+  font-weight: 700 !important;
+}
+
+.submitTipBtn:hover {
+  background: #facc1520 !important;
+}
+
+/* Tips section on homepage */
+.tipsSection {
+  margin-top: 32px;
+}
+
+.tipsSectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tipsSectionTitle {
+  color: #facc15;
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+
+.tipsSectionSub {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+}
+
+.tipsSectionSubmitBtn {
+  flex-shrink: 0;
+  border: 1px solid #facc15;
+  background: transparent;
+  color: #facc15;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tipsSectionSubmitBtn:hover {
+  background: #facc1520;
+}
+
+.tipsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.tipSearchResults {
+  margin-top: 14px;
+}
+
+.tipCard {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tipCardTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tipCategory {
+  background: #1e293b;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tipUnverified {
+  background: #451a03;
+  color: #fb923c;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tipVehicle {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tipTitle {
+  color: #f8fafc;
+  font-size: 16px;
+  margin: 0;
+}
+
+.tipContent {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.tipMeta {
+  color: #475569;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Modal overlay */
+.tipModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.tipModalBox {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+}
+
+.tipModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tipModalHeader h3 {
+  color: #facc15;
+  font-size: 20px;
+  margin: 0;
+}
+
+.tipModalClose {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.tipModalClose:hover {
+  color: #f8fafc;
+}
+
+.tipModalNote {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+
+/* Form */
+.tipForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tipForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tipForm input,
+.tipForm select,
+.tipForm textarea {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 15px;
+  padding: 10px 14px;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.tipForm input:focus,
+.tipForm select:focus,
+.tipForm textarea:focus {
+  border-color: #facc15;
+}
+
+.tipForm select option {
+  background: #020617;
+}
+
+.tipRequired {
+  color: #fb923c;
+}
+
+.tipError {
+  color: #f87171;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.tipCharCount {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.tipDisclaimer {
+  color: #475569;
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.tipFormActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.tipCancelBtn {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tipCancelBtn:hover {
+  border-color: #64748b;
+  color: #f8fafc;
+}
+
+.tipSubmitBtn {
+  background: #facc15;
+  border: none;
+  color: #111827;
+  font-weight: 900;
+  border-radius: 10px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tipSubmitBtn:hover {
+  background: #fde047;
+}
+
+/* Success state */
+.tipSubmitSuccess {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.tipSuccessIcon {
+  width: 52px;
+  height: 52px;
+  background: #14532d;
+  color: #4ade80;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 auto 16px;
+}
+
+.tipSubmitSuccess h3 {
+  color: #4ade80;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.tipSubmitSuccess p {
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.tipCloseBtn {
+  background: #facc15;
+  border: none;
+  color: #111827;
+  font-weight: 900;
+  border-radius: 10px;
+  padding: 10px 32px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 16px;
+}
+
 @media (max-width: 600px) {
   .hero {
     padding: 22px;
@@ -162,5 +487,19 @@ p {
 
   .panel {
     padding: 18px;
+  }
+
+  .tipModalBox {
+    padding: 20px;
+  }
+
+  .tipFormActions {
+    flex-direction: column;
+  }
+
+  .tipCancelBtn,
+  .tipSubmitBtn {
+    width: 100%;
+    text-align: center;
   }
 }
