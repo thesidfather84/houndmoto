@@ -5,6 +5,11 @@ import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
 import { troubleCodes } from "./dtcCodes";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
+import {
+  vendors, repairResources,
+  vehicleMakes, vehicleModels, vehicleEngines, partCategories,
+  buildPartMatch, lemonManualsUrl, isVin, getYear,
+} from "./partsData";
 
 const baseVehicleSpecs = [
   // --- Original hand-entered specs ---
@@ -698,6 +703,20 @@ function App() {
   const [showWizard, setShowWizard] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
 
+  // VIN decoder state
+  const [vinResult, setVinResult] = useState(null);
+  const [vinDecoding, setVinDecoding] = useState(false);
+  const [vinError, setVinError] = useState("");
+
+  // Vehicle lookup tree state
+  const [showVehicleLookup, setShowVehicleLookup] = useState(false);
+  const [vYear, setVYear] = useState("");
+  const [vMake, setVMake] = useState("");
+  const [vModel, setVModel] = useState("");
+  const [vEngine, setVEngine] = useState("");
+  const [vCategory, setVCategory] = useState("");
+  const [vPart, setVPart] = useState("");
+
   useEffect(() => {
     setTips(loadTips());
   }, []);
@@ -731,6 +750,16 @@ function App() {
     return { vehicles, codes, tips: matchedTips };
   }, [trimmedQuery, tips]);
 
+  const partMatch = useMemo(() => buildPartMatch(trimmedQuery), [trimmedQuery]);
+
+  const lemonUrl = useMemo(() => {
+    if (vinResult?.Make && vinResult?.ModelYear) {
+      return lemonManualsUrl(vinResult.Make, vinResult.ModelYear);
+    }
+    const detectedMake = vehicleMakes.find((m) => trimmedQuery.toLowerCase().includes(m.toLowerCase()));
+    return lemonManualsUrl(detectedMake, getYear(trimmedQuery));
+  }, [vinResult, trimmedQuery]);
+
   const hasResults =
     results.vehicles.length > 0 || results.codes.length > 0 || results.tips.length > 0;
 
@@ -743,12 +772,65 @@ function App() {
     console.log("🐕 Hound sound placeholder");
   }
 
-  function handleHoundIt() {
+  // Main search action: decodes a VIN if one was entered, otherwise just
+  // runs the live search (which already updates as the query changes).
+  async function runSearch() {
     playHoundSound();
-    if (!query.trim()) return;
+    const q = query.trim();
+    if (!q) return;
+
     setIsTracking(true);
+    setVinError("");
+
+    if (isVin(q)) {
+      const vin = q.toUpperCase();
+      const url = `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${vin}?format=json`;
+      console.log("[HoundMoto] VIN detected, decoding:", vin);
+      console.log("[HoundMoto] fetch ->", url);
+      setVinDecoding(true);
+      setVinResult(null);
+      try {
+        const res = await fetch(url);
+        console.log("[HoundMoto] VIN decode HTTP status:", res.status);
+        if (!res.ok) throw new Error(`VIN service returned HTTP ${res.status}`);
+        const data = await res.json();
+        const item = data?.Results?.[0];
+        console.log("[HoundMoto] VIN decode result:", item);
+        if (item?.ModelYear) {
+          setVinResult(item);
+          const decoded = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(" ");
+          if (decoded) setQuery(decoded);
+        } else {
+          setVinError("That VIN could not be decoded. Check the characters and try again.");
+        }
+      } catch (err) {
+        // Network/socket failures land here instead of crashing the app.
+        console.error("[HoundMoto] VIN decode failed:", err);
+        setVinError("VIN lookup is temporarily unavailable (network error). You can still search by year, make, and model.");
+      } finally {
+        setVinDecoding(false);
+      }
+    }
+
     setTimeout(() => setIsTracking(false), 600);
   }
+
+  function handleHoundIt() {
+    runSearch();
+  }
+
+  function applyVehicleLookup() {
+    if (!vYear || !vMake || !vModel) return;
+    setQuery([vYear, vMake, vModel, vEngine, vPart].filter(Boolean).join(" "));
+    setShowVehicleLookup(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const lookupYears = useMemo(() => {
+    const a = [];
+    for (let y = 2026; y >= 1980; y--) a.push(String(y));
+    return a;
+  }, []);
 
   if (showWizard) {
     return <SymptomDiagnosisWizard onClose={() => setShowWizard(false)} />;
@@ -769,13 +851,23 @@ function App() {
             className="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search: 2018 Ford F-150 oil, P0300, tire size, battery group..."
+            onKeyDown={(e) => e.key === "Enter" && runSearch()}
+            placeholder="Search: VIN, 2018 Ford F-150 oil, P0300, tire size, part number..."
             autoFocus
           />
-          <button className={`houndBtn${isTracking ? " tracking" : ""}`} onClick={handleHoundIt}>
-            🐕 HOUND IT
+          <button
+            className={`houndBtn${isTracking ? " tracking" : ""}`}
+            onClick={handleHoundIt}
+            disabled={vinDecoding}
+          >
+            {vinDecoding ? "Decoding VIN…" : "🐕 HOUND IT"}
           </button>
         </div>
+
+        {isVin(query) && !vinDecoding && !vinResult && (
+          <p className="vinHint">🔍 VIN detected — press HOUND IT to decode this vehicle</p>
+        )}
+        {vinError && <p className="vinError">{vinError}</p>}
 
         <div className="quickLinks">
           <button onClick={() => setQuery("2018 Ford F-150")}>F-150</button>
@@ -783,14 +875,59 @@ function App() {
           <button onClick={() => setQuery("2018 Toyota Camry")}>Camry</button>
           <button onClick={() => setQuery("2015 Honda Civic")}>Civic</button>
           <button onClick={() => setQuery("2014 Silverado")}>Silverado</button>
-          <button onClick={() => setQuery("2014 Cruze")}>Cruze</button>
+          <button onClick={() => setQuery("Suburban")}>Suburban</button>
           <button onClick={() => setQuery("P0300")}>P0300</button>
           <button onClick={() => setQuery("P0420")}>P0420</button>
           <button className="submitTipBtn" onClick={() => setShowSubmitForm(true)}>
             + Submit a Tip
           </button>
         </div>
+
+        <button className="vehicleToggle" onClick={() => setShowVehicleLookup((v) => !v)}>
+          {showVehicleLookup
+            ? "▲ Close Vehicle Lookup"
+            : "▼ Look Up by Vehicle  (Year → Make → Model → Part)"}
+        </button>
       </section>
+
+      {showVehicleLookup && (
+        <section className="panel">
+          <h2 className="tipsSectionTitle">Look Up a Part for Your Vehicle</h2>
+          <p className="tipsSectionSub">Choose your vehicle step by step. Each choice unlocks the next.</p>
+          <div className="vehicleTree">
+            <select value={vYear} onChange={(e) => { setVYear(e.target.value); setVMake(""); setVModel(""); setVEngine(""); setVCategory(""); setVPart(""); }}>
+              <option value="">1. Year</option>
+              {lookupYears.map((y) => <option key={y}>{y}</option>)}
+            </select>
+            <select value={vMake} onChange={(e) => { setVMake(e.target.value); setVModel(""); setVEngine(""); setVCategory(""); setVPart(""); }} disabled={!vYear}>
+              <option value="">2. Make</option>
+              {vehicleMakes.map((m) => <option key={m}>{m}</option>)}
+            </select>
+            <select value={vModel} onChange={(e) => { setVModel(e.target.value); setVEngine(""); setVCategory(""); setVPart(""); }} disabled={!vMake}>
+              <option value="">3. Model</option>
+              {(vehicleModels[vMake] || []).map((m) => <option key={m}>{m}</option>)}
+            </select>
+            <select value={vEngine} onChange={(e) => setVEngine(e.target.value)} disabled={!vModel}>
+              <option value="">4. Engine (optional)</option>
+              {vehicleEngines.map((e) => <option key={e}>{e}</option>)}
+            </select>
+            <select value={vCategory} onChange={(e) => { setVCategory(e.target.value); setVPart(""); }} disabled={!vModel}>
+              <option value="">5. Part Category</option>
+              {Object.keys(partCategories).map((c) => <option key={c}>{c}</option>)}
+            </select>
+            <select value={vPart} onChange={(e) => setVPart(e.target.value)} disabled={!vCategory}>
+              <option value="">6. Part Needed</option>
+              {(partCategories[vCategory] || []).map((p) => <option key={p}>{p}</option>)}
+            </select>
+          </div>
+          {vYear && vMake && vModel && (
+            <div className="vehiclePreview">
+              <p className="note">Will search: <strong>{[vYear, vMake, vModel, vEngine, vPart].filter(Boolean).join(" ")}</strong></p>
+              <button className="wizardEntryBtn" onClick={applyVehicleLookup}>Search This Vehicle</button>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Symptom Diagnosis Wizard entry card */}
       <section className="wizardEntry">
@@ -842,17 +979,47 @@ function App() {
         <div className="trackingBanner">🐾 Tracking the problem...</div>
       )}
 
-      {!isTracking && trimmedQuery && hasResults && (
+      {!isTracking && trimmedQuery && (hasResults || partMatch) && (
         <div className="trailResultLabel">🐾 HoundMoto found a trail</div>
       )}
 
-      {!isTracking && trimmedQuery && !hasResults && (
+      {vinResult && (
+        <section className="panel vinResultCard">
+          <h2>VIN Decoded</h2>
+          <div className="resultBox">
+            <strong>{vinResult.ModelYear} {vinResult.Make} {vinResult.Model}</strong>
+            <span>
+              {vinResult.Trim || ""}
+              {vinResult.EngineCylinders ? `${vinResult.Trim ? ", " : ""}${vinResult.EngineCylinders} cylinders` : ""}
+              {vinResult.DisplacementL ? `, ${vinResult.DisplacementL}L` : ""}
+            </span>
+          </div>
+          <p className="note">Results below are for this vehicle.</p>
+        </section>
+      )}
+
+      {!isTracking && trimmedQuery && partMatch && (
+        <section className="panel bestMatch">
+          <div className="bestMatchHeader">
+            <span className="bestMatchBadge">Best Match</span>
+            <h2>{partMatch.name}</h2>
+          </div>
+          <div className="grid">
+            <Info title="Vehicle Fit" value={partMatch.vehicleFit} />
+            <Info title="What It Does" value={partMatch.whatItDoes} />
+            {partMatch.aka && <Info title="Also Known As" value={partMatch.aka} />}
+            <Info title="⚠ Fitment Warning" value={partMatch.warn} />
+          </div>
+        </section>
+      )}
+
+      {!isTracking && trimmedQuery && !hasResults && !partMatch && (
         <section className="panel">
-          <h2>{looksLikeVehicleQuery(trimmedQuery) ? "Vehicle Not in Database" : "No Results Found"}</h2>
+          <h2>{looksLikeVehicleQuery(trimmedQuery) ? "Vehicle Not in Database Yet" : "No Exact Specs Yet"}</h2>
           <p>
             {looksLikeVehicleQuery(trimmedQuery)
-              ? "That vehicle is not in the HoundMoto database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker."
-              : "HoundMoto does not have that result yet. Try a vehicle year/make/model, trouble code (P0300), or a spec like oil capacity or tire size."}
+              ? "That vehicle is not in the HoundMoto specs database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker. You can still use the part price and repair-manual links below."
+              : "HoundMoto does not have exact specs for that yet. Try a vehicle year/make/model, a trouble code (P0300), a part name, or use the price and manual links below."}
           </p>
           <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
           <a className="button" href="https://www.bidwrenx.com">
@@ -937,6 +1104,67 @@ function App() {
             ))}
           </div>
         </section>
+      )}
+
+      {/* Where-to-buy and repair resources — shown for any active search */}
+      {!isTracking && trimmedQuery && (
+        <>
+          <section className="panel" id="prices">
+            <h2 className="tipsSectionTitle">Check Prices at {vendors.length} Vendors</h2>
+            <p className="tipsSectionSub">Click any vendor to check live pricing for this search.</p>
+            <div className="vendorList">
+              {vendors.map((v) => (
+                <div className="vendorRow" key={v.name}>
+                  <div className="vendorInfo">
+                    <span className="vendorName">{v.name}</span>
+                    <span className="vendorNote">{v.note}</span>
+                  </div>
+                  <a className="priceBtn" href={v.url(trimmedQuery)} target="_blank" rel="noreferrer">
+                    Check Price →
+                  </a>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="panel" id="crossref">
+            <h2 className="tipsSectionTitle">Cross Reference</h2>
+            <p className="tipsSectionSub">Find this part under a different brand or OEM number.</p>
+            <div className="crossRefList">
+              <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(trimmedQuery + " OEM part number equivalent")}`} target="_blank" rel="noreferrer">
+                <span className="crossRefLabel">OEM Equivalent Search</span>
+                <span className="crossRefNote">Find the original manufacturer part number</span>
+              </a>
+              <a className="crossRefLink" href={`https://www.google.com/search?q=${encodeURIComponent(trimmedQuery + " aftermarket cross reference")}`} target="_blank" rel="noreferrer">
+                <span className="crossRefLabel">Aftermarket Equivalent</span>
+                <span className="crossRefNote">Find aftermarket brands that make this part</span>
+              </a>
+              <a className="crossRefLink" href={`https://www.rockauto.com/en/partsearch/?partnum=${encodeURIComponent(trimmedQuery)}`} target="_blank" rel="noreferrer">
+                <span className="crossRefLabel">RockAuto Part Search</span>
+                <span className="crossRefNote">Use their vehicle selector for best results</span>
+              </a>
+            </div>
+          </section>
+
+          <section className="panel" id="repair">
+            <h2 className="tipsSectionTitle">Repair Guides &amp; Manuals</h2>
+            <p className="tipsSectionSub">Service manuals and DIY guides for your vehicle.</p>
+            <a className="lemonFeatured" href={lemonUrl} target="_blank" rel="noreferrer">
+              <div className="lemonFeaturedTop">
+                <strong>Repair Manual Search</strong>
+                <span className="lemonBadge">Free guides</span>
+              </div>
+              <span className="lemonFeaturedNote">View service manuals and repair guides for this vehicle →</span>
+            </a>
+            <a className="lemonFeatured" href={repairResources[0].url(trimmedQuery)} target="_blank" rel="noreferrer" style={{ marginTop: "10px" }}>
+              <div className="lemonFeaturedTop">
+                <strong>DIY Repair Guides</strong>
+                <span className="lemonBadge">{repairResources[0].note}</span>
+              </div>
+              <span className="lemonFeaturedNote">Browse step-by-step repair documentation →</span>
+            </a>
+          </section>
+        </>
       )}
 
       {showSubmitForm && (
