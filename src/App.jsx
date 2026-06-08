@@ -6,6 +6,8 @@ import { toVehicleSpecs } from "./fluidDatabase";
 import { troubleCodes } from "./dtcCodes";
 import { vehicleCoverage } from "./vehicleCoverageData";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
+import { lazy, Suspense } from "react";
+const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
   vehicleMakes, vehicleModels, vehicleEngines, partCategories,
@@ -750,6 +752,7 @@ function App() {
   const [vinResult, setVinResult] = useState(null);
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinError, setVinError] = useState("");
+  const [showScanner, setShowScanner] = useState(false);
 
   // Vehicle lookup tree state
   const [showVehicleLookup, setShowVehicleLookup] = useState(false);
@@ -865,6 +868,13 @@ function App() {
     runSearch();
   }
 
+  function handleScanDetected(vin) {
+    setQuery(vin);
+    setShowScanner(false);
+    // Small delay lets React re-render the query before we decode
+    setTimeout(() => runSearch(), 100);
+  }
+
   function applyVehicleLookup() {
     if (!vYear || !vMake || !vModel) return;
     setQuery([vYear, vMake, vModel, vEngine, vPart].filter(Boolean).join(" "));
@@ -880,6 +890,14 @@ function App() {
 
   if (showWizard) {
     return <SymptomDiagnosisWizard onClose={() => setShowWizard(false)} />;
+  }
+
+  if (showScanner) {
+    return (
+      <Suspense fallback={<div className="vinScanOverlay"><div className="vinScanModal"><p className="vinScanStatus">Loading scanner…</p></div></div>}>
+        <VinScanner onDetected={handleScanDetected} onClose={() => setShowScanner(false)} />
+      </Suspense>
+    );
   }
 
   return (
@@ -907,6 +925,13 @@ function App() {
             disabled={vinDecoding}
           >
             {vinDecoding ? "Decoding VIN…" : "🐕 HOUND IT"}
+          </button>
+          <button
+            className="scanVinBtn"
+            onClick={() => setShowScanner(true)}
+            title="Scan VIN barcode from door jamb sticker"
+          >
+            📷 Scan VIN
           </button>
         </div>
 

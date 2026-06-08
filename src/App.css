@@ -1255,3 +1255,163 @@ p {
     text-align: center;
   }
 }
+
+/* ── Scan VIN button ──────────────────────────────────────────────────────── */
+.scanVinBtn {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+.scanVinBtn:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+/* ── VIN Scanner overlay ──────────────────────────────────────────────────── */
+.vinScanOverlay {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+.vinScanModal {
+  width: 100%;
+  max-width: 520px;
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.vinScanTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.vzNavBtn {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.vzNavBtn:hover { background: #334155; color: #f8fafc; }
+
+.vinScanHint {
+  color: #cbd5e1;
+  font-size: 15px;
+  margin: 0;
+  text-align: center;
+}
+.vinScanHintSub {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+.vinScanViewport {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #facc15;
+}
+/* Override html5-qrcode default styles for dark theme */
+#houndmoto-vin-scanner video {
+  border-radius: 12px;
+}
+.vinScanStatus {
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.vinScanResult {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+}
+.vinScanResultIcon {
+  font-size: 48px;
+  color: #4ade80;
+}
+.vinScanResultLabel {
+  color: #4ade80;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+.vinScanResultVin {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #facc15;
+  letter-spacing: 2px;
+  word-break: break-all;
+  text-align: center;
+}
+.vinScanResultNote {
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+}
+.vinScanActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.vinScanError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+  text-align: center;
+}
+.vinScanErrorMsg {
+  color: #f87171;
+  font-size: 14px;
+  margin: 0;
+}
+.vinScanManual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #1e293b;
+  padding-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .scanVinBtn {
+    width: 100%;
+    text-align: center;
+  }
+}
