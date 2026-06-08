@@ -503,3 +503,473 @@ p {
     text-align: center;
   }
 }
+
+/* ── Dog branding ─────────────────────────────────────────────────────────── */
+
+.searchWrap {
+  position: relative;
+  margin-top: 22px;
+}
+
+.searchWrap .search {
+  margin-top: 0;
+  padding-right: 140px;
+}
+
+.houndBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #facc15;
+  color: #111827;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.houndBtn:hover {
+  background: #fde047;
+}
+
+.houndBtn.tracking {
+  background: #f59e0b;
+  animation: houndPulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes houndPulse {
+  from { opacity: 1; }
+  to   { opacity: 0.6; }
+}
+
+.trackingBanner {
+  text-align: center;
+  color: #facc15;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 18px;
+  letter-spacing: 0.03em;
+  animation: houndPulse 0.5s ease-in-out infinite alternate;
+}
+
+.trailResultLabel {
+  color: #4ade80;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0 2px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Wizard entry card ────────────────────────────────────────────────────── */
+
+.wizardEntry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid #facc1540;
+  border-radius: 18px;
+  padding: 22px 24px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.wizardEntryTitle {
+  color: #facc15;
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.wizardEntrySub {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+.wizardEntryBtn {
+  flex-shrink: 0;
+  background: #facc15;
+  color: #111827;
+  font-weight: 900;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wizardEntryBtn:hover {
+  background: #fde047;
+}
+
+/* ── Wizard page ──────────────────────────────────────────────────────────── */
+
+.wzPage {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.wzTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 24px;
+}
+
+.wzNavBtn {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.wzNavBtn:hover {
+  color: #f8fafc;
+  border-color: #64748b;
+}
+
+.wzBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wzTitle {
+  color: #f8fafc;
+  font-size: clamp(22px, 4vw, 30px);
+  margin: 0;
+}
+
+.wzSub {
+  color: #94a3b8;
+  font-size: 15px;
+  margin: 0;
+}
+
+.wzCatGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.wzCatBtn {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 18px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.15s;
+}
+
+.wzCatBtn:hover {
+  border-color: #facc15;
+}
+
+.wzCatIcon {
+  font-size: 28px;
+}
+
+.wzCatLabel {
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.wzCatBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: #facc15;
+  font-size: 13px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.wzVehicleRow {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr;
+  gap: 10px;
+}
+
+.wzField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wzField label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wzField input {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 15px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.wzField input:focus {
+  border-color: #facc15;
+}
+
+.wzStartBtn {
+  background: #facc15;
+  color: #111827;
+  font-weight: 900;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.wzStartBtn:hover {
+  background: #fde047;
+}
+
+.wzVehicleBadge {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 5px 14px;
+  color: #94a3b8;
+  font-size: 13px;
+  width: fit-content;
+}
+
+.wzProgress {
+  color: #facc15;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wzQuestion {
+  color: #f8fafc;
+  font-size: clamp(18px, 3.5vw, 24px);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.wzOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wzOptionBtn {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  color: #e2e8f0;
+  font-size: 15px;
+  text-align: left;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  line-height: 1.4;
+}
+
+.wzOptionBtn:hover {
+  border-color: #facc15;
+  background: #1e293b;
+  color: #facc15;
+}
+
+.wzResult {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wzResultTitle {
+  color: #facc15;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.wzProbability {
+  display: inline-block;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  width: fit-content;
+}
+
+.wzResultWhy {
+  color: #cbd5e1;
+  font-size: 15px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.wzSection {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.wzSectionTitle {
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.wzList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wzList li {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.wzSafetyBox {
+  border-color: #f59e0b60;
+  background: #1c1407;
+}
+
+.wzSafetyBox .wzSectionTitle {
+  color: #f59e0b;
+}
+
+.wzSafetyBox .wzList li {
+  color: #fcd34d;
+}
+
+.wzProBox {
+  border-color: #3b82f640;
+  background: #071020;
+}
+
+.wzProBox .wzSectionTitle {
+  color: #60a5fa;
+}
+
+.wzDtcRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wzDtcBadge {
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: #93c5fd;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  font-family: monospace;
+}
+
+.wzDisclaimer {
+  color: #475569;
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.wzResultActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wzRestartBtn {
+  background: #facc15;
+  color: #111827;
+  font-weight: 900;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.wzRestartBtn:hover {
+  background: #fde047;
+}
+
+@media (max-width: 600px) {
+  .searchWrap .search {
+    padding-right: 16px;
+    padding-bottom: 56px;
+  }
+
+  .houndBtn {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 8px;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .wzVehicleRow {
+    grid-template-columns: 1fr;
+  }
+
+  .wzCatGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wizardEntry {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wizardEntryBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

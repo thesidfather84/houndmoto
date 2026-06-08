@@ -3,6 +3,8 @@ import "./App.css";
 import { TipSubmitForm } from "./TipSubmitForm";
 import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
+import { troubleCodes } from "./dtcCodes";
+import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
 
 const baseVehicleSpecs = [
   // --- Original hand-entered specs ---
@@ -62,7 +64,6 @@ const baseVehicleSpecs = [
     wipers: "24 inch driver / 18 inch passenger", bulbs: "Verify by trim",
     notes: "Starter data. Always verify before repair."
   },
-
   // --- 1990s popular vehicles ---
   {
     year: "1995", make: "Ford", model: "Mustang GT", engine: "5.0L V8",
@@ -112,7 +113,6 @@ const baseVehicleSpecs = [
     wipers: "20 inch driver / 18 inch passenger", bulbs: "Verify by trim",
     notes: "Starter data. Always verify before repair."
   },
-
   // --- 2000s popular vehicles ---
   {
     year: "2003", make: "Ford", model: "F-150", engine: "5.4L V8",
@@ -210,7 +210,6 @@ const baseVehicleSpecs = [
     wipers: "22 inch driver / 22 inch passenger", bulbs: "Verify by trim",
     notes: "Starter data. Always verify before repair."
   },
-
   // --- 2010s popular vehicles ---
   {
     year: "2011", make: "Ford", model: "Mustang GT", engine: "5.0L V8",
@@ -316,7 +315,6 @@ const baseVehicleSpecs = [
     wipers: "24 inch driver / 18 inch passenger", bulbs: "Verify by trim",
     notes: "Starter data. Always verify before repair."
   },
-
   // --- 2020s popular vehicles ---
   {
     year: "2021", make: "Ford", model: "F-150", engine: "3.5L EcoBoost V6",
@@ -384,7 +382,6 @@ const baseVehicleSpecs = [
   },
 ];
 
-// Merge fluidDatabase vehicles — skip any already covered by year/make/model/engine
 const _existingKeys = new Set(
   baseVehicleSpecs.map((v) => `${v.year}-${v.make}-${v.model}-${v.engine}`)
 );
@@ -393,142 +390,6 @@ const vehicleSpecs = [
   ...toVehicleSpecs().filter(
     (s) => !_existingKeys.has(`${s.year}-${s.make}-${s.model}-${s.engine}`)
   ),
-];
-
-const troubleCodes = [
-  {
-    code: "P0101",
-    title: "Mass Air Flow Sensor Circuit Range / Performance",
-    causes: "Dirty or damaged MAF sensor, air filter issue, vacuum leak after the filter, wiring",
-    severity: "Medium",
-    steps: "Clean MAF sensor with MAF-specific spray cleaner. Clear code and retest. If it returns, check for air leaks after the filter and test sensor output voltage."
-  },
-  {
-    code: "P0113",
-    title: "Intake Air Temperature Sensor Circuit High Input",
-    causes: "Faulty IAT sensor, open circuit in wiring, corroded connector",
-    severity: "Low to medium",
-    steps: "Inspect IAT sensor connector for corrosion. Test sensor resistance at a known temperature. Replace sensor if out of spec."
-  },
-  {
-    code: "P0117",
-    title: "Engine Coolant Temperature Circuit Low Input",
-    causes: "Faulty coolant temp sensor, shorted wiring, connector issue",
-    severity: "Medium",
-    steps: "Check coolant level first. Inspect sensor connector. Test sensor resistance at operating temperature. Replace if reading is implausible."
-  },
-  {
-    code: "P0128",
-    title: "Coolant Temp Below Thermostat Regulating Temperature",
-    causes: "Stuck-open thermostat, faulty coolant temp sensor, wiring",
-    severity: "Low to medium",
-    steps: "Replace thermostat first — most common cause by far. Clear code and retest. If it returns, test coolant temp sensor resistance."
-  },
-  {
-    code: "P0135",
-    title: "O2 Sensor Heater Circuit Malfunction (Bank 1, Sensor 1)",
-    causes: "Failed upstream oxygen sensor, broken heater circuit wiring, blown fuse",
-    severity: "Medium",
-    steps: "Check the O2 sensor heater fuse first. Test heater circuit resistance (2–30 ohms typical). Replace sensor if heater circuit is open."
-  },
-  {
-    code: "P0155",
-    title: "O2 Sensor Heater Circuit Malfunction (Bank 2, Sensor 1)",
-    causes: "Failed upstream O2 sensor on Bank 2, wiring issue, blown fuse",
-    severity: "Medium",
-    steps: "Same procedure as P0135 but for Bank 2. Applies to V6 and V8 engines. Confirm Bank 2 location for your specific engine before replacing."
-  },
-  {
-    code: "P0171",
-    title: "System Too Lean Bank 1",
-    causes: "Vacuum leak, dirty MAF sensor, weak fuel pump, exhaust leak",
-    severity: "Medium",
-    steps: "Check for vacuum leaks (spray carb cleaner near intake seams at idle — RPM change indicates a leak). Clean MAF. Check fuel pressure. Inspect exhaust manifold."
-  },
-  {
-    code: "P0300",
-    title: "Random / Multiple Cylinder Misfire",
-    causes: "Spark plugs, ignition coils, vacuum leak, fuel issue, compression issue",
-    severity: "Medium to high",
-    steps: "Start with spark plug inspection. Swap coils between cylinders to isolate faults. Check for vacuum leaks. Run a compression test if misfire persists after ignition service."
-  },
-  {
-    code: "P0301",
-    title: "Cylinder 1 Misfire Detected",
-    causes: "Spark plug, ignition coil, fuel injector, compression issue in cylinder 1",
-    severity: "Medium to high",
-    steps: "Swap the cylinder 1 coil with another cylinder. If the misfire code moves with the coil, replace that coil. If it stays on cylinder 1, check the plug, injector, and compression."
-  },
-  {
-    code: "P0302",
-    title: "Cylinder 2 Misfire Detected",
-    causes: "Spark plug, ignition coil, fuel injector, compression issue in cylinder 2",
-    severity: "Medium to high",
-    steps: "Swap the cylinder 2 coil with another cylinder. If misfire moves, replace that coil. If it stays, check the plug, injector, and run a compression test."
-  },
-  {
-    code: "P0303",
-    title: "Cylinder 3 Misfire Detected",
-    causes: "Spark plug, ignition coil, fuel injector, compression issue in cylinder 3",
-    severity: "Medium to high",
-    steps: "Swap the cylinder 3 coil with another cylinder. If misfire moves, replace that coil. If it stays, inspect plug, injector, and compression."
-  },
-  {
-    code: "P0304",
-    title: "Cylinder 4 Misfire Detected",
-    causes: "Spark plug, ignition coil, fuel injector, compression issue in cylinder 4",
-    severity: "Medium to high",
-    steps: "Swap the cylinder 4 coil with another cylinder. If misfire moves, replace that coil. If it stays, inspect plug, injector, and compression."
-  },
-  {
-    code: "P0340",
-    title: "Camshaft Position Sensor A Circuit (Bank 1 or Single Cam)",
-    causes: "Bad cam position sensor, wiring issue, reluctor ring damage, timing chain problem",
-    severity: "High",
-    steps: "Inspect wiring and connector first. Test sensor resistance per vehicle spec. Replace sensor if wiring is good. If code returns after replacement, check timing chain."
-  },
-  {
-    code: "P0401",
-    title: "Exhaust Gas Recirculation Flow Insufficient",
-    causes: "Clogged EGR valve or passages, failed EGR valve, vacuum line issue, faulty DPFE sensor",
-    severity: "Medium",
-    steps: "Remove and inspect the EGR valve for heavy carbon buildup. Clean or replace. Check EGR vacuum lines and the DPFE sensor if equipped."
-  },
-  {
-    code: "P0420",
-    title: "Catalyst System Efficiency Below Threshold",
-    causes: "Catalytic converter, oxygen sensor, exhaust leak, engine running poorly",
-    severity: "Medium",
-    steps: "Check for exhaust leaks before the converter first. Test upstream and downstream O2 sensor waveforms. Rule out sensor and engine issues before replacing the converter."
-  },
-  {
-    code: "P0442",
-    title: "EVAP System Small Leak",
-    causes: "Loose or damaged gas cap, cracked EVAP hose, purge valve, vent valve",
-    severity: "Low",
-    steps: "Tighten or replace gas cap and clear the code. If it returns, a smoke test of the EVAP system will find the exact leak location."
-  },
-  {
-    code: "P0455",
-    title: "EVAP System Large Leak",
-    causes: "Loose gas cap, cracked EVAP hose, purge valve, vent valve",
-    severity: "Low to medium",
-    steps: "Check the gas cap first — a missing or very loose cap is the most common cause. If cap is tight, use a smoke machine to locate the EVAP leak."
-  },
-  {
-    code: "P0507",
-    title: "Idle Air Control System RPM High",
-    causes: "Vacuum leak, dirty throttle body, faulty IAC valve or throttle position sensor",
-    severity: "Low to medium",
-    steps: "Clean the throttle body first. Inspect for vacuum leaks at the intake manifold. Test IAC valve response and throttle position sensor output voltage."
-  },
-  {
-    code: "P0700",
-    title: "Transmission Control System Malfunction",
-    causes: "Transmission-specific fault stored in TCM — P0700 is a pointer code, not the root cause",
-    severity: "High",
-    steps: "P0700 is a flag code. Scan the TCM for additional transmission-specific codes. Diagnose those codes first — P0700 clears automatically once the root fault is resolved."
-  },
 ];
 
 function cleanText(value) {
@@ -540,21 +401,11 @@ function cleanText(value) {
 function searchVehicle(vehicle, query) {
   const q = query.toLowerCase();
   const cleanQuery = cleanText(query);
-
   const searchable = [
-    vehicle.year,
-    vehicle.make,
-    vehicle.model,
-    vehicle.engine,
-    vehicle.oilType,
-    vehicle.oilCapacity,
-    vehicle.transmissionFluid,
-    vehicle.tireSize,
-    vehicle.batteryGroup,
-    vehicle.wipers,
-    vehicle.bulbs,
+    vehicle.year, vehicle.make, vehicle.model, vehicle.engine,
+    vehicle.oilType, vehicle.oilCapacity, vehicle.transmissionFluid,
+    vehicle.tireSize, vehicle.batteryGroup, vehicle.wipers, vehicle.bulbs,
   ].join(" ");
-
   return (
     searchable.toLowerCase().includes(q) ||
     cleanText(searchable).includes(cleanQuery)
@@ -570,22 +421,25 @@ function App() {
   const [query, setQuery] = useState("");
   const [tips, setTips] = useState([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
+  const [isTracking, setIsTracking] = useState(false);
 
   useEffect(() => {
     setTips(loadTips());
   }, []);
 
+  useEffect(() => {
+    if (!query.trim()) { setIsTracking(false); return; }
+    setIsTracking(true);
+    const t = setTimeout(() => setIsTracking(false), 600);
+    return () => clearTimeout(t);
+  }, [query]);
+
   const trimmedQuery = query.trim();
 
   const results = useMemo(() => {
-    if (!trimmedQuery) {
-      return { vehicles: [], codes: [], tips: [] };
-    }
-
-    const vehicles = vehicleSpecs.filter((vehicle) =>
-      searchVehicle(vehicle, trimmedQuery)
-    );
-
+    if (!trimmedQuery) return { vehicles: [], codes: [], tips: [] };
+    const vehicles = vehicleSpecs.filter((v) => searchVehicle(v, trimmedQuery));
     const codes = troubleCodes.filter((item) => {
       const searchable = `${item.code} ${item.title} ${item.causes}`;
       return (
@@ -593,20 +447,31 @@ function App() {
         cleanText(searchable).includes(cleanText(trimmedQuery))
       );
     });
-
     const matchedTips = searchTips(tips, trimmedQuery);
-
     return { vehicles, codes, tips: matchedTips };
   }, [trimmedQuery, tips]);
 
   const hasResults =
-    results.vehicles.length > 0 ||
-    results.codes.length > 0 ||
-    results.tips.length > 0;
+    results.vehicles.length > 0 || results.codes.length > 0 || results.tips.length > 0;
 
   function handleTipSubmit(tipData) {
     const updated = saveTip(tipData);
     setTips(updated);
+  }
+
+  function playHoundSound() {
+    console.log("🐕 Hound sound placeholder");
+  }
+
+  function handleHoundIt() {
+    playHoundSound();
+    if (!query.trim()) return;
+    setIsTracking(true);
+    setTimeout(() => setIsTracking(false), 600);
+  }
+
+  if (showWizard) {
+    return <SymptomDiagnosisWizard onClose={() => setShowWizard(false)} />;
   }
 
   return (
@@ -619,13 +484,18 @@ function App() {
           symptom, or check engine code.
         </p>
 
-        <input
-          className="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search: 2018 Ford F-150 oil, P0300, tire size, battery group..."
-          autoFocus
-        />
+        <div className="searchWrap">
+          <input
+            className="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search: 2018 Ford F-150 oil, P0300, tire size, battery group..."
+            autoFocus
+          />
+          <button className={`houndBtn${isTracking ? " tracking" : ""}`} onClick={handleHoundIt}>
+            🐕 HOUND IT
+          </button>
+        </div>
 
         <div className="quickLinks">
           <button onClick={() => setQuery("2018 Ford F-150")}>F-150</button>
@@ -640,6 +510,20 @@ function App() {
             + Submit a Tip
           </button>
         </div>
+      </section>
+
+      {/* Symptom Diagnosis Wizard entry card */}
+      <section className="wizardEntry">
+        <div className="wizardEntryText">
+          <div className="wizardEntryTitle">Symptom Diagnosis Wizard</div>
+          <p className="wizardEntrySub">
+            Describe what your vehicle is doing. Get ranked likely causes, first checks,
+            tools needed, and when to call a mechanic.
+          </p>
+        </div>
+        <button className="wizardEntryBtn" onClick={() => setShowWizard(true)}>
+          Start Diagnosis
+        </button>
       </section>
 
       {!trimmedQuery && (
@@ -661,10 +545,7 @@ function App() {
                   Community-submitted shop knowledge. Unverified — always confirm before acting.
                 </p>
               </div>
-              <button
-                className="tipsSectionSubmitBtn"
-                onClick={() => setShowSubmitForm(true)}
-              >
+              <button className="tipsSectionSubmitBtn" onClick={() => setShowSubmitForm(true)}>
                 + Submit a Tip
               </button>
             </div>
@@ -677,7 +558,15 @@ function App() {
         </>
       )}
 
-      {trimmedQuery && !hasResults && (
+      {isTracking && trimmedQuery && (
+        <div className="trackingBanner">🐾 Tracking the problem...</div>
+      )}
+
+      {!isTracking && trimmedQuery && hasResults && (
+        <div className="trailResultLabel">🐾 HoundMoto found a trail</div>
+      )}
+
+      {!isTracking && trimmedQuery && !hasResults && (
         <section className="panel">
           <h2>{looksLikeVehicleQuery(trimmedQuery) ? "Vehicle Not in Database" : "No Results Found"}</h2>
           <p>
@@ -685,9 +574,7 @@ function App() {
               ? "That vehicle is not in the HoundMoto database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker."
               : "HoundMoto does not have that result yet. Try a vehicle year/make/model, trouble code (P0300), or a spec like oil capacity or tire size."}
           </p>
-          <p className="note">
-            HoundMoto does not guess specs. Data is added as vehicles are verified.
-          </p>
+          <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
           <a className="button" href="https://www.bidwrenx.com">
             Need repair help? Post this job on BidWrenx
           </a>
@@ -699,11 +586,8 @@ function App() {
           className="panel"
           key={`${vehicle.year}-${vehicle.make}-${vehicle.model}-${vehicle.engine}`}
         >
-          <h2>
-            {vehicle.year} {vehicle.make} {vehicle.model}
-          </h2>
+          <h2>{vehicle.year} {vehicle.make} {vehicle.model}</h2>
           <p className="sub">{vehicle.engine}</p>
-
           <div className="grid">
             <Info title="Oil Type" value={vehicle.oilType} />
             <Info title="Oil Capacity" value={vehicle.oilCapacity} />
@@ -714,9 +598,7 @@ function App() {
             <Info title="Wipers" value={vehicle.wipers} />
             <Info title="Bulbs" value={vehicle.bulbs} />
           </div>
-
           <p className="note">{vehicle.notes}</p>
-
           <a className="button" href="https://www.bidwrenx.com">
             Need repair help? Post this job on BidWrenx
           </a>
@@ -725,16 +607,12 @@ function App() {
 
       {results.codes.map((item) => (
         <section className="panel" key={item.code}>
-          <h2>
-            {item.code}: {item.title}
-          </h2>
-
+          <h2>{item.code}: {item.title}</h2>
           <div className="grid">
             <Info title="Common Causes" value={item.causes} />
             <Info title="Severity" value={item.severity} />
             {item.steps && <Info title="Next Steps" value={item.steps} />}
           </div>
-
           <p className="note">
             Trouble code info is a starting point only. Diagnose before replacing parts.
           </p>
