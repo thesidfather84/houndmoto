@@ -789,20 +789,21 @@ p {
 /* ── Dog branding ─────────────────────────────────────────────────────────── */
 
 .searchWrap {
-  position: relative;
   margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .searchWrap .search {
   margin-top: 0;
-  padding-right: 140px;
+  flex: 1;
+  min-width: 0;
 }
 
 .houndBtn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   background: #facc15;
   color: #111827;
   border: none;
@@ -1223,18 +1224,24 @@ p {
 }
 
 @media (max-width: 600px) {
+  .searchWrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .searchWrap .search {
     padding-right: 16px;
-    padding-bottom: 56px;
   }
 
   .houndBtn {
-    position: static;
-    transform: none;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 0;
     font-size: 15px;
     padding: 12px;
+  }
+
+  .scanVinBtn {
+    margin-top: 8px;
   }
 
   .wzVehicleRow {
@@ -1265,7 +1272,6 @@ p {
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 10px;
   transition: background 0.15s, color 0.15s;
 }
 .scanVinBtn:hover {
