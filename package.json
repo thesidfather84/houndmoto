@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
     "@vitejs/plugin-react": "latest",
     "html5-qrcode": "^2.3.8",
     "react": "latest",

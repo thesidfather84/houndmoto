@@ -1,38 +1,46 @@
 import { useEffect, useRef, useState } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 
 const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/i;
 const SCAN_ID = "houndmoto-vin-scanner";
 
+const VIN_FORMATS = [
+  Html5QrcodeSupportedFormats.CODE_128,
+  Html5QrcodeSupportedFormats.CODE_39,
+  Html5QrcodeSupportedFormats.PDF_417,
+];
+
+const SCAN_CONFIG = {
+  fps: 10,
+  qrbox: { width: 280, height: 120 },
+  formatsToSupport: VIN_FORMATS,
+  rememberLastUsedCamera: true,
+  showTorchButtonIfSupported: true,
+};
+
 export function VinScanner({ onDetected, onClose }) {
-  const [status, setStatus] = useState("starting"); // starting | scanning | found | error
+  const [status, setStatus] = useState("starting");
   const [detected, setDetected] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const scannerRef = useRef(null);
 
-  useEffect(() => {
+  function launchScanner() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setStatus("error");
+      setErrorMsg(
+        "Camera scanning requires HTTPS or a secure browser context. Please open the live HTTPS site or enter the VIN manually."
+      );
+      return;
+    }
+
     const scanner = new Html5Qrcode(SCAN_ID);
     scannerRef.current = scanner;
 
     scanner
       .start(
         { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 280, height: 120 },
-          // support both QR and 1D barcodes (VINs are Code-128, Code-39, or PDF417)
-          formatsToSupport: [
-            Html5Qrcode.SUPPORT_FORMAT?.QR_CODE,
-            Html5Qrcode.SUPPORT_FORMAT?.CODE_128,
-            Html5Qrcode.SUPPORT_FORMAT?.CODE_39,
-            Html5Qrcode.SUPPORT_FORMAT?.PDF_417,
-            Html5Qrcode.SUPPORT_FORMAT?.DATA_MATRIX,
-          ].filter(Boolean),
-          rememberLastUsedCamera: true,
-          showTorchButtonIfSupported: true,
-        },
+        SCAN_CONFIG,
         (text) => {
-          // Strip whitespace and check if valid 17-char VIN
           const candidate = text.replace(/\s/g, "").toUpperCase();
           if (VIN_RE.test(candidate)) {
             scanner.stop().catch(() => {});
@@ -40,20 +48,21 @@ export function VinScanner({ onDetected, onClose }) {
             setStatus("found");
           }
         },
-        () => {
-          // Per-frame decode failure — expected during scanning, ignore
-        }
+        () => {}
       )
       .then(() => setStatus("scanning"))
       .catch((err) => {
         setStatus("error");
-        if (err.toString().includes("permission")) {
-          setErrorMsg("Camera access denied. Please allow camera permission in your browser settings.");
-        } else {
-          setErrorMsg("Camera could not be started. Try using a different browser or entering the VIN manually.");
-        }
+        setErrorMsg(
+          err.toString().includes("permission")
+            ? "Camera access denied. Please allow camera permission in your browser settings."
+            : "Camera could not be started. Try using a different browser or entering the VIN manually."
+        );
       });
+  }
 
+  useEffect(() => {
+    launchScanner();
     return () => {
       if (scannerRef.current) {
         scannerRef.current.stop().catch(() => {});
@@ -67,26 +76,13 @@ export function VinScanner({ onDetected, onClose }) {
   }
 
   function retry() {
+    const old = scannerRef.current;
+    if (old) old.stop().catch(() => {});
+    scannerRef.current = null;
     setDetected("");
-    setStatus("scanning");
-    // Re-start scanning
-    if (scannerRef.current) {
-      scannerRef.current
-        .start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: { width: 280, height: 120 } },
-          (text) => {
-            const candidate = text.replace(/\s/g, "").toUpperCase();
-            if (VIN_RE.test(candidate)) {
-              scannerRef.current.stop().catch(() => {});
-              setDetected(candidate);
-              setStatus("found");
-            }
-          },
-          () => {}
-        )
-        .catch(() => {});
-    }
+    setStatus("starting");
+    // Small delay so the DOM element re-renders visible before scanner attaches
+    setTimeout(launchScanner, 100);
   }
 
   return (
