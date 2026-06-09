@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getEvents, clearEvents } from "./analytics";
+import { manualRefs, manualSources } from "./manualRefsData";
 
 function countBy(events, key) {
   const map = {};
@@ -136,6 +137,16 @@ export function AdminDashboard() {
         </AdminSection>
       </div>
 
+      <div className="adminManualSection">
+        <h2 className="adminManualHeading">Manual Reference Index</h2>
+        <p className="adminManualSub">
+          Seeded records from LEMON Manuals / Operation CHARM archive. No content is stored — these are metadata references only.
+          Add more records to <code>src/manualRefsData.js</code>.
+        </p>
+        <ManualImportStats events={events} />
+        <ManualRefsTable />
+      </div>
+
       <p className="adminFootnote">
         Events are stored in this browser&apos;s localStorage only — no server, no external tracking.
         Storage used: {storageSizeKB}KB of ~5MB limit.
@@ -204,4 +215,94 @@ function AdminEventList({ events, fields }) {
 
 function AdminEmpty({ text = "No data yet" }) {
   return <p className="adminEmpty">{text}</p>;
+}
+
+function ManualImportStats({ events }) {
+  const clicks = events.filter((e) => e.event === "manual_reference_clicked");
+  const bySource = {};
+  for (const e of clicks) {
+    const s = e.source || "unknown";
+    bySource[s] = (bySource[s] || 0) + 1;
+  }
+  const makes = {};
+  for (const ref of manualRefs) {
+    makes[ref.make] = (makes[ref.make] || 0) + 1;
+  }
+  const makeRows = Object.entries(makes).sort((a, b) => b[1] - a[1]);
+
+  return (
+    <div className="adminManualStats">
+      <div className="adminManualStatCards">
+        <div className="adminManualCard">
+          <div className="adminManualCardVal">{manualRefs.length}</div>
+          <div className="adminManualCardLbl">Seeded Records</div>
+        </div>
+        <div className="adminManualCard">
+          <div className="adminManualCardVal">{Object.keys(makes).length}</div>
+          <div className="adminManualCardLbl">Makes Covered</div>
+        </div>
+        <div className="adminManualCard">
+          <div className="adminManualCardVal">{Object.keys(manualSources).length}</div>
+          <div className="adminManualCardLbl">Sources Indexed</div>
+        </div>
+        <div className="adminManualCard adminManualCardGood">
+          <div className="adminManualCardVal">{clicks.length}</div>
+          <div className="adminManualCardLbl">Manual Link Clicks</div>
+        </div>
+        {Object.entries(bySource).map(([src, count]) => (
+          <div key={src} className="adminManualCard">
+            <div className="adminManualCardVal">{count}</div>
+            <div className="adminManualCardLbl">{src} clicks</div>
+          </div>
+        ))}
+      </div>
+      <div className="adminManualMakeRow">
+        {makeRows.map(([make, count]) => (
+          <span key={make} className="adminManualMakeBadge">
+            {make} <strong>{count}</strong>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ManualRefsTable() {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? manualRefs : manualRefs.slice(0, 10);
+  return (
+    <div className="adminManualTable">
+      <div className="adminTableWrap">
+        <table className="adminTable">
+          <thead>
+            <tr>
+              <th className="adminTh">Make</th>
+              <th className="adminTh">Model</th>
+              <th className="adminTh">Years</th>
+              <th className="adminTh">Variant / Generation</th>
+              <th className="adminTh">Category</th>
+              <th className="adminTh">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((ref) => (
+              <tr key={ref.id} className="adminTr">
+                <td className="adminTd">{ref.make}</td>
+                <td className="adminTd">{ref.model}</td>
+                <td className="adminTd adminTdNum" style={{ color: "#94a3b8" }}>{ref.yearStart}–{ref.yearEnd}</td>
+                <td className="adminTd" style={{ color: "#64748b", fontSize: "12px" }}>{ref.variant || "—"}</td>
+                <td className="adminTd" style={{ color: "#60a5fa", fontSize: "12px" }}>{ref.category}</td>
+                <td className="adminTd" style={{ color: "#4ade80", fontSize: "12px" }}>{ref.source}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {manualRefs.length > 10 && (
+        <button className="adminBtn" style={{ marginTop: "10px" }} onClick={() => setExpanded((v) => !v)}>
+          {expanded ? `▲ Show less` : `▼ Show all ${manualRefs.length} records`}
+        </button>
+      )}
+    </div>
+  );
 }
