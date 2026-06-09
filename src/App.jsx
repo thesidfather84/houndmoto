@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import "./App.css";
+import { track } from "./analytics";
 import { TipSubmitForm } from "./TipSubmitForm";
 import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
@@ -767,6 +768,8 @@ function App() {
     setTips(loadTips());
   }, []);
 
+  useEffect(() => { track("page_view", {}); }, []);
+
   useEffect(() => {
     if (!query.trim()) { setIsTracking(false); return; }
     setIsTracking(true);
@@ -828,6 +831,12 @@ function App() {
     const q = query.trim();
     if (!q) return;
 
+    const total = results.vehicles.length + results.codes.length + results.tips.length + results.coverage.length;
+    track("search_submitted", { query: q, resultCount: total, isVin: isVin(q) });
+    results.vehicles.slice(0, 5).forEach((v) => {
+      track("vehicle_selected", { vehicle: `${v.year} ${v.make} ${v.model}` });
+    });
+
     setIsTracking(true);
     setVinError("");
 
@@ -850,10 +859,12 @@ function App() {
           const decoded = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(" ");
           if (decoded) setQuery(decoded);
         } else {
+          track("error_occurred", { type: "vin_decode_failed" });
           setVinError("That VIN could not be decoded. Check the characters and try again.");
         }
       } catch (err) {
         // Network/socket failures land here instead of crashing the app.
+        track("error_occurred", { type: "vin_network", error: err.message });
         console.error("[HoundMoto] VIN decode failed:", err);
         setVinError("VIN lookup is temporarily unavailable (network error). You can still search by year, make, and model.");
       } finally {
@@ -1009,7 +1020,7 @@ function App() {
             tools needed, and when to call a mechanic.
           </p>
         </div>
-        <button className="wizardEntryBtn" onClick={() => setShowWizard(true)}>
+        <button className="wizardEntryBtn" onClick={() => { setShowWizard(true); track("symptom_selected", { action: "wizard_opened" }); }}>
           Start Diagnosis
         </button>
       </section>
@@ -1093,9 +1104,7 @@ function App() {
               : "HoundMoto does not have exact specs for that yet. Try a vehicle year/make/model, a trouble code (P0300), a part name, or use the price and manual links below."}
           </p>
           <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
-          <a className="button" href="https://www.bidwrenx.com">
-            Need repair help? Post this job on BidWrenx
-          </a>
+          <BidWrenxBtn context="no_results" />
         </section>
       )}
 
@@ -1144,9 +1153,7 @@ function App() {
           )}
 
           <p className="note">{vehicle.notes}</p>
-          <a className="button" href="https://www.bidwrenx.com">
-            Need repair help? Post this job on BidWrenx
-          </a>
+          <BidWrenxBtn context="vehicle_result" />
         </section>
       ))}
 
@@ -1204,9 +1211,7 @@ function App() {
             </div>
           )}
           <p className="note">{cov.notes}</p>
-          <a className="button" href="https://www.bidwrenx.com">
-            Need repair help? Post this job on BidWrenx
-          </a>
+          <BidWrenxBtn context="coverage_result" />
         </section>
       ))}
 
@@ -1236,8 +1241,21 @@ function App() {
                   <div className="vendorInfo">
                     <span className="vendorName">{v.name}</span>
                     <span className="vendorNote">{v.note}</span>
+                    <button
+                      className="brokenLinkBtn"
+                      onClick={() => track("broken_link_reported", { vendor: v.name })}
+                      title="Report this vendor link as broken"
+                    >
+                      report broken link
+                    </button>
                   </div>
-                  <a className="priceBtn" href={v.url(trimmedQuery)} target="_blank" rel="noreferrer">
+                  <a
+                    className="priceBtn"
+                    href={v.url(trimmedQuery)}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => track("result_clicked", { type: "vendor", label: v.name })}
+                  >
                     Check Price →
                   </a>
                 </div>
@@ -1267,14 +1285,16 @@ function App() {
           <section className="panel" id="repair">
             <h2 className="tipsSectionTitle">Repair Guides &amp; Manuals</h2>
             <p className="tipsSectionSub">Service manuals and DIY guides for your vehicle.</p>
-            <a className="lemonFeatured" href={lemonUrl} target="_blank" rel="noreferrer">
+            <a className="lemonFeatured" href={lemonUrl} target="_blank" rel="noreferrer"
+               onClick={() => track("result_clicked", { type: "repair_manual", label: "lemon_manuals" })}>
               <div className="lemonFeaturedTop">
                 <strong>Repair Manual Search</strong>
                 <span className="lemonBadge">Free guides</span>
               </div>
               <span className="lemonFeaturedNote">View service manuals and repair guides for this vehicle →</span>
             </a>
-            <a className="lemonFeatured" href={repairResources[0].url(trimmedQuery)} target="_blank" rel="noreferrer" style={{ marginTop: "10px" }}>
+            <a className="lemonFeatured" href={repairResources[0].url(trimmedQuery)} target="_blank" rel="noreferrer" style={{ marginTop: "10px" }}
+               onClick={() => track("result_clicked", { type: "repair_guide", label: repairResources[0].note })}>
               <div className="lemonFeaturedTop">
                 <strong>DIY Repair Guides</strong>
                 <span className="lemonBadge">{repairResources[0].note}</span>
@@ -1292,6 +1312,18 @@ function App() {
         />
       )}
     </main>
+  );
+}
+
+function BidWrenxBtn({ context }) {
+  return (
+    <a
+      className="button"
+      href="https://www.bidwrenx.com"
+      onClick={() => track("premium_email_clicked", { context })}
+    >
+      Need repair help? Post this job on BidWrenx
+    </a>
   );
 }
 

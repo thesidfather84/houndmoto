@@ -1415,3 +1415,233 @@ p {
     text-align: center;
   }
 }
+
+/* ── Broken link report button (additive, inside vendorInfo) ─────────────── */
+.brokenLinkBtn {
+  background: none;
+  border: none;
+  color: #334155;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 0;
+  text-align: left;
+  line-height: 1;
+  font-family: inherit;
+}
+.brokenLinkBtn:hover {
+  color: #64748b;
+  text-decoration: underline;
+}
+
+/* ── Admin Dashboard ──────────────────────────────────────────────────────── */
+.adminDash {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 16px 80px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f8fafc;
+}
+
+.adminHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.adminBrand {
+  color: #facc15;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.adminHeaderSub {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.adminActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.adminBtn {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.adminBtn:hover { border-color: #64748b; color: #f8fafc; }
+.adminBtnMuted { color: #475569; }
+.adminBtnDanger { background: #450a0a; border-color: #991b1b; color: #fca5a5; }
+.adminBtnDanger:hover { background: #7f1d1d; }
+.adminBtnCancel { color: #94a3b8; }
+
+.adminStatRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.adminStat {
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+.adminStat--warn { border-color: #92400e40; background: #1c0f07; }
+.adminStat--good { border-color: #14532d40; background: #071a10; }
+
+.adminStatVal {
+  font-size: 32px;
+  font-weight: 900;
+  color: #facc15;
+  line-height: 1;
+}
+.adminStat--warn .adminStatVal { color: #f97316; }
+.adminStat--good .adminStatVal { color: #4ade80; }
+
+.adminStatLbl {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 8px;
+}
+
+.adminGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.adminSection {
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.adminSectionTitle {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 14px;
+}
+
+.adminTableWrap { overflow-x: auto; }
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.adminTh {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.adminTr:hover { background: #0f172a; }
+
+.adminTd {
+  padding: 7px 8px;
+  color: #cbd5e1;
+  border-bottom: 1px solid #0f172a;
+  font-size: 13px;
+}
+
+.adminTdNum {
+  font-weight: 700;
+  color: #facc15;
+  text-align: right;
+}
+
+.adminEventList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.adminEventRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.adminEventField {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.adminEventKey {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+.adminEventVal {
+  color: #cbd5e1;
+  word-break: break-word;
+}
+
+.adminEmpty {
+  color: #475569;
+  font-size: 13px;
+  margin: 0;
+  font-style: italic;
+}
+
+.adminFootnote {
+  color: #334155;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 32px;
+  line-height: 1.6;
+}
+
+.adminFootnote code {
+  background: #1e293b;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12px;
+  color: #facc15;
+}
+
+@media (max-width: 600px) {
+  .adminGrid {
+    grid-template-columns: 1fr;
+  }
+  .adminStatRow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

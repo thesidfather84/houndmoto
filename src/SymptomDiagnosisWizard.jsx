@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CATEGORIES, TREES } from "./diagnosisWizardData";
+import { track } from "./analytics";
 
 export function SymptomDiagnosisWizard({ onClose }) {
   const [step, setStep] = useState("category");
@@ -13,6 +14,7 @@ export function SymptomDiagnosisWizard({ onClose }) {
   const node = tree && nodeId && tree.nodes[nodeId] ? tree.nodes[nodeId] : null;
 
   function selectCategory(cat) {
+    track("symptom_selected", { category: cat.label });
     setCategory(cat);
     setStep("vehicle");
   }
@@ -28,7 +30,9 @@ export function SymptomDiagnosisWizard({ onClose }) {
     const next = opt.next;
     setHistory((h) => [...h, nodeId]);
     if (tree.results[next]) {
-      setResult(tree.results[next]);
+      const res = tree.results[next];
+      track("symptom_selected", { action: "result", category: category?.label, result: res.title });
+      setResult(res);
       setStep("result");
     } else {
       setNodeId(next);
