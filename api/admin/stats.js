@@ -4,11 +4,13 @@ import { sql } from "@vercel/postgres";
 export function verifyToken(token) {
   const secret = process.env.ADMIN_SECRET;
   if (!secret || !token) return false;
-  const [payload, sig] = String(token).split(".");
-  if (!payload || !sig) return false;
-  const expected = crypto.createHmac("sha256", secret).update(payload).digest("base64url");
-  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return false;
   try {
+    const [payload, sig] = String(token).split(".");
+    if (!payload || !sig) return false;
+    const expected = crypto.createHmac("sha256", secret).update(payload).digest("base64url");
+    // timingSafeEqual throws if buffers differ in length — guard first
+    if (sig.length !== expected.length) return false;
+    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return false;
     const { exp } = JSON.parse(Buffer.from(payload, "base64url").toString());
     return Date.now() < exp;
   } catch (_) {
@@ -21,6 +23,13 @@ export default async function handler(req, res) {
 
   const token = req.headers["authorization"]?.replace("Bearer ", "");
   if (!verifyToken(token)) return res.status(401).json({ error: "Unauthorized" });
+
+  if (!process.env.POSTGRES_URL) {
+    return res.status(503).json({
+      error: "Database not connected",
+      detail: "POSTGRES_URL is not set. In your Vercel dashboard: Storage → Create Database → Postgres → link to this project. Then run db/schema.sql in the Vercel Postgres query console. Also confirm ADMIN_PIN and ADMIN_SECRET are set under Project Settings → Environment Variables.",
+    });
+  }
 
   try {
     const [overview, daily, vehicles, symptoms, manuals, referrers, devices, errors, failedSearches, brokenLinks] =
@@ -105,7 +114,7 @@ export default async function handler(req, res) {
           SELECT data->>'query' AS query, COUNT(*) AS count
           FROM analytics_events
           WHERE event = 'search_submitted'
-            AND (data->>'resultCount')::int = 0
+            AND data->>'resultCount' = '0'
           GROUP BY data->>'query'
           ORDER BY count DESC
           LIMIT 20

@@ -159,7 +159,12 @@ export function AdminConsole() {
     try {
       const res = await fetch("/api/admin/stats", { headers: { Authorization: `Bearer ${t}` } });
       if (res.status === 401) { clearToken(); setToken(null); return; }
-      if (!res.ok) { setError(`Server error ${res.status}`); return; }
+      if (!res.ok) {
+        let msg = `Server error ${res.status}`;
+        try { const j = await res.json(); msg = j.detail || j.error || msg; } catch (_) {}
+        setError(msg);
+        return;
+      }
       setStats(await res.json());
     } catch (err) {
       setError("Could not load stats — check API deployment.");
@@ -196,7 +201,22 @@ export function AdminConsole() {
         </div>
       </div>
 
-      {error && <div style={styles.errorBanner}>{error}</div>}
+      {error && (
+        <div style={styles.errorBanner}>
+          <strong>Error:</strong> {error}
+          {(error.includes("POSTGRES_URL") || error.includes("Database not connected") || error.includes("does not exist")) && (
+            <div style={styles.setupSteps}>
+              <strong>Setup required:</strong>
+              <ol style={{ margin: "6px 0 0", paddingLeft: "20px", lineHeight: "1.7" }}>
+                <li>Vercel dashboard → <strong>Storage</strong> → <strong>Create Database</strong> → Postgres → link to this project</li>
+                <li>Open the Vercel Postgres <strong>Query</strong> tab and paste + run <code>db/schema.sql</code></li>
+                <li>Project Settings → <strong>Environment Variables</strong> → add <code>ADMIN_PIN</code> and <code>ADMIN_SECRET</code></li>
+                <li>Redeploy (push a commit or trigger manually in Vercel)</li>
+              </ol>
+            </div>
+          )}
+        </div>
+      )}
 
       {!stats && !loading && !error && (
         <div style={styles.emptyState}>
@@ -359,7 +379,8 @@ const styles = {
   headerActions: { display: "flex", gap: "8px" },
   refreshBtn: { background: C.border, color: C.text, border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontSize: "13px" },
   logoutBtn: { background: "transparent", color: C.muted, border: `1px solid ${C.border}`, borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontSize: "13px" },
-  errorBanner: { background: "#450a0a", color: C.red, padding: "12px 24px", fontSize: "14px" },
+  errorBanner: { background: "#450a0a", color: C.red, padding: "12px 24px", fontSize: "14px", lineHeight: "1.6" },
+  setupSteps: { marginTop: "10px", background: "#1c0505", border: "1px solid #7f1d1d", borderRadius: "6px", padding: "10px 14px", fontSize: "13px", color: "#fca5a5" },
   emptyState: { padding: "60px 24px", textAlign: "center", color: C.muted },
   section: { padding: "24px", borderBottom: `1px solid ${C.border}` },
   sectionTitle: { color: C.text, fontSize: "16px", fontWeight: 700, margin: "0 0 16px" },
