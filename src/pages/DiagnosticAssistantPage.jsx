@@ -1,104 +1,321 @@
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Navbar } from "../components/Navbar";
+import { diagnose } from "../services/diagnosticService";
 import { track } from "../analytics";
 
 function setMeta(title, description) {
   document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
+  const q = (sel) => document.querySelector(sel);
+  q('meta[name="description"]')?.setAttribute("content", description);
+  q('meta[property="og:title"]')?.setAttribute("content", title);
+  q('meta[property="og:description"]')?.setAttribute("content", description);
 }
 
+const QUICK_SYMPTOMS = [
+  "Rough idle when cold",
+  "Check engine light on",
+  "Engine won't start",
+  "Overheating",
+  "Transmission slipping",
+  "Engine knocking sound",
+  "Brakes grinding",
+  "Stalling at idle",
+];
+
 export default function DiagnosticAssistantPage() {
+  const [year,    setYear]    = useState("");
+  const [make,    setMake]    = useState("");
+  const [model,   setModel]   = useState("");
+  const [engine,  setEngine]  = useState("");
+  const [problem, setProblem] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result,  setResult]  = useState(null);
+  const [error,   setError]   = useState("");
+  const problemRef = useRef(null);
+  const resultRef  = useRef(null);
+
   useEffect(() => {
     setMeta(
-      "AI Diagnostic Assistant — Smart Vehicle Troubleshooting | HoundMoto",
-      "HoundMoto's Diagnostic Assistant will help you diagnose vehicle problems by asking follow-up questions like an experienced mechanic. Coming soon."
+      "AI Diagnostic Assistant — Vehicle Troubleshooting | HoundMoto",
+      "Describe your vehicle symptoms and get ranked likely causes, first checks, and repair guidance. Free — no login required."
     );
     track("page_view", { page: "diagnostic-assistant" });
     return () => { document.title = "HoundMoto — Auto Specs Search"; };
   }, []);
 
+  // Detect if input is a DTC code vs a symptom description
+  function detectType(text) {
+    if (/^[PBCU]\d{4}$/i.test(text.trim())) return "dtc";
+    return "symptom";
+  }
+
+  async function handleSubmit(e) {
+    e?.preventDefault();
+    const trimmed = problem.trim();
+    if (!trimmed) {
+      setError("Describe your symptoms or enter a DTC code like P0300.");
+      problemRef.current?.focus();
+      return;
+    }
+    setError("");
+    setLoading(true);
+    setResult(null);
+
+    const type = detectType(trimmed);
+    const vehicle = (year || make || model || engine)
+      ? { year: year.trim(), make: make.trim(), model: model.trim(), engine: engine.trim() }
+      : null;
+
+    const context =
+      type === "dtc"
+        ? { dtcCode: trimmed.toUpperCase(), vehicle }
+        : { symptoms: trimmed, vehicle };
+
+    try {
+      const res = await diagnose(type, context);
+      setResult(res);
+      track("diagnostic_request", { type, fallback: res.fallback, source: res.source });
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleQuickSymptom(sym) {
+    setProblem(sym);
+    setResult(null);
+    setError("");
+    setTimeout(() => problemRef.current?.focus(), 50);
+  }
+
   return (
-    <div className="comingSoonPage">
-      <header className="csNavbar">
-        <Link to="/" className="csNavBrand">HoundMoto</Link>
-        <nav className="csNavLinks">
-          <Link to="/" className="csNavLink">Search</Link>
-          <Link to="/dtc/p0300" className="csNavLink">DTC Codes</Link>
-          <Link to="/right-to-repair" className="csNavLink">Right to Repair</Link>
+    <div className="diagPage">
+      <Navbar />
+
+      <div className="diagContainer">
+        <nav className="dtcBreadcrumb">
+          <Link to="/" className="dtcBreadLink">HoundMoto</Link>
+          <span className="dtcBreadSep">›</span>
+          <span>Diagnostic Assistant</span>
         </nav>
-      </header>
 
-      <div className="csContainer">
-        <div className="csIcon">🔬</div>
-        <h1 className="csTitle">AI Diagnostic Assistant</h1>
-        <p className="csSubtitle">Coming Soon</p>
-
-        <p className="csDesc">
-          HoundMoto's Diagnostic Assistant will ask follow-up questions like an experienced mechanic —
-          helping you narrow down vehicle problems, rank likely causes, and decide on next steps.
+        <h1 className="diagTitle">Diagnostic Assistant</h1>
+        <p className="diagSub">
+          Describe your symptoms or enter a DTC code. Get ranked causes and diagnostic steps —
+          free, no login required.
         </p>
 
-        <div className="csFeatureList">
-          <div className="csFeature">
-            <div className="csFeatureIcon">🗣️</div>
-            <div>
-              <strong>Guided Diagnosis</strong>
-              <p>Enter your vehicle, symptoms, warning lights, or DTC codes</p>
+        <form className="diagForm" onSubmit={handleSubmit}>
+          {/* Optional vehicle context */}
+          <fieldset className="diagVehicleRow">
+            <legend className="diagFieldLabel">Vehicle (optional — improves accuracy)</legend>
+            <div className="diagVehicleInputs">
+              <input
+                className="diagInput diagInputSmall"
+                placeholder="Year"
+                maxLength={4}
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              />
+              <input
+                className="diagInput diagInputSmall"
+                placeholder="Make"
+                maxLength={30}
+                value={make}
+                onChange={(e) => setMake(e.target.value)}
+              />
+              <input
+                className="diagInput diagInputMed"
+                placeholder="Model"
+                maxLength={40}
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+              />
+              <input
+                className="diagInput diagInputMed"
+                placeholder="Engine (e.g. 5.3L V8)"
+                maxLength={30}
+                value={engine}
+                onChange={(e) => setEngine(e.target.value)}
+              />
             </div>
-          </div>
-          <div className="csFeature">
-            <div className="csFeatureIcon">🧠</div>
-            <div>
-              <strong>Smart Follow-Up Questions</strong>
-              <p>Asks the right questions to narrow down the cause — like a real mechanic would</p>
-            </div>
-          </div>
-          <div className="csFeature">
-            <div className="csFeatureIcon">📊</div>
-            <div>
-              <strong>Probability Ranking</strong>
-              <p>Ranks likely causes from most to least probable based on your answers</p>
-            </div>
-          </div>
-          <div className="csFeature">
-            <div className="csFeatureIcon">🛠️</div>
-            <div>
-              <strong>Next Steps</strong>
-              <p>Suggests specific diagnostic tests before recommending any part replacement</p>
-            </div>
-          </div>
-          <div className="csFeature">
-            <div className="csFeatureIcon">📸</div>
-            <div>
-              <strong>Photo Support</strong>
-              <p>Upload photos of warning lights, fluid leaks, or damage for better guidance</p>
-            </div>
-          </div>
-        </div>
+          </fieldset>
 
-        <div className="csFreeNote">
-          No paywall. No login required.
-        </div>
+          {/* Quick symptom chips */}
+          <div className="diagQuickLabel">Quick select or type below:</div>
+          <div className="diagQuickChips">
+            {QUICK_SYMPTOMS.map((s) => (
+              <button
+                type="button"
+                key={s}
+                className={`diagChip${problem === s ? " diagChipActive" : ""}`}
+                onClick={() => handleQuickSymptom(s)}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
 
-        <p className="csDesc" style={{ marginTop: "16px" }}>
-          While the full assistant is being built, use HoundMoto's existing{" "}
-          <Link to="/" className="csInlineLink">symptom diagnosis wizard</Link>{" "}
-          on the search page for guided troubleshooting today.
-        </p>
+          {/* Main problem input */}
+          <label className="diagFieldLabel" htmlFor="diagProblem">
+            Describe the problem or enter a DTC code
+          </label>
+          <textarea
+            id="diagProblem"
+            ref={problemRef}
+            className="diagTextarea"
+            placeholder="e.g. Rough idle when cold, check engine light, P0420, engine knocking, brakes grinding..."
+            rows={4}
+            maxLength={600}
+            value={problem}
+            onChange={(e) => { setProblem(e.target.value); setError(""); }}
+          />
+          {error && <div className="diagError">{error}</div>}
 
-        <Link to="/" className="csActionBtn">Try Symptom Diagnosis Now →</Link>
+          <button className="diagSubmitBtn" type="submit" disabled={loading}>
+            {loading ? "Diagnosing…" : "Diagnose"}
+          </button>
+        </form>
+
+        {/* Loading */}
+        {loading && (
+          <div className="diagLoading">
+            <span className="diagLoadingSpinner" />
+            Analyzing symptoms…
+          </div>
+        )}
+
+        {/* Result */}
+        {result && !loading && (
+          <div className="diagResult" ref={resultRef}>
+            <SourceBadge source={result.source} fallback={result.fallback} />
+
+            {result.urgency && result.urgency !== "unknown" && (
+              <UrgencyBadge urgency={result.urgency} />
+            )}
+
+            {result.safetyNote && (
+              <div className="diagSafetyNote">
+                <span className="diagSafetyIcon">⚠️</span>
+                {result.safetyNote}
+              </div>
+            )}
+
+            {result.system && result.system !== "Unknown" && result.system !== "General" && (
+              <div className="diagSystem">
+                <span className="diagSystemLabel">System: </span>{result.system}
+              </div>
+            )}
+
+            <div className="diagResponseText">
+              <FormattedText text={result.text} />
+            </div>
+
+            {/* Always show supplemental links regardless of AI status */}
+            <div className="diagToolLinks">
+              <Link to={result.dtcLink || "/dtc"} className="diagToolLink diagToolLinkDtc">
+                DTC Code Lookup →
+              </Link>
+              <Link to={result.recallLink || "/vin-recall-check"} className="diagToolLink diagToolLinkRecall">
+                Check Safety Recalls →
+              </Link>
+            </div>
+
+            <div className="diagDisclaimer">
+              This is general automotive guidance, not a definitive diagnosis. Always verify before
+              purchasing parts. For safety-critical systems — brakes, steering, airbags — consult
+              a qualified mechanic.
+            </div>
+
+            <button
+              className="diagNewBtn"
+              onClick={() => { setResult(null); setProblem(""); setError(""); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            >
+              ← New Question
+            </button>
+          </div>
+        )}
       </div>
 
-      <footer className="csFooter">
-        <nav className="csFooterLinks">
-          <Link to="/terms" className="csFooterLink">Terms</Link>
-          <Link to="/privacy" className="csFooterLink">Privacy</Link>
-          <Link to="/disclaimer" className="csFooterLink">Disclaimer</Link>
-          <Link to="/contact" className="csFooterLink">Contact</Link>
-        </nav>
-        <div className="csFooterCopy">© {new Date().getFullYear()} HoundMoto. All Rights Reserved.</div>
-      </footer>
+      <DiagFooter />
     </div>
+  );
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function SourceBadge({ source, fallback }) {
+  if (fallback) {
+    return (
+      <div className="diagSourceBadge diagSourceRules">
+        Rules-based guidance (AI not configured)
+      </div>
+    );
+  }
+  return (
+    <div className="diagSourceBadge diagSourceAI">
+      AI-assisted diagnosis
+    </div>
+  );
+}
+
+function UrgencyBadge({ urgency }) {
+  const config = {
+    high:     { label: "High Urgency",    cls: "diagUrgencyHigh"     },
+    moderate: { label: "Moderate Urgency", cls: "diagUrgencyModerate" },
+    low:      { label: "Low Urgency",     cls: "diagUrgencyLow"      },
+  };
+  const c = config[urgency];
+  if (!c) return null;
+  return <div className={`diagUrgency ${c.cls}`}>{c.label}</div>;
+}
+
+// Converts **bold** and bullet points in plain text to styled elements
+function FormattedText({ text }) {
+  if (!text) return null;
+  const lines = text.split("\n");
+  return (
+    <div className="diagFormattedText">
+      {lines.map((line, i) => {
+        if (!line.trim()) return <br key={i} />;
+        // Bullet points
+        if (line.trimStart().startsWith("•")) {
+          return (
+            <div key={i} className="diagBullet">
+              {renderInline(line.replace(/^[\s•]+/, ""))}
+            </div>
+          );
+        }
+        // Headings (lines ending in :)
+        if (line.trimStart().startsWith("**") && line.includes(":**")) {
+          return <div key={i} className="diagHeading">{renderInline(line)}</div>;
+        }
+        return <p key={i} className="diagPara">{renderInline(line)}</p>;
+      })}
+    </div>
+  );
+}
+
+// Renders **bold** markers inline
+function renderInline(text) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+  );
+}
+
+function DiagFooter() {
+  return (
+    <footer className="dtcFooter">
+      <nav className="dtcFooterLinks">
+        <Link to="/terms"           className="dtcFooterLink">Terms</Link>
+        <Link to="/privacy"         className="dtcFooterLink">Privacy</Link>
+        <Link to="/disclaimer"      className="dtcFooterLink">Disclaimer</Link>
+        <Link to="/contact"         className="dtcFooterLink">Contact</Link>
+        <Link to="/right-to-repair" className="dtcFooterLink">Right to Repair</Link>
+      </nav>
+      <div className="dtcFooterCopy">© {new Date().getFullYear()} HoundMoto. All Rights Reserved.</div>
+    </footer>
   );
 }
