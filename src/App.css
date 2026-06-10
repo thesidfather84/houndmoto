@@ -1822,31 +1822,162 @@ p {
 }
 
 
-/* ── Visitor counter footer ───────────────────────────────────────────────── */
-.visitorFooter {
+/* ── Site Footer ──────────────────────────────────────────────────────────── */
+.siteFooter {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 20px 16px 28px;
-  margin-top: 32px;
+  gap: 12px;
+  padding: 28px 16px 36px;
+  margin-top: 40px;
   border-top: 1px solid #1e293b;
   font-size: 12px;
   color: #475569;
-  flex-wrap: wrap;
 }
 
-.visitorCount {
+.footerLinks {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footerLink {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.15s;
+}
+.footerLink:hover { color: #facc15; }
+
+.footerVisitor {
   background: #0f172a;
   border: 1px solid #1e293b;
   border-radius: 20px;
-  padding: 4px 14px;
+  padding: 4px 16px;
   color: #facc15;
-  font-weight: 600;
   font-size: 13px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+}
+.footerVisitor strong { font-weight: 700; }
+
+.footerCopy {
+  color: #334155;
+  font-size: 12px;
 }
 
-.visitorNote {
+/* ── Legal Pages ──────────────────────────────────────────────────────────── */
+.legalPage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+.legalTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 24px;
+  border-bottom: 1px solid #1e293b;
+  margin-bottom: 32px;
+}
+
+.legalBody {
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.legalTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.legalDate {
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.legalBody h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 28px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.legalBody p { margin: 0 0 14px; color: #94a3b8; font-size: 14px; }
+.legalBody ul { margin: 0 0 14px 20px; }
+.legalBody li { margin-bottom: 6px; color: #94a3b8; font-size: 14px; }
+
+.legalLink { color: #facc15; text-decoration: none; }
+.legalLink:hover { text-decoration: underline; }
+
+.legalNotice {
+  background: #1e293b;
+  border: 1px solid #f59e0b;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 0 0 28px;
+}
+
+.legalNoticeTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.legalNotice p { margin: 0; color: #cbd5e1; font-size: 14px; }
+
+.legalContactNote {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0 24px;
+}
+
+.legalContactNote strong { color: #f1f5f9; display: block; margin-bottom: 8px; }
+
+.legalFootnote {
+  font-size: 12px;
   color: #334155;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #1e293b;
+  text-align: center;
+}
+
+/* ── Probability Bar ──────────────────────────────────────────────────────── */
+.wzProbWrap { margin: 4px 0 16px; }
+.wzProbLabel { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+.wzProbLabel strong { color: #f1f5f9; }
+.wzProbTrack {
+  height: 8px;
+  background: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wzProbFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* ── Related Problems Tags ────────────────────────────────────────────────── */
+.wzRelatedBox { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; }
+.wzRelatedList { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.wzRelatedTag {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: #94a3b8;
+  cursor: default;
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CATEGORIES, TREES } from "./diagnosisWizardData";
+import { CATEGORIES, TREES, RELATED_PROBLEMS } from "./diagnosisWizardData";
 import { track } from "./analytics";
 
 export function SymptomDiagnosisWizard({ onClose }) {
@@ -155,7 +155,7 @@ export function SymptomDiagnosisWizard({ onClose }) {
             <div className="wzResult">
               <div className="wzResultTitle">{result.title}</div>
               {result.probability && !result.probability.includes("required") && (
-                <div className="wzProbability">Likelihood: {result.probability}</div>
+                <ProbabilityBar probability={result.probability} />
               )}
               <p className="wzResultWhy">{result.why}</p>
 
@@ -212,6 +212,23 @@ export function SymptomDiagnosisWizard({ onClose }) {
                 repairs on brakes, suspension, fuel, electrical, or any safety-critical system.
               </p>
 
+              {/* Related problems from result-level or category-level data */}
+              {(() => {
+                const related = result.relatedProblems ||
+                  (category?.id ? RELATED_PROBLEMS[category.id] : null);
+                if (!related?.length) return null;
+                return (
+                  <div className="wzSection wzRelatedBox">
+                    <div className="wzSectionTitle">🔗 Related Problems to Investigate</div>
+                    <div className="wzRelatedList">
+                      {related.map((item) => (
+                        <span key={item} className="wzRelatedTag">{item}</span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
               <div className="wzResultActions">
                 <button className="wzRestartBtn" onClick={restart}>Start Over</button>
                 <button className="wzNavBtn" onClick={goBack}>← Back</button>
@@ -222,5 +239,26 @@ export function SymptomDiagnosisWizard({ onClose }) {
 
       </div>
     </main>
+  );
+}
+
+const PROB_MAP = {
+  "very high": 92, "high": 75, "medium to high": 62,
+  "medium": 50, "low to medium": 35, "low": 20,
+};
+
+function ProbabilityBar({ probability }) {
+  const label = probability.toLowerCase();
+  const pct = PROB_MAP[label] ?? 60;
+  return (
+    <div className="wzProbWrap">
+      <div className="wzProbLabel">Likelihood: <strong>{probability}</strong></div>
+      <div className="wzProbTrack">
+        <div
+          className="wzProbFill"
+          style={{ width: `${pct}%`, background: pct >= 75 ? "#f59e0b" : pct >= 50 ? "#3b82f6" : "#64748b" }}
+        />
+      </div>
+    </div>
   );
 }

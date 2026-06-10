@@ -9,6 +9,7 @@ import { troubleCodes } from "./dtcCodes";
 import { vehicleCoverage } from "./vehicleCoverageData";
 import { matchDirectory } from "./vehicleDirectory";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
+import { TermsPage, PrivacyPage, DisclaimerPage, ContactPage } from "./LegalPages";
 import { lazy, Suspense } from "react";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
@@ -744,12 +745,30 @@ function looksLikeVehicleQuery(query) {
     /\b(ford|chevy|chevrolet|toyota|honda|dodge|ram|jeep|nissan|bmw|hyundai|subaru|kia|volkswagen|vw|mazda|mitsubishi|gmc|buick|cadillac|lincoln|mercury|pontiac|oldsmobile|saturn|chrysler|acura|lexus|infiniti|volvo|audi|mercedes|benz|porsche|tesla)\b/i.test(query);
 }
 
+const LEGAL_PAGES = new Set(["terms", "privacy", "disclaimer", "contact"]);
+function hashPage() {
+  const h = window.location.hash.replace("#", "").toLowerCase();
+  return LEGAL_PAGES.has(h) ? h : null;
+}
+
 function App() {
+  const [page, setPage] = useState(hashPage);
   const [query, setQuery] = useState("");
   const [tips, setTips] = useState([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
+
+  useEffect(() => {
+    function onHashChange() { setPage(hashPage()); }
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  function navigateTo(p) {
+    window.location.hash = p || "";
+    setPage(p || null);
+  }
 
   // VIN decoder state
   const [vinResult, setVinResult] = useState(null);
@@ -900,6 +919,11 @@ function App() {
     for (let y = 2026; y >= 1980; y--) a.push(String(y));
     return a;
   }, []);
+
+  if (page === "terms")      return <TermsPage      onClose={() => navigateTo("")} />;
+  if (page === "privacy")    return <PrivacyPage    onClose={() => navigateTo("")} />;
+  if (page === "disclaimer") return <DisclaimerPage onClose={() => navigateTo("")} />;
+  if (page === "contact")    return <ContactPage    onClose={() => navigateTo("")} />;
 
   if (showWizard) {
     return <SymptomDiagnosisWizard onClose={() => setShowWizard(false)} />;
@@ -1306,7 +1330,7 @@ function App() {
         />
       )}
 
-      <VisitorCounter />
+      <SiteFooter />
     </main>
   );
 }
@@ -1396,7 +1420,7 @@ function NoResultsPanel({ query }) {
   );
 }
 
-function VisitorCounter() {
+function SiteFooter() {
   const [count, setCount] = useState(null);
 
   useEffect(() => {
@@ -1407,13 +1431,19 @@ function VisitorCounter() {
   }, []);
 
   return (
-    <footer className="visitorFooter">
-      <span className="visitorCount">
-        {count != null
-          ? `${count.toLocaleString()} visits`
-          : ""}
-      </span>
-      <span className="visitorNote">HoundMoto · Free auto specs search</span>
+    <footer className="siteFooter">
+      <nav className="footerLinks">
+        <a href="#terms"       className="footerLink">Terms &amp; Conditions</a>
+        <a href="#privacy"     className="footerLink">Privacy Policy</a>
+        <a href="#disclaimer"  className="footerLink">Disclaimer</a>
+        <a href="#contact"     className="footerLink">Contact</a>
+      </nav>
+      {count != null && (
+        <div className="footerVisitor">
+          Total Visits: <strong>{count.toLocaleString()}</strong>
+        </div>
+      )}
+      <div className="footerCopy">© HoundMoto. All Rights Reserved.</div>
     </footer>
   );
 }
