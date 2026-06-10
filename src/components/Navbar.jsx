@@ -10,6 +10,7 @@ export function Navbar() {
     { to: "/dtc", label: "DTC Lookup" },
     { to: "/vin-recall-check", label: "Recall Check" },
     { to: "/diagnostic-assistant", label: "Diagnostic Assistant" },
+    { to: "/obd2-scan", label: "OBD2 Scan" },
     { to: "/parts/search", label: "Parts Hunter" },
     { to: "/right-to-repair", label: "Right to Repair" },
   ];

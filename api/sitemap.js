@@ -22,6 +22,7 @@ const STATIC_PAGES = [
   { path: "/right-to-repair", priority: "0.8", changefreq: "monthly" },
   { path: "/parts/search", priority: "0.7", changefreq: "monthly" },
   { path: "/diagnostic-assistant", priority: "0.7", changefreq: "monthly" },
+  { path: "/obd2-scan", priority: "0.7", changefreq: "monthly" },
   { path: "/terms", priority: "0.3", changefreq: "yearly" },
   { path: "/privacy", priority: "0.3", changefreq: "yearly" },
   { path: "/disclaimer", priority: "0.3", changefreq: "yearly" },
