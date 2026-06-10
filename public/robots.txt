@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# DTC code pages are free and indexable
+Allow: /dtc/
+
+# Key pages
+Allow: /right-to-repair
+Allow: /parts/search
+Allow: /diagnostic-assistant
+Allow: /vehicle/
+
+# Disallow admin
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://www.houndmoto.com/api/sitemap

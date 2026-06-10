@@ -1,6 +1,8 @@
 // HoundMoto Legal Pages — Terms, Privacy, Disclaimer, Contact
 // No personal address, ownership details, or identifying info exposed.
 
+import { Link } from "react-router-dom";
+
 const YEAR = new Date().getFullYear();
 
 function LegalPage({ title, onClose, children }) {
@@ -14,6 +16,12 @@ function LegalPage({ title, onClose, children }) {
         <div className="legalBody">
           <h1 className="legalTitle">{title}</h1>
           {children}
+          <nav style={{ marginTop: "24px", display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            <Link to="/terms" className="legalLink">Terms</Link>
+            <Link to="/privacy" className="legalLink">Privacy</Link>
+            <Link to="/disclaimer" className="legalLink">Disclaimer</Link>
+            <Link to="/contact" className="legalLink">Contact</Link>
+          </nav>
           <p className="legalFootnote">© {YEAR} HoundMoto. All Rights Reserved.</p>
         </div>
       </div>
@@ -184,7 +192,7 @@ export function PrivacyPage({ onClose }) {
 
       <h2>Contact</h2>
       <p>
-        For privacy questions, please use the <a href="#contact" className="legalLink">Contact page</a>.
+        For privacy questions, please use the <Link to="/contact" className="legalLink">Contact page</Link>.
       </p>
     </LegalPage>
   );

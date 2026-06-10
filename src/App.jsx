@@ -1,4 +1,5 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import "./App.css";
 import { track } from "./analytics";
 import { findManualRefsForVehicle, buildManualSearchLinks, MANUAL_ATTRIBUTION } from "./manualRefsData";
@@ -9,8 +10,8 @@ import { troubleCodes } from "./dtcCodes";
 import { vehicleCoverage } from "./vehicleCoverageData";
 import { matchDirectory } from "./vehicleDirectory";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
-import { TermsPage, PrivacyPage, DisclaimerPage, ContactPage } from "./LegalPages";
-import { lazy, Suspense } from "react";
+import { Navbar } from "./components/Navbar";
+import { RightToRepairBanner } from "./components/RightToRepairBanner";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
@@ -745,30 +746,12 @@ function looksLikeVehicleQuery(query) {
     /\b(ford|chevy|chevrolet|toyota|honda|dodge|ram|jeep|nissan|bmw|hyundai|subaru|kia|volkswagen|vw|mazda|mitsubishi|gmc|buick|cadillac|lincoln|mercury|pontiac|oldsmobile|saturn|chrysler|acura|lexus|infiniti|volvo|audi|mercedes|benz|porsche|tesla)\b/i.test(query);
 }
 
-const LEGAL_PAGES = new Set(["terms", "privacy", "disclaimer", "contact"]);
-function hashPage() {
-  const h = window.location.hash.replace("#", "").toLowerCase();
-  return LEGAL_PAGES.has(h) ? h : null;
-}
-
 function App() {
-  const [page, setPage] = useState(hashPage);
   const [query, setQuery] = useState("");
   const [tips, setTips] = useState([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
-
-  useEffect(() => {
-    function onHashChange() { setPage(hashPage()); }
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-
-  function navigateTo(p) {
-    window.location.hash = p || "";
-    setPage(p || null);
-  }
 
   // VIN decoder state
   const [vinResult, setVinResult] = useState(null);
@@ -920,11 +903,6 @@ function App() {
     return a;
   }, []);
 
-  if (page === "terms")      return <TermsPage      onClose={() => navigateTo("")} />;
-  if (page === "privacy")    return <PrivacyPage    onClose={() => navigateTo("")} />;
-  if (page === "disclaimer") return <DisclaimerPage onClose={() => navigateTo("")} />;
-  if (page === "contact")    return <ContactPage    onClose={() => navigateTo("")} />;
-
   if (showWizard) {
     return <SymptomDiagnosisWizard onClose={() => setShowWizard(false)} />;
   }
@@ -939,6 +917,7 @@ function App() {
 
   return (
     <main className="app">
+      <Navbar />
       <section className="hero">
         <div className="brand">HoundMoto</div>
         <h1>One search bar for auto specs, fluids, tires, parts, and trouble codes.</h1>
@@ -1330,6 +1309,7 @@ function App() {
         />
       )}
 
+      <RightToRepairBanner />
       <SiteFooter />
     </main>
   );
@@ -1433,10 +1413,11 @@ function SiteFooter() {
   return (
     <footer className="siteFooter">
       <nav className="footerLinks">
-        <a href="#terms"       className="footerLink">Terms &amp; Conditions</a>
-        <a href="#privacy"     className="footerLink">Privacy Policy</a>
-        <a href="#disclaimer"  className="footerLink">Disclaimer</a>
-        <a href="#contact"     className="footerLink">Contact</a>
+        <Link to="/terms"        className="footerLink">Terms &amp; Conditions</Link>
+        <Link to="/privacy"      className="footerLink">Privacy Policy</Link>
+        <Link to="/disclaimer"   className="footerLink">Disclaimer</Link>
+        <Link to="/contact"      className="footerLink">Contact</Link>
+        <Link to="/right-to-repair" className="footerLink">Right to Repair</Link>
       </nav>
       {count != null && (
         <div className="footerVisitor">
