@@ -1,7 +1,40 @@
 // Dynamic sitemap generator
-// Covers homepage, legal pages, DTC pages, and key feature pages
+// Covers homepage, legal pages, DTC pages, key feature pages, and make/model pages
 
 const BASE = "https://www.houndmoto.com";
+
+const MAKE_SLUGS = [
+  "ford","chevrolet","gmc","dodge","ram","jeep","toyota","honda",
+  "nissan","hyundai","kia","subaru","mazda","volkswagen","bmw",
+  "mercedes-benz","audi","lexus","acura","infiniti","cadillac",
+  "buick","lincoln","chrysler","mitsubishi",
+];
+
+// Key model pages (make-slug/model-slug)
+const POPULAR_MODELS = [
+  "ford/f-150","ford/mustang","ford/explorer","ford/escape","ford/ranger",
+  "chevrolet/silverado-1500","chevrolet/camaro","chevrolet/equinox","chevrolet/traverse","chevrolet/impala",
+  "gmc/sierra-1500","gmc/terrain","gmc/yukon",
+  "dodge/charger","dodge/challenger","dodge/durango",
+  "ram/1500",
+  "jeep/wrangler","jeep/grand-cherokee","jeep/cherokee",
+  "toyota/camry","toyota/corolla","toyota/rav4","toyota/tacoma","toyota/4runner",
+  "honda/civic","honda/accord","honda/cr-v","honda/pilot","honda/odyssey",
+  "nissan/altima","nissan/rogue","nissan/maxima","nissan/sentra","nissan/frontier",
+  "hyundai/elantra","hyundai/sonata","hyundai/tucson","hyundai/santa-fe",
+  "kia/sportage","kia/sorento","kia/optima",
+  "subaru/outback","subaru/forester","subaru/impreza",
+  "mazda/mazda3","mazda/cx-5",
+  "volkswagen/jetta","volkswagen/tiguan",
+  "bmw/3-series","bmw/x3","bmw/x5",
+  "mercedes-benz/c-class","mercedes-benz/e-class","mercedes-benz/gle",
+  "audi/a4","audi/q5",
+  "lexus/rx-350","lexus/es-350",
+  "acura/mdx","acura/rdx",
+  "infiniti/qx60","infiniti/q50",
+  "cadillac/escalade","cadillac/xt5",
+  "mitsubishi/outlander",
+];
 
 const TOP_CODES = [
   "p0011","p0012","p0013","p0014","p0016","p0017",
@@ -49,10 +82,20 @@ export default function handler(req, res) {
     urlEntry(`/dtc/${code}`, "0.9", "monthly", today)
   );
 
+  const makeEntries = MAKE_SLUGS.map((slug) =>
+    urlEntry(`/vehicles/${slug}`, "0.8", "monthly", today)
+  );
+
+  const modelEntries = POPULAR_MODELS.map((path) =>
+    urlEntry(`/vehicles/${path}`, "0.7", "monthly", today)
+  );
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticEntries.join("\n")}
 ${dtcEntries.join("\n")}
+${makeEntries.join("\n")}
+${modelEntries.join("\n")}
 </urlset>`;
 
   res.setHeader("Content-Type", "application/xml");

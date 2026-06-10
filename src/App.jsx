@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { saveVehicleContext } from "./utils/vehicleContext";
+import { slugify } from "./utils/getVehicleCoverage";
 import "./App.css";
 import { track } from "./analytics";
 import { findManualRefsForVehicle, buildManualSearchLinks, MANUAL_ATTRIBUTION } from "./manualRefsData";
@@ -1579,10 +1580,6 @@ function VehicleActionDashboard({ vinResult, vin }) {
 
   const vehicleLabel = [y, mk, mo, tri].filter(Boolean).join(" ");
 
-  function scrollToSpecs() {
-    document.querySelector(".panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
   return (
     <section className="vaDash">
       <div className="vaDashHeader">
@@ -1607,11 +1604,14 @@ function VehicleActionDashboard({ vinResult, vin }) {
           <div className="vaCardTitle">Look Up a Trouble Code</div>
           <div className="vaCardDesc">Enter a DTC with vehicle context pre-loaded</div>
         </Link>
-        <button type="button" className="vaCard" onClick={scrollToSpecs}>
+        <Link
+          to={mk && mo ? `/vehicles/${slugify(mk)}/${slugify(mo)}` : "/"}
+          className="vaCard"
+        >
           <div className="vaCardIcon">📋</div>
           <div className="vaCardTitle">Maintenance &amp; Specs</div>
-          <div className="vaCardDesc">Fluids, tires, capacities — see below ↓</div>
-        </button>
+          <div className="vaCardDesc">Fluids, tires, capacities, and common issues</div>
+        </Link>
         <Link to="/parts/search" className="vaCard">
           <div className="vaCardIcon">🔩</div>
           <div className="vaCardTitle">Search Parts</div>

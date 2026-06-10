@@ -3880,3 +3880,309 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
   .obd2ScannerGrid { grid-template-columns: 1fr; }
   .obd2Container { padding: 20px 16px 48px; gap: 28px; }
 }
+
+/* ─── Make / Model Pages ──────────────────────────────────────────── */
+.makePage {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #e8e8e8;
+  display: flex;
+  flex-direction: column;
+}
+.makeContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.makeHero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.makeTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin: 0;
+}
+.makeSub {
+  color: #aaa;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 680px;
+}
+.makeYearBadge {
+  display: inline-block;
+  background: #1e3a5f;
+  color: #7eb8f7;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin: 0;
+  width: fit-content;
+}
+.makeBackLink {
+  color: #7eb8f7;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.makeBackLink:hover { text-decoration: underline; }
+
+/* Action row */
+.makeActionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.makeAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: #e8e8e8;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+.makeAction:hover {
+  background: #1f2d3d;
+  border-color: #4a90d9;
+  color: #fff;
+}
+.makeActionIcon { font-size: 1.1rem; }
+
+/* Two-column layout */
+.makeTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+.makeTechCol, .makeModelsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Sections */
+.makeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.makeSectionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.makeSubSectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ccc;
+  margin: 0 0 4px;
+}
+.makeList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #c0c0c0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.makeList li { color: #bbb; }
+
+/* Model grid */
+.makeModelGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.makeModelCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #141414;
+  border: 1px solid #252525;
+  border-radius: 8px;
+  padding: 9px 12px;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.makeModelCard:hover {
+  background: #1a2a3a;
+  border-color: #4a90d9;
+}
+.makeModelName {
+  font-size: 0.84rem;
+  color: #d8d8d8;
+  font-weight: 500;
+}
+.makeModelArrow {
+  color: #555;
+  font-size: 0.9rem;
+}
+.makeViewAllLink {
+  font-size: 0.84rem;
+  color: #7eb8f7;
+  text-decoration: none;
+  margin-top: 4px;
+}
+.makeViewAllLink:hover { text-decoration: underline; }
+
+/* Manual section */
+.makeManualSection { }
+.makeManualNote {
+  font-size: 0.87rem;
+  color: #aaa;
+  line-height: 1.6;
+  margin: 0;
+}
+.makeExtLink {
+  color: #7eb8f7;
+  text-decoration: none;
+}
+.makeExtLink:hover { text-decoration: underline; }
+
+/* Safety note */
+.makeSafetyNote {
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 0.84rem;
+  color: #888;
+  line-height: 1.6;
+}
+.makeSafetyNote strong { color: #bbb; }
+
+/* Generation cards (ModelPage) */
+.makeGenCard {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 20px;
+  gap: 16px;
+}
+.makeGenHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.makeGenBadge {
+  background: #1e3a5f;
+  color: #7eb8f7;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.makeGenCode {
+  background: #1a1a1a;
+  color: #aaa;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #2a2a2a;
+}
+.makeGenEngine {
+  color: #888;
+  font-size: 0.82rem;
+}
+.makeGenEstBadge {
+  background: #3a2800;
+  color: #f0a500;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.makeGenGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.makeGenItem {
+  background: #0e0e0e;
+  border: 1px solid #1e1e1e;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.makeGenItemLabel {
+  font-size: 0.72rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.makeGenItemValue {
+  font-size: 0.88rem;
+  color: #ddd;
+  font-weight: 600;
+}
+.makeGenExtra {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.makeGenExtraLabel {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+.makeGenExtraText {
+  font-size: 0.87rem;
+  color: #aaa;
+  line-height: 1.55;
+  margin: 0;
+}
+.makeGenNote {
+  font-size: 0.82rem;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Fallback note */
+.modelFallbackNote {
+  background: #1a1500;
+  border: 1px solid #3a2800;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.87rem;
+  color: #d4a843;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .makeTwoCol { grid-template-columns: 1fr; }
+  .makeModelsCol { order: -1; }
+  .makeModelGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .makeContainer { padding: 20px 16px 48px; gap: 20px; }
+  .makeTitle { font-size: 1.5rem; }
+  .makeModelGrid { grid-template-columns: 1fr 1fr; }
+  .makeGenGrid { grid-template-columns: 1fr 1fr; }
+  .makeActionRow { gap: 8px; }
+  .makeAction { padding: 8px 12px; font-size: 0.83rem; }
+}
