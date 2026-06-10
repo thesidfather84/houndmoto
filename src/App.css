@@ -3881,6 +3881,67 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
   .obd2Container { padding: 20px 16px 48px; gap: 28px; }
 }
 
+/* ─── Active Vehicle Bar ──────────────────────────────────────────── */
+.activeVehicleBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #0d1f0d;
+  border-bottom: 1px solid #1a3a1a;
+  padding: 8px 20px;
+  font-size: 0.86rem;
+  flex-wrap: wrap;
+}
+.activeVehicleLabel {
+  color: #6b9e6b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.activeVehicleName {
+  color: #c8f0c8;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.activeVehicleActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.activeVehicleChange {
+  color: #7eb8f7;
+  text-decoration: none;
+  font-size: 0.82rem;
+  padding: 3px 10px;
+  border: 1px solid #2a4a6a;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.activeVehicleChange:hover {
+  background: #1a2d40;
+}
+.activeVehicleClear {
+  background: none;
+  border: 1px solid #3a2020;
+  color: #c06060;
+  font-size: 0.82rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.activeVehicleClear:hover {
+  background: #2a1010;
+}
+@media (max-width: 600px) {
+  .activeVehicleBar { padding: 8px 14px; gap: 8px; }
+  .activeVehicleName { font-size: 0.84rem; }
+}
+
 /* ─── Make / Model Pages ──────────────────────────────────────────── */
 .makePage {
   min-height: 100vh;

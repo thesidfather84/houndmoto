@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { saveVehicleContext } from "./utils/vehicleContext";
 import { slugify } from "./utils/getVehicleCoverage";
+import { useVehicle } from "./context/VehicleContext";
 import "./App.css";
 import { track } from "./analytics";
 import { findManualRefsForVehicle, buildManualSearchLinks, MANUAL_ATTRIBUTION } from "./manualRefsData";
@@ -751,6 +751,7 @@ function looksLikeVehicleQuery(query) {
 }
 
 function App() {
+  const { setActiveVehicle } = useVehicle();
   const [query, setQuery] = useState("");
   const [tips, setTips] = useState([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
@@ -880,15 +881,17 @@ function App() {
         if (item?.ModelYear) {
           setVinResult(item);
           setDecodedVin(vin);
-          saveVehicleContext({
+          setActiveVehicle({
             vin,
-            year: item.ModelYear,
-            make: item.Make,
+            year:  item.ModelYear,
+            make:  item.Make,
             model: item.Model,
-            trim: item.Trim || "",
+            trim:  item.Trim || "",
             engine: item.DisplacementL
               ? `${parseFloat(item.DisplacementL).toFixed(1)}L`
               : "",
+            source:    "vin_decode",
+            decodedAt: new Date().toISOString(),
           });
           const decoded = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(" ");
           if (decoded) setQuery(decoded);
@@ -1617,17 +1620,6 @@ function VehicleActionDashboard({ vinResult, vin }) {
           <div className="vaCardTitle">Search Parts</div>
           <div className="vaCardDesc">OEM and aftermarket part lookup</div>
         </Link>
-        <a
-          className="vaCard"
-          href="https://www.bidwrenx.com"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => track("premium_email_clicked", { context: "vehicle_dashboard" })}
-        >
-          <div className="vaCardIcon">👨‍🔧</div>
-          <div className="vaCardTitle">Get Repair Help</div>
-          <div className="vaCardDesc">Post this job on BidWrenx</div>
-        </a>
       </div>
     </section>
   );

@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { useVehicle } from "../context/VehicleContext";
 import { diagnose } from "../services/diagnosticService";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
-import { getVehicleContext } from "../utils/vehicleContext";
 
 const QUICK_SYMPTOMS = [
   "Rough idle when cold",
@@ -19,10 +20,11 @@ const QUICK_SYMPTOMS = [
 
 export default function DiagnosticAssistantPage() {
   const [searchParams] = useSearchParams();
-  const [year,    setYear]    = useState(() => searchParams.get("year")   || getVehicleContext()?.year   || "");
-  const [make,    setMake]    = useState(() => searchParams.get("make")   || getVehicleContext()?.make   || "");
-  const [model,   setModel]   = useState(() => searchParams.get("model")  || getVehicleContext()?.model  || "");
-  const [engine,  setEngine]  = useState(() => searchParams.get("engine") || getVehicleContext()?.engine || "");
+  const { vehicle } = useVehicle();
+  const [year,    setYear]    = useState(() => searchParams.get("year")   || vehicle?.year   || "");
+  const [make,    setMake]    = useState(() => searchParams.get("make")   || vehicle?.make   || "");
+  const [model,   setModel]   = useState(() => searchParams.get("model")  || vehicle?.model  || "");
+  const [engine,  setEngine]  = useState(() => searchParams.get("engine") || vehicle?.engine || "");
   const [problem, setProblem] = useState("");
   const [loading, setLoading] = useState(false);
   const [result,  setResult]  = useState(null);
@@ -88,6 +90,7 @@ export default function DiagnosticAssistantPage() {
   return (
     <div className="diagPage">
       <Navbar />
+      <ActiveVehicleBar />
 
       <div className="diagContainer">
         <nav className="dtcBreadcrumb">

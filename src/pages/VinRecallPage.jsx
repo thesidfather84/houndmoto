@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { useVehicle } from "../context/VehicleContext";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 
@@ -8,12 +10,17 @@ const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/;
 
 export default function VinRecallPage() {
   const [searchParams] = useSearchParams();
-  const urlVin = (searchParams.get("vin") || "").toUpperCase().replace(/[IOQ\s]/g, "").slice(0, 17);
+  const { vehicle, setActiveVehicle } = useVehicle();
 
-  const [vin,        setVin]        = useState(urlVin);
+  // URL param takes precedence over context VIN
+  const urlVin = (searchParams.get("vin") || "").toUpperCase().replace(/[IOQ\s]/g, "").slice(0, 17);
+  const contextVin = vehicle?.vin || "";
+  const initialVin = urlVin || contextVin;
+
+  const [vin,        setVin]        = useState(initialVin);
   const [error,      setError]      = useState("");
   const [loading,    setLoading]    = useState(false);
-  const [vehicle,    setVehicle]    = useState(null);
+  const [recallVehicle, setRecallVehicle] = useState(null);
   const [recalls,    setRecalls]    = useState(null);
   const [fetchError, setFetchError] = useState("");
   const didAutoCheck = useRef(false);
@@ -27,11 +34,11 @@ export default function VinRecallPage() {
     return () => resetPageSEO();
   }, []);
 
-  // Auto-trigger check when VIN is passed via URL param
+  // Auto-trigger when a valid VIN is available on mount
   useEffect(() => {
-    if (urlVin && VIN_RE.test(urlVin) && !didAutoCheck.current) {
+    if (initialVin && VIN_RE.test(initialVin) && !didAutoCheck.current) {
       didAutoCheck.current = true;
-      doCheck(urlVin);
+      doCheck(initialVin);
     }
   }, []); // eslint-disable-line
 
@@ -54,7 +61,7 @@ export default function VinRecallPage() {
     setError("");
     setFetchError("");
     setLoading(true);
-    setVehicle(null);
+    setRecallVehicle(null);
     setRecalls(null);
 
     try {
@@ -74,8 +81,21 @@ export default function VinRecallPage() {
         return;
       }
 
-      setVehicle({ year, make, model });
+      const decoded = { year, make, model };
+      setRecallVehicle(decoded);
       track("vin_recall_check", { year, make, model });
+
+      // Save to shared vehicle context
+      setActiveVehicle({
+        vin: clean,
+        year,
+        make,
+        model,
+        trim:      r?.Trim      || "",
+        engine:    r?.DisplacementL ? `${parseFloat(r.DisplacementL).toFixed(1)}L` : "",
+        source:    "vin_decode",
+        decodedAt: new Date().toISOString(),
+      });
 
       const recallRes = await fetch(
         `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&modelYear=${encodeURIComponent(year)}`
@@ -101,6 +121,7 @@ export default function VinRecallPage() {
   return (
     <div className="recallPage">
       <Navbar />
+      <ActiveVehicleBar />
 
       <div className="recallContainer">
         <nav className="dtcBreadcrumb">
@@ -163,11 +184,11 @@ export default function VinRecallPage() {
         )}
 
         {/* Decoded vehicle */}
-        {vehicle && !loading && (
+        {recallVehicle && !loading && (
           <div className="recallVehicleBadge">
             <div className="recallVehicleLabel">Vehicle identified</div>
             <div className="recallVehicleName">
-              {vehicle.year} {vehicle.make} {vehicle.model}
+              {recallVehicle.year} {recallVehicle.make} {recallVehicle.model}
             </div>
           </div>
         )}
@@ -180,9 +201,9 @@ export default function VinRecallPage() {
                 <div className="recallNoneIcon">✓</div>
                 <div className="recallNoneTitle">No open recalls found</div>
                 <p className="recallNoneText">
-                  No NHTSA safety recalls were returned for the {vehicle?.year} {vehicle?.make}{" "}
-                  {vehicle?.model}. This searches by make, model, and year — recall applicability
-                  can vary by individual VIN. Verify your specific VIN at{" "}
+                  No open safety recalls were found in public NHTSA data for this vehicle.
+                  Recall applicability can vary by individual VIN even within the same
+                  make, model, and year — confirm your specific VIN at{" "}
                   <a
                     href="https://www.nhtsa.gov/vehicle-safety/recalls"
                     target="_blank"
@@ -198,7 +219,7 @@ export default function VinRecallPage() {
               <>
                 <div className="recallCount">
                   {recalls.length} safety recall{recalls.length !== 1 ? "s" : ""} found for{" "}
-                  <strong>{vehicle?.year} {vehicle?.make} {vehicle?.model}</strong>
+                  <strong>{recallVehicle?.year} {recallVehicle?.make} {recallVehicle?.model}</strong>
                 </div>
                 {recalls.map((r, i) => (
                   <RecallCard key={r.NHTSACampaignNumber || i} recall={r} />

@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { VehicleProvider } from "./context/VehicleContext";
 import App from "./App.jsx";
 import { AdminConsole } from "./AdminConsole.jsx";
 import { AdminDashboard } from "./AdminDashboard.jsx";
@@ -23,6 +24,7 @@ function LegalRoute({ Page }) {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <VehicleProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
@@ -46,5 +48,6 @@ createRoot(document.getElementById("root")).render(
         <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
+    </VehicleProvider>
   </StrictMode>
 );
