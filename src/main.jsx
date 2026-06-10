@@ -10,6 +10,7 @@ import RightToRepairPage from "./pages/RightToRepairPage.jsx";
 import VehiclePage from "./pages/VehiclePage.jsx";
 import PartsPage from "./pages/PartsPage.jsx";
 import DiagnosticAssistantPage from "./pages/DiagnosticAssistantPage.jsx";
+import VinRecallPage from "./pages/VinRecallPage.jsx";
 import { TermsPage, PrivacyPage, DisclaimerPage, ContactPage } from "./LegalPages.jsx";
 
 function LegalRoute({ Page }) {
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/parts/search" element={<PartsPage />} />
         <Route path="/parts/cross-reference/:partNum" element={<PartsPage />} />
         <Route path="/diagnostic-assistant" element={<DiagnosticAssistantPage />} />
+        <Route path="/vin-recall-check" element={<VinRecallPage />} />
         <Route path="/terms" element={<LegalRoute Page={TermsPage} />} />
         <Route path="/privacy" element={<LegalRoute Page={PrivacyPage} />} />
         <Route path="/disclaimer" element={<LegalRoute Page={DisclaimerPage} />} />

@@ -19,6 +19,7 @@ import {
   vehicleMakes, vehicleModels, vehicleEngines, partCategories,
   buildPartMatch, lemonManualsUrl, isVin, getYear,
 } from "./partsData";
+import { getEnginesForVehicle, matchEnginesByVinCode, parseVinHints } from "./data/engineData";
 
 const baseVehicleSpecs = [
   // --- Original hand-entered specs ---
@@ -766,8 +767,12 @@ function App() {
   const [vMake, setVMake] = useState("");
   const [vModel, setVModel] = useState("");
   const [vEngine, setVEngine] = useState("");
+  const [vEngineObj, setVEngineObj] = useState(null);
   const [vCategory, setVCategory] = useState("");
   const [vPart, setVPart] = useState("");
+  const [vinInput, setVinInput] = useState("");
+  const [vinHints, setVinHints] = useState(null);
+  const [engineConfirmed, setEngineConfirmed] = useState(false);
 
   useEffect(() => {
     setTips(loadTips());
@@ -807,6 +812,16 @@ function App() {
   }, [trimmedQuery, tips]);
 
   const partMatch = useMemo(() => buildPartMatch(trimmedQuery), [trimmedQuery]);
+
+  const availableEngines = useMemo(() => {
+    if (!vMake || !vModel) return null;
+    return getEnginesForVehicle(vMake, vModel, vYear);
+  }, [vMake, vModel, vYear]);
+
+  const vinMatchedEngines = useMemo(() => {
+    if (!vinHints?.engineCode || !availableEngines) return [];
+    return matchEnginesByVinCode(availableEngines, vinHints.engineCode);
+  }, [vinHints, availableEngines]);
 
   const lemonUrl = useMemo(() => {
     if (vinResult?.Make && vinResult?.ModelYear) {
@@ -893,7 +908,8 @@ function App() {
 
   function applyVehicleLookup() {
     if (!vYear || !vMake || !vModel) return;
-    setQuery([vYear, vMake, vModel, vEngine, vPart].filter(Boolean).join(" "));
+    const engineForSearch = vEngineObj ? vEngineObj.disp : vEngine;
+    setQuery([vYear, vMake, vModel, engineForSearch, vPart].filter(Boolean).join(" "));
     setShowVehicleLookup(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -987,22 +1003,77 @@ function App() {
         <section className="panel">
           <h2 className="tipsSectionTitle">Look Up a Part for Your Vehicle</h2>
           <p className="tipsSectionSub">Choose your vehicle step by step. Each choice unlocks the next.</p>
+
+          {/* Optional VIN shortcut */}
+          <div className="vinShortcutRow">
+            <div className="vinShortcutLabel">Have your VIN? Enter it to identify your exact engine:</div>
+            <div className="vinShortcutInputRow">
+              <input
+                className="vinShortcutInput"
+                placeholder="17-character VIN (e.g. 1FTEW1EP8JFB12345)"
+                maxLength={17}
+                value={vinInput}
+                spellCheck={false}
+                autoCapitalize="characters"
+                onChange={(e) => { setVinInput(e.target.value.trim().toUpperCase()); setVinHints(null); }}
+              />
+              <button
+                className="vinShortcutBtn"
+                disabled={vinInput.length !== 17}
+                onClick={() => setVinHints(parseVinHints(vinInput))}
+              >
+                Extract Engine Code
+              </button>
+            </div>
+            {vinHints && (
+              <div className="vinHintBox">
+                <strong>VIN engine code (8th digit): {vinHints.engineCode}</strong>
+                {vinHints.year ? ` · Year indicator: ${vinHints.year}` : ""}
+                {vinMatchedEngines.length === 1
+                  ? ` · Matched: ${vinMatchedEngines[0].label} — select it below`
+                  : vinMatchedEngines.length > 1
+                  ? ` · ${vinMatchedEngines.length} engines match this code — select below`
+                  : " · Select your make/model to match this engine code"}
+              </div>
+            )}
+          </div>
+
           <div className="vehicleTree">
-            <select value={vYear} onChange={(e) => { setVYear(e.target.value); setVMake(""); setVModel(""); setVEngine(""); setVCategory(""); setVPart(""); }}>
+            <select value={vYear} onChange={(e) => { setVYear(e.target.value); setVMake(""); setVModel(""); setVEngine(""); setVEngineObj(null); setVCategory(""); setVPart(""); setEngineConfirmed(false); }}>
               <option value="">1. Year</option>
               {lookupYears.map((y) => <option key={y}>{y}</option>)}
             </select>
-            <select value={vMake} onChange={(e) => { setVMake(e.target.value); setVModel(""); setVEngine(""); setVCategory(""); setVPart(""); }} disabled={!vYear}>
+            <select value={vMake} onChange={(e) => { setVMake(e.target.value); setVModel(""); setVEngine(""); setVEngineObj(null); setVCategory(""); setVPart(""); setEngineConfirmed(false); }} disabled={!vYear}>
               <option value="">2. Make</option>
               {vehicleMakes.map((m) => <option key={m}>{m}</option>)}
             </select>
-            <select value={vModel} onChange={(e) => { setVModel(e.target.value); setVEngine(""); setVCategory(""); setVPart(""); }} disabled={!vMake}>
+            <select value={vModel} onChange={(e) => { setVModel(e.target.value); setVEngine(""); setVEngineObj(null); setVCategory(""); setVPart(""); setEngineConfirmed(false); }} disabled={!vMake}>
               <option value="">3. Model</option>
               {(vehicleModels[vMake] || []).map((m) => <option key={m}>{m}</option>)}
             </select>
-            <select value={vEngine} onChange={(e) => setVEngine(e.target.value)} disabled={!vModel}>
-              <option value="">4. Engine (optional)</option>
-              {vehicleEngines.map((e) => <option key={e}>{e}</option>)}
+            <select
+              value={vEngine}
+              disabled={!vModel}
+              onChange={(e) => {
+                const label = e.target.value;
+                setVEngine(label);
+                setEngineConfirmed(false);
+                const found = (availableEngines || []).find((eng) => eng.label === label);
+                setVEngineObj(found || null);
+              }}
+            >
+              <option value="">4. Engine</option>
+              {availableEngines
+                ? availableEngines.map((eng) => {
+                    const isVinMatch = vinMatchedEngines.some((m) => m.label === eng.label);
+                    return (
+                      <option key={eng.label} value={eng.label}>
+                        {isVinMatch ? `★ ${eng.label}` : eng.label}
+                      </option>
+                    );
+                  })
+                : vehicleEngines.map((e) => <option key={e}>{e}</option>)
+              }
             </select>
             <select value={vCategory} onChange={(e) => { setVCategory(e.target.value); setVPart(""); }} disabled={!vModel}>
               <option value="">5. Part Category</option>
@@ -1013,14 +1084,66 @@ function App() {
               {(partCategories[vCategory] || []).map((p) => <option key={p}>{p}</option>)}
             </select>
           </div>
+
+          {/* Engine confirmation step */}
+          {vEngine && !engineConfirmed && (
+            <div className="engineConfirmBox">
+              <div className="engineConfirmLabel">Confirm your engine:</div>
+              <div className="engineConfirmName">{vEngine}</div>
+              {vEngineObj?.vinCode && (
+                <div className="engineConfirmDetail">VIN 8th digit: <strong>{vEngineObj.vinCode}</strong></div>
+              )}
+              {vEngineObj?.fuelType && (
+                <div className="engineConfirmDetail">Fuel type: {vEngineObj.fuelType}</div>
+              )}
+              <div className="engineConfirmActions">
+                <button className="engineConfirmBtn" onClick={() => setEngineConfirmed(true)}>
+                  Yes, this is my engine
+                </button>
+                <button className="engineConfirmSkip" onClick={() => { setVEngine(""); setVEngineObj(null); setEngineConfirmed(false); }}>
+                  Choose a different engine
+                </button>
+              </div>
+            </div>
+          )}
+
+          {engineConfirmed && (
+            <div className="engineConfirmedBadge">
+              Engine confirmed: {vEngine}
+            </div>
+          )}
+
+          {vModel && !vEngine && (
+            <div className="engineNotConfirmedNote">
+              {availableEngines
+                ? "Select your engine above for more accurate results."
+                : "Engine not confirmed — results may vary by engine code."}
+              {vinHints?.engineCode && !vEngine && ` Your VIN engine code is ${vinHints.engineCode}.`}
+            </div>
+          )}
+
           {vYear && vMake && vModel && (
             <div className="vehiclePreview">
-              <p className="note">Will search: <strong>{[vYear, vMake, vModel, vEngine, vPart].filter(Boolean).join(" ")}</strong></p>
+              <p className="note">Will search: <strong>{[vYear, vMake, vModel, vEngineObj ? vEngineObj.disp : vEngine, vPart].filter(Boolean).join(" ")}</strong></p>
               <button className="wizardEntryBtn" onClick={applyVehicleLookup}>Search This Vehicle</button>
             </div>
           )}
         </section>
       )}
+
+      {/* Safety Recall Check entry card */}
+      <Link to="/vin-recall-check" className="recallEntryLink">
+        <section className="recallEntry">
+          <div className="recallEntryText">
+            <div className="recallEntryBadge">Free Safety Tool</div>
+            <div className="recallEntryTitle">Check Safety Recalls by VIN</div>
+            <p className="recallEntrySub">
+              Enter your 17-character VIN to look up open NHTSA safety recalls — free, no login required.
+            </p>
+          </div>
+          <div className="recallEntryBtn">Check Recalls →</div>
+        </section>
+      </Link>
 
       {/* Symptom Diagnosis Wizard entry card */}
       <section className="wizardEntry">
