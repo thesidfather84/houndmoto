@@ -8,10 +8,11 @@ export default async function handler(req, res) {
     const result = await sql`
       SELECT COUNT(*) AS count FROM analytics_events WHERE event = 'page_view'
     `;
-    const count = parseInt(result.rows[0]?.count || "0", 10);
-    return res.status(200).json({ count });
+    const raw = result.rows[0]?.count;
+    const count = raw == null ? 0 : Number(raw);
+    return res.status(200).json({ count: isNaN(count) ? 0 : count });
   } catch (err) {
     console.error("[visitor-count]", err.message);
-    return res.status(200).json({ count: null });
+    return res.status(200).json({ count: 0 });
   }
 }
