@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
@@ -7,12 +7,16 @@ import { setPageSEO, resetPageSEO } from "../utils/seo";
 const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/;
 
 export default function VinRecallPage() {
-  const [vin, setVin] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [vehicle, setVehicle] = useState(null);
-  const [recalls, setRecalls] = useState(null);
+  const [searchParams] = useSearchParams();
+  const urlVin = (searchParams.get("vin") || "").toUpperCase().replace(/[IOQ\s]/g, "").slice(0, 17);
+
+  const [vin,        setVin]        = useState(urlVin);
+  const [error,      setError]      = useState("");
+  const [loading,    setLoading]    = useState(false);
+  const [vehicle,    setVehicle]    = useState(null);
+  const [recalls,    setRecalls]    = useState(null);
   const [fetchError, setFetchError] = useState("");
+  const didAutoCheck = useRef(false);
 
   useEffect(() => {
     setPageSEO({
@@ -23,14 +27,22 @@ export default function VinRecallPage() {
     return () => resetPageSEO();
   }, []);
 
+  // Auto-trigger check when VIN is passed via URL param
+  useEffect(() => {
+    if (urlVin && VIN_RE.test(urlVin) && !didAutoCheck.current) {
+      didAutoCheck.current = true;
+      doCheck(urlVin);
+    }
+  }, []); // eslint-disable-line
+
   function handleVinChange(e) {
     const val = e.target.value.toUpperCase().replace(/[IOQ\s]/g, "").slice(0, 17);
     setVin(val);
     setError("");
   }
 
-  async function handleCheck() {
-    const clean = vin.trim();
+  async function doCheck(vinStr) {
+    const clean = (vinStr || "").trim();
     if (!VIN_RE.test(clean)) {
       setError(
         clean.length !== 17
@@ -46,15 +58,14 @@ export default function VinRecallPage() {
     setRecalls(null);
 
     try {
-      // Step 1: decode VIN to get make / model / year
       const decodeRes = await fetch(
         `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${clean}?format=json`
       );
-      if (!decodeRes.ok) throw new Error("VIN decode request failed");
+      if (!decodeRes.ok) throw new Error("VIN decode failed");
       const decodeData = await decodeRes.json();
       const r = decodeData.Results?.[0];
-      const year = r?.ModelYear?.trim();
-      const make = r?.Make?.trim();
+      const year  = r?.ModelYear?.trim();
+      const make  = r?.Make?.trim();
       const model = r?.Model?.trim();
 
       if (!year || !make || !model || year === "0") {
@@ -63,22 +74,26 @@ export default function VinRecallPage() {
         return;
       }
 
-      const decoded = { year, make, model };
-      setVehicle(decoded);
+      setVehicle({ year, make, model });
       track("vin_recall_check", { year, make, model });
 
-      // Step 2: fetch recalls by make / model / year
       const recallRes = await fetch(
         `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&modelYear=${encodeURIComponent(year)}`
       );
-      if (!recallRes.ok) throw new Error("Recall lookup request failed");
+      if (!recallRes.ok) throw new Error("Recall lookup failed");
       const recallData = await recallRes.json();
       setRecalls(recallData.results || []);
     } catch {
-      setFetchError("Network error — please check your connection and try again.");
+      setFetchError(
+        "Recall data could not be reached right now. Try again later or check NHTSA directly at nhtsa.gov."
+      );
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleCheck() {
+    doCheck(vin);
   }
 
   const charsLeft = 17 - vin.length;

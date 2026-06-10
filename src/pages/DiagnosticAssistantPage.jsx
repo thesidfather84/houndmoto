@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { diagnose } from "../services/diagnosticService";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
+import { getVehicleContext } from "../utils/vehicleContext";
 
 const QUICK_SYMPTOMS = [
   "Rough idle when cold",
@@ -17,10 +18,11 @@ const QUICK_SYMPTOMS = [
 ];
 
 export default function DiagnosticAssistantPage() {
-  const [year,    setYear]    = useState("");
-  const [make,    setMake]    = useState("");
-  const [model,   setModel]   = useState("");
-  const [engine,  setEngine]  = useState("");
+  const [searchParams] = useSearchParams();
+  const [year,    setYear]    = useState(() => searchParams.get("year")   || getVehicleContext()?.year   || "");
+  const [make,    setMake]    = useState(() => searchParams.get("make")   || getVehicleContext()?.make   || "");
+  const [model,   setModel]   = useState(() => searchParams.get("model")  || getVehicleContext()?.model  || "");
+  const [engine,  setEngine]  = useState(() => searchParams.get("engine") || getVehicleContext()?.engine || "");
   const [problem, setProblem] = useState("");
   const [loading, setLoading] = useState(false);
   const [result,  setResult]  = useState(null);
@@ -103,7 +105,20 @@ export default function DiagnosticAssistantPage() {
         <form className="diagForm" onSubmit={handleSubmit}>
           {/* Optional vehicle context */}
           <fieldset className="diagVehicleRow">
-            <legend className="diagFieldLabel">Vehicle (optional — improves accuracy)</legend>
+            {(year || make || model) ? (
+              <legend className="diagFieldLabel">
+                Using vehicle: {[year, make, model].filter(Boolean).join(" ")}
+                <button
+                  type="button"
+                  className="diagVehicleClearBtn"
+                  onClick={() => { setYear(""); setMake(""); setModel(""); setEngine(""); }}
+                >
+                  Edit
+                </button>
+              </legend>
+            ) : (
+              <legend className="diagFieldLabel">Vehicle (optional — improves accuracy)</legend>
+            )}
             <div className="diagVehicleInputs">
               <input
                 className="diagInput diagInputSmall"

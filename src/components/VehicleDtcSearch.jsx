@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { buildDtcUrl } from "../utils/getVehicleSpecificDtc";
+import { getVehicleContext } from "../utils/vehicleContext";
 
 const DTC_RE = /^[PBCU]\d{4}$/i;
 
@@ -13,10 +14,10 @@ const EXAMPLE_LOOKUPS = [
 
 export function VehicleDtcSearch({ compact = false }) {
   const navigate = useNavigate();
-  const [year,   setYear]   = useState("");
-  const [make,   setMake]   = useState("");
-  const [model,  setModel]  = useState("");
-  const [engine, setEngine] = useState("");
+  const [year,   setYear]   = useState(() => getVehicleContext()?.year   || "");
+  const [make,   setMake]   = useState(() => getVehicleContext()?.make   || "");
+  const [model,  setModel]  = useState(() => getVehicleContext()?.model  || "");
+  const [engine, setEngine] = useState(() => getVehicleContext()?.engine || "");
   const [code,   setCode]   = useState("");
   const [error,  setError]  = useState("");
 

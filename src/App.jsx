@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+import { saveVehicleContext } from "./utils/vehicleContext";
 import "./App.css";
 import { track } from "./analytics";
 import { findManualRefsForVehicle, buildManualSearchLinks, MANUAL_ATTRIBUTION } from "./manualRefsData";
@@ -759,6 +760,7 @@ function App() {
   const [vinResult, setVinResult] = useState(null);
   const [vinDecoding, setVinDecoding] = useState(false);
   const [vinError, setVinError] = useState("");
+  const [decodedVin, setDecodedVin] = useState("");
   const [showScanner, setShowScanner] = useState(false);
 
   // Vehicle lookup tree state
@@ -876,6 +878,17 @@ function App() {
         console.log("[HoundMoto] VIN decode result:", item);
         if (item?.ModelYear) {
           setVinResult(item);
+          setDecodedVin(vin);
+          saveVehicleContext({
+            vin,
+            year: item.ModelYear,
+            make: item.Make,
+            model: item.Model,
+            trim: item.Trim || "",
+            engine: item.DisplacementL
+              ? `${parseFloat(item.DisplacementL).toFixed(1)}L`
+              : "",
+          });
           const decoded = [item.ModelYear, item.Make, item.Model].filter(Boolean).join(" ");
           if (decoded) setQuery(decoded);
         } else {
@@ -1200,18 +1213,7 @@ function App() {
       )}
 
       {vinResult && (
-        <section className="panel vinResultCard">
-          <h2>VIN Decoded</h2>
-          <div className="resultBox">
-            <strong>{vinResult.ModelYear} {vinResult.Make} {vinResult.Model}</strong>
-            <span>
-              {vinResult.Trim || ""}
-              {vinResult.EngineCylinders ? `${vinResult.Trim ? ", " : ""}${vinResult.EngineCylinders} cylinders` : ""}
-              {vinResult.DisplacementL ? `, ${vinResult.DisplacementL}L` : ""}
-            </span>
-          </div>
-          <p className="note">Results below are for this vehicle.</p>
-        </section>
+        <VehicleActionDashboard vinResult={vinResult} vin={decodedVin} />
       )}
 
       {!isTracking && trimmedQuery && partMatch && (
@@ -1512,7 +1514,7 @@ function NoResultsPanel({ query }) {
         <h2>{best.make} {best.model}</h2>
         <p className="sub">{typeLabel} · {yearLabel}</p>
         <p>Vehicle recognized. Detailed diagnostic information is still being added.</p>
-        <p>You can still search for parts, check prices at vendors, or use the repair manual links below.</p>
+        <p>What would you like to do next?</p>
         <p className="note">Specs vary by trim, engine, and model year. Always verify against your owner's manual or door sticker.</p>
         <BidWrenxBtn context="no_results" />
       </section>
@@ -1522,7 +1524,8 @@ function NoResultsPanel({ query }) {
   return (
     <section className="panel">
       <h2>Vehicle Not in Database Yet</h2>
-      <p>That vehicle is not in the HoundMoto specs database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker. You can still use the part price and repair-manual links below.</p>
+      <p>That vehicle is not in the HoundMoto specs database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker.</p>
+      <p>What would you like to do next?</p>
       <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
       <BidWrenxBtn context="no_results" />
     </section>
@@ -1555,6 +1558,78 @@ function SiteFooter() {
       )}
       <div className="footerCopy">© HoundMoto. All Rights Reserved.</div>
     </footer>
+  );
+}
+
+function VehicleActionDashboard({ vinResult, vin }) {
+  const y   = vinResult.ModelYear || "";
+  const mk  = vinResult.Make      || "";
+  const mo  = vinResult.Model     || "";
+  const tri = vinResult.Trim      || "";
+  const eng = vinResult.DisplacementL
+    ? `${parseFloat(vinResult.DisplacementL).toFixed(1)}L`
+    : "";
+
+  const vqs = new URLSearchParams([
+    ...(y   ? [["year",   y  ]] : []),
+    ...(mk  ? [["make",   mk ]] : []),
+    ...(mo  ? [["model",  mo ]] : []),
+    ...(eng ? [["engine", eng]] : []),
+  ]).toString();
+
+  const vehicleLabel = [y, mk, mo, tri].filter(Boolean).join(" ");
+
+  function scrollToSpecs() {
+    document.querySelector(".panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  return (
+    <section className="vaDash">
+      <div className="vaDashHeader">
+        <div className="vaDashLabel">VIN decoded</div>
+        <h2 className="vaDashTitle">Your vehicle: {vehicleLabel}</h2>
+        {vin && <div className="vaDashVin">VIN · {vin}</div>}
+      </div>
+      <p className="vaDashCta">What would you like to do next?</p>
+      <div className="vaGrid">
+        <Link to={`/vin-recall-check?vin=${encodeURIComponent(vin)}`} className="vaCard vaCardHighlight">
+          <div className="vaCardIcon">🛡️</div>
+          <div className="vaCardTitle">Check Safety Recalls</div>
+          <div className="vaCardDesc">Search NHTSA open recalls for this vehicle</div>
+        </Link>
+        <Link to={`/diagnostic-assistant${vqs ? `?${vqs}` : ""}`} className="vaCard vaCardHighlight">
+          <div className="vaCardIcon">🔧</div>
+          <div className="vaCardTitle">Diagnose a Problem</div>
+          <div className="vaCardDesc">Get ranked causes and repair guidance</div>
+        </Link>
+        <Link to={`/dtc${vqs ? `?${vqs}` : ""}`} className="vaCard">
+          <div className="vaCardIcon">💡</div>
+          <div className="vaCardTitle">Look Up a Trouble Code</div>
+          <div className="vaCardDesc">Enter a DTC with vehicle context pre-loaded</div>
+        </Link>
+        <button type="button" className="vaCard" onClick={scrollToSpecs}>
+          <div className="vaCardIcon">📋</div>
+          <div className="vaCardTitle">Maintenance &amp; Specs</div>
+          <div className="vaCardDesc">Fluids, tires, capacities — see below ↓</div>
+        </button>
+        <Link to="/parts/search" className="vaCard">
+          <div className="vaCardIcon">🔩</div>
+          <div className="vaCardTitle">Search Parts</div>
+          <div className="vaCardDesc">OEM and aftermarket part lookup</div>
+        </Link>
+        <a
+          className="vaCard"
+          href="https://www.bidwrenx.com"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => track("premium_email_clicked", { context: "vehicle_dashboard" })}
+        >
+          <div className="vaCardIcon">👨‍🔧</div>
+          <div className="vaCardTitle">Get Repair Help</div>
+          <div className="vaCardDesc">Post this job on BidWrenx</div>
+        </a>
+      </div>
+    </section>
   );
 }
 

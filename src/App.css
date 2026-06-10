@@ -3619,6 +3619,87 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
   .vdsInputGrid { grid-template-columns: 1fr; }
 }
 
+/* ── Vehicle Action Dashboard ────────────────────────────────────── */
+.vaDash {
+  background: #111827;
+  border: 1px solid #1e3a5f;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.vaDashHeader { display: flex; flex-direction: column; gap: 6px; }
+.vaDashLabel {
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.vaDashTitle {
+  color: #f8fafc;
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 700;
+  margin: 0;
+}
+.vaDashVin {
+  color: #475569;
+  font-size: 12px;
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+.vaDashCta { color: #94a3b8; font-size: 14px; margin: 0; }
+.vaGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.vaCard {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  min-height: 88px;
+}
+.vaCard:hover { border-color: #60a5fa; background: #1e3a5f; }
+.vaCardHighlight { border-color: #2563eb; }
+.vaCardHighlight:hover { border-color: #60a5fa; }
+.vaCardIcon { font-size: 20px; line-height: 1; }
+.vaCardTitle { color: #f8fafc; font-size: 13px; font-weight: 700; }
+.vaCardDesc { color: #64748b; font-size: 11px; line-height: 1.4; }
+
+/* Diagnostic Assistant vehicle pre-filled banner */
+.diagVehicleClearBtn {
+  background: none;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #60a5fa;
+  cursor: pointer;
+  font-size: 11px;
+  margin-left: 10px;
+  padding: 2px 8px;
+}
+.diagVehicleClearBtn:hover { background: #1e293b; }
+
+@media (max-width: 640px) {
+  .vaGrid { grid-template-columns: 1fr 1fr; }
+  .vaCard { min-height: 80px; }
+}
+@media (max-width: 380px) {
+  .vaGrid { grid-template-columns: 1fr; }
+}
+
 /* ── OBD2 Scan Page ──────────────────────────────────────────────── */
 .obd2Page {
   min-height: 100vh;
