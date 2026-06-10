@@ -7,6 +7,7 @@ import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
 import { troubleCodes } from "./dtcCodes";
 import { vehicleCoverage } from "./vehicleCoverageData";
+import { matchDirectory } from "./vehicleDirectory";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
 import { lazy, Suspense } from "react";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
@@ -1097,16 +1098,7 @@ function App() {
       )}
 
       {!isTracking && trimmedQuery && !hasResults && !partMatch && (
-        <section className="panel">
-          <h2>{looksLikeVehicleQuery(trimmedQuery) ? "Vehicle Not in Database Yet" : "No Exact Specs Yet"}</h2>
-          <p>
-            {looksLikeVehicleQuery(trimmedQuery)
-              ? "That vehicle is not in the HoundMoto specs database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker. You can still use the part price and repair-manual links below."
-              : "HoundMoto does not have exact specs for that yet. Try a vehicle year/make/model, a trouble code (P0300), a part name, or use the price and manual links below."}
-          </p>
-          <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
-          <BidWrenxBtn context="no_results" />
-        </section>
+        <NoResultsPanel query={trimmedQuery} />
       )}
 
       {results.vehicles.map((vehicle) => (
@@ -1313,6 +1305,8 @@ function App() {
           onClose={() => setShowSubmitForm(false)}
         />
       )}
+
+      <VisitorCounter />
     </main>
   );
 }
@@ -1352,6 +1346,75 @@ function ManualRefsBlock({ vehicle }) {
       </div>
       <p className="manualRefAttribution">{MANUAL_ATTRIBUTION}</p>
     </div>
+  );
+}
+
+function NoResultsPanel({ query }) {
+  if (!looksLikeVehicleQuery(query)) {
+    return (
+      <section className="panel">
+        <h2>No Exact Specs Yet</h2>
+        <p>HoundMoto does not have exact specs for that yet. Try a vehicle year/make/model, a trouble code (P0300), a part name, or use the price and manual links below.</p>
+        <BidWrenxBtn context="no_results" />
+      </section>
+    );
+  }
+
+  const directoryMatches = matchDirectory(query);
+
+  if (directoryMatches.length > 0) {
+    const best = directoryMatches[0];
+    const yearLabel = best.yearStart === best.yearEnd
+      ? String(best.yearStart)
+      : `${best.yearStart}–${best.yearEnd}`;
+    const typeLabel = best.type === "ev" ? "Electric Vehicle"
+      : best.type === "hybrid" ? "Hybrid"
+      : best.type === "truck" ? "Truck"
+      : best.type === "suv" ? "SUV"
+      : best.type === "van" ? "Van"
+      : "Vehicle";
+    return (
+      <section className="panel">
+        <div className="confidenceBadge related">Vehicle Recognized</div>
+        <h2>{best.make} {best.model}</h2>
+        <p className="sub">{typeLabel} · {yearLabel}</p>
+        <p>Vehicle recognized. Detailed diagnostic information is still being added.</p>
+        <p>You can still search for parts, check prices at vendors, or use the repair manual links below.</p>
+        <p className="note">Specs vary by trim, engine, and model year. Always verify against your owner's manual or door sticker.</p>
+        <BidWrenxBtn context="no_results" />
+      </section>
+    );
+  }
+
+  return (
+    <section className="panel">
+      <h2>Vehicle Not in Database Yet</h2>
+      <p>That vehicle is not in the HoundMoto specs database yet. Specs vary widely by trim and engine — always verify against your owner's manual or door sticker. You can still use the part price and repair-manual links below.</p>
+      <p className="note">HoundMoto does not guess specs. Data is added as vehicles are verified.</p>
+      <BidWrenxBtn context="no_results" />
+    </section>
+  );
+}
+
+function VisitorCounter() {
+  const [count, setCount] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/visitor-count")
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.count != null) setCount(d.count); })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <footer className="visitorFooter">
+      <span className="visitorCount">
+        {count != null
+          ? `${count.toLocaleString()} visits`
+          : ""}
+      </span>
+      <span className="visitorNote">HoundMoto · Free auto specs search</span>
+    </footer>
   );
 }
 
