@@ -1,23 +1,19 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { track } from "../analytics";
-
-function setMeta(title, description) {
-  document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
-}
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 export default function PartsPage() {
   const { partNum } = useParams();
 
   useEffect(() => {
-    setMeta(
-      "Parts Hunter — Cross-Reference OEM and Aftermarket Parts | HoundMoto",
-      "HoundMoto Parts Hunter will help compare OEM and aftermarket part numbers, cross-reference compatible parts, and find trusted sources. Coming soon."
-    );
+    setPageSEO({
+      title: "Parts Hunter — Cross-Reference OEM and Aftermarket Parts | HoundMoto",
+      description: "HoundMoto Parts Hunter will help compare OEM and aftermarket part numbers, cross-reference compatible parts, and find trusted sources. Coming soon.",
+      path: "/parts/search",
+    });
     track("page_view", { page: "parts" });
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    return () => resetPageSEO();
   }, []);
 
   return (

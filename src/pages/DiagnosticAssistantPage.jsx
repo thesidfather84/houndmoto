@@ -3,14 +3,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { diagnose } from "../services/diagnosticService";
 import { track } from "../analytics";
-
-function setMeta(title, description) {
-  document.title = title;
-  const q = (sel) => document.querySelector(sel);
-  q('meta[name="description"]')?.setAttribute("content", description);
-  q('meta[property="og:title"]')?.setAttribute("content", title);
-  q('meta[property="og:description"]')?.setAttribute("content", description);
-}
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 const QUICK_SYMPTOMS = [
   "Rough idle when cold",
@@ -36,12 +29,13 @@ export default function DiagnosticAssistantPage() {
   const resultRef  = useRef(null);
 
   useEffect(() => {
-    setMeta(
-      "AI Diagnostic Assistant — Vehicle Troubleshooting | HoundMoto",
-      "Describe your vehicle symptoms and get ranked likely causes, first checks, and repair guidance. Free — no login required."
-    );
+    setPageSEO({
+      title: "AI Diagnostic Assistant — Vehicle Troubleshooting | HoundMoto",
+      description: "Describe your vehicle symptoms and get ranked likely causes, first checks, and repair guidance. Free — no login required.",
+      path: "/diagnostic-assistant",
+    });
     track("page_view", { page: "diagnostic-assistant" });
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    return () => resetPageSEO();
   }, []);
 
   // Detect if input is a DTC code vs a symptom description

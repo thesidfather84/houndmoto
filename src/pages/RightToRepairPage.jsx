@@ -1,25 +1,17 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { track } from "../analytics";
-
-function setMeta(title, description) {
-  document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
-  let ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute("content", title);
-  let ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute("content", description);
-}
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 export default function RightToRepairPage() {
   useEffect(() => {
-    setMeta(
-      "Right to Repair — Vehicle Owners Deserve Access to Repair Information | HoundMoto",
-      "HoundMoto supports the right of vehicle owners and independent mechanics to access repair information, diagnostic data, and maintenance guidance. Learn why repair freedom matters."
-    );
+    setPageSEO({
+      title: "Right to Repair — Vehicle Owners Deserve Access to Repair Information | HoundMoto",
+      description: "HoundMoto supports the right of vehicle owners and independent mechanics to access repair information, diagnostic data, and maintenance guidance. Learn why repair freedom matters.",
+      path: "/right-to-repair",
+    });
     track("page_view", { page: "right-to-repair" });
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    return () => resetPageSEO();
   }, []);
 
   return (

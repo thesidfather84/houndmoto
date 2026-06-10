@@ -2,16 +2,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { track } from "../analytics";
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/;
-
-function setMeta(title, description) {
-  document.title = title;
-  const q = (sel) => document.querySelector(sel);
-  q('meta[name="description"]')?.setAttribute("content", description);
-  q('meta[property="og:title"]')?.setAttribute("content", title);
-  q('meta[property="og:description"]')?.setAttribute("content", description);
-}
 
 export default function VinRecallPage() {
   const [vin, setVin] = useState("");
@@ -22,11 +15,12 @@ export default function VinRecallPage() {
   const [fetchError, setFetchError] = useState("");
 
   useEffect(() => {
-    setMeta(
-      "VIN Recall Check — Free NHTSA Safety Recall Lookup | HoundMoto",
-      "Enter your 17-character VIN to check open NHTSA safety recalls for free. Recall summaries, components affected, and dealer remedies — no login required."
-    );
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    setPageSEO({
+      title: "VIN Recall Check — Free NHTSA Safety Recall Lookup | HoundMoto",
+      description: "Enter your 17-character VIN to check open NHTSA safety recalls for free. Recall summaries, components affected, and dealer remedies — no login required.",
+      path: "/vin-recall-check",
+    });
+    return () => resetPageSEO();
   }, []);
 
   function handleVinChange(e) {

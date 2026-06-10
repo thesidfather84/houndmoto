@@ -17,6 +17,8 @@ const TOP_CODES = [
 
 const STATIC_PAGES = [
   { path: "/", priority: "1.0", changefreq: "weekly" },
+  { path: "/dtc", priority: "0.9", changefreq: "monthly" },
+  { path: "/vin-recall-check", priority: "0.8", changefreq: "monthly" },
   { path: "/right-to-repair", priority: "0.8", changefreq: "monthly" },
   { path: "/parts/search", priority: "0.7", changefreq: "monthly" },
   { path: "/diagnostic-assistant", priority: "0.7", changefreq: "monthly" },

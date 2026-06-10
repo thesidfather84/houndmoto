@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { track } from "../analytics";
-
-function setMeta(title, description) {
-  document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
-}
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 function parseSlug(slug) {
   if (!slug) return null;
@@ -27,12 +22,14 @@ export default function VehiclePage() {
 
   useEffect(() => {
     if (vehicle) {
-      const title = `${vehicle.year} ${vehicle.make} ${vehicle.model} — Specs, Problems, Fluids | HoundMoto`;
-      const desc = `${vehicle.year} ${vehicle.make} ${vehicle.model} common problems, fluid capacities, maintenance schedule, and DTC codes. Free vehicle information from HoundMoto.`;
-      setMeta(title, desc);
+      setPageSEO({
+        title: `${vehicle.year} ${vehicle.make} ${vehicle.model} — Specs, Problems, Fluids | HoundMoto`,
+        description: `${vehicle.year} ${vehicle.make} ${vehicle.model} common problems, fluid capacities, maintenance schedule, and DTC codes. Free vehicle information from HoundMoto.`,
+        path: `/vehicle/${slug}`,
+      });
       track("vehicle_page_viewed", { slug });
     }
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    return () => resetPageSEO();
   }, [slug, vehicle]);
 
   if (!vehicle) {

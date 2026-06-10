@@ -5,19 +5,10 @@ import { track } from "../analytics";
 import { DtcLookup } from "../components/DtcLookup";
 import { getVehicleSpecificDtc, parseVehicleParams } from "../utils/getVehicleSpecificDtc";
 import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 const SEVERITY_LABEL = { high: "High", moderate: "Moderate", low: "Low" };
 const SEVERITY_COLOR = { high: "#ef4444", moderate: "#f59e0b", low: "#22c55e" };
-
-function setMeta(title, description) {
-  document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
-  let ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute("content", title);
-  let ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute("content", description);
-}
 
 const SEVERITY_BADGE = {
   High:     { color: "#ef4444", bg: "#1c0a0a" },
@@ -40,17 +31,16 @@ export default function DtcPage() {
 
   useEffect(() => {
     if (dtc) {
-      setMeta(
-        `${dtc.code} Code Meaning, Causes, Symptoms, and Fixes | HoundMoto`,
-        `Learn what code ${dtc.code} means, common causes, symptoms, diagnostic steps, and possible fixes. Free automotive repair information from HoundMoto.`
-      );
+      setPageSEO({
+        title: `${dtc.code} Code Meaning, Causes, Symptoms, and Fixes | HoundMoto`,
+        description: `Learn what code ${dtc.code} means, common causes, symptoms, diagnostic steps, and possible fixes. Free automotive repair information from HoundMoto.`,
+        path: `/dtc/${code.toLowerCase()}`,
+      });
       track("dtc_viewed", { code: dtc.code });
     } else {
       document.title = `DTC Code ${code?.toUpperCase()} | HoundMoto`;
     }
-    return () => {
-      document.title = "HoundMoto — Auto Specs Search";
-    };
+    return () => resetPageSEO();
   }, [code, dtc]);
 
   if (!dtc) {

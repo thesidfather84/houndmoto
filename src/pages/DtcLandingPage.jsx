@@ -3,16 +3,7 @@ import { Link } from "react-router-dom";
 import { DtcLookup } from "../components/DtcLookup";
 import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
 import { track } from "../analytics";
-
-function setMeta(title, description) {
-  document.title = title;
-  let desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.setAttribute("content", description);
-  let ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute("content", title);
-  let ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute("content", description);
-}
+import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 const POPULAR_CODES = [
   { code: "P0300", label: "Random Misfire" },
@@ -44,12 +35,13 @@ const CODE_SYSTEMS = [
 
 export default function DtcLandingPage() {
   useEffect(() => {
-    setMeta(
-      "OBD-II DTC Code Lookup — Free Check Engine Code Information | HoundMoto",
-      "Look up any OBD-II diagnostic trouble code free. Enter P, B, C, or U codes to get meaning, causes, symptoms, and fixes. No login required."
-    );
+    setPageSEO({
+      title: "OBD-II DTC Code Lookup — Free Check Engine Code Information | HoundMoto",
+      description: "Look up any OBD-II diagnostic trouble code free. Enter P, B, C, or U codes to get meaning, causes, symptoms, and fixes. No login required.",
+      path: "/dtc",
+    });
     track("page_view", { page: "dtc-landing" });
-    return () => { document.title = "HoundMoto — Auto Specs Search"; };
+    return () => resetPageSEO();
   }, []);
 
   return (
