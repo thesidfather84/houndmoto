@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getDtcInfo } from "../data/dtcData";
 import { track } from "../analytics";
+import { DtcLookup } from "../components/DtcLookup";
 
 const SEVERITY_LABEL = { high: "High", moderate: "Moderate", low: "Low" };
 const SEVERITY_COLOR = { high: "#ef4444", moderate: "#f59e0b", low: "#22c55e" };
@@ -40,10 +41,11 @@ export default function DtcPage() {
       <div className="dtcPage">
         <Navbar />
         <div className="dtcContainer">
+          <DtcLookup autoFocus />
           <div className="dtcNotFound">
             <h1>Code {code?.toUpperCase()} Not Recognized</h1>
             <p>That does not appear to be a valid OBD-II code format. Valid codes start with P, B, C, or U followed by 4 digits (e.g., P0300).</p>
-            <Link to="/" className="dtcBackLink">← Back to Search</Link>
+            <Link to="/dtc" className="dtcBackLink">← DTC Lookup</Link>
           </div>
         </div>
         <DtcFooter />
@@ -71,10 +73,12 @@ export default function DtcPage() {
         <nav className="dtcBreadcrumb">
           <Link to="/" className="dtcBreadLink">HoundMoto</Link>
           <span className="dtcBreadSep">›</span>
-          <Link to="/dtc/p0300" className="dtcBreadLink">DTC Codes</Link>
+          <Link to="/dtc" className="dtcBreadLink">DTC Codes</Link>
           <span className="dtcBreadSep">›</span>
           <span>{dtc.code}</span>
         </nav>
+
+        <DtcLookup className="dtcPageLookup" />
 
         <div className="dtcHeader">
           <div className="dtcCodeBadge">{dtc.code}</div>
@@ -186,7 +190,7 @@ function Navbar() {
       <Link to="/" className="dtcNavBrand">HoundMoto</Link>
       <nav className="dtcNavLinks">
         <Link to="/" className="dtcNavLink">Search</Link>
-        <Link to="/dtc/p0300" className="dtcNavLink">DTC Codes</Link>
+        <Link to="/dtc" className="dtcNavLink dtcNavLinkActive">DTC Lookup</Link>
         <Link to="/right-to-repair" className="dtcNavLink">Right to Repair</Link>
       </nav>
     </header>

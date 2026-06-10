@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { AdminConsole } from "./AdminConsole.jsx";
 import { AdminDashboard } from "./AdminDashboard.jsx";
 import DtcPage from "./pages/DtcPage.jsx";
+import DtcLandingPage from "./pages/DtcLandingPage.jsx";
 import RightToRepairPage from "./pages/RightToRepairPage.jsx";
 import VehiclePage from "./pages/VehiclePage.jsx";
 import PartsPage from "./pages/PartsPage.jsx";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/dtc" element={<DtcLandingPage />} />
         <Route path="/dtc/:code" element={<DtcPage />} />
         <Route path="/right-to-repair" element={<RightToRepairPage />} />
         <Route path="/vehicle/:slug" element={<VehiclePage />} />

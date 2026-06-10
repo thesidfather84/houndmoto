@@ -7,7 +7,7 @@ export function Navbar() {
 
   const links = [
     { to: "/", label: "Search" },
-    { to: "/dtc/p0300", label: "DTC Codes" },
+    { to: "/dtc", label: "DTC Lookup" },
     { to: "/diagnostic-assistant", label: "Diagnostic Assistant" },
     { to: "/parts/search", label: "Parts Hunter" },
     { to: "/right-to-repair", label: "Right to Repair" },

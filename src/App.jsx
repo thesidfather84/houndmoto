@@ -12,6 +12,7 @@ import { matchDirectory } from "./vehicleDirectory";
 import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
 import { Navbar } from "./components/Navbar";
 import { RightToRepairBanner } from "./components/RightToRepairBanner";
+import { DtcLookup } from "./components/DtcLookup";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
@@ -968,6 +969,11 @@ function App() {
           <button className="submitTipBtn" onClick={() => setShowSubmitForm(true)}>
             + Submit a Tip
           </button>
+        </div>
+
+        <div className="heroDtcLookup">
+          <div className="heroDtcLabel">Check Engine Light? Look up your code:</div>
+          <DtcLookup />
         </div>
 
         <button className="vehicleToggle" onClick={() => setShowVehicleLookup((v) => !v)}>
