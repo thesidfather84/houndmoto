@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { getDtcInfo } from "../data/dtcData";
 import { track } from "../analytics";
 import { DtcLookup } from "../components/DtcLookup";
+import { getVehicleSpecificDtc, parseVehicleParams } from "../utils/getVehicleSpecificDtc";
+import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
 
 const SEVERITY_LABEL = { high: "High", moderate: "Moderate", low: "Low" };
 const SEVERITY_COLOR = { high: "#ef4444", moderate: "#f59e0b", low: "#22c55e" };
@@ -17,9 +19,24 @@ function setMeta(title, description) {
   if (ogDesc) ogDesc.setAttribute("content", description);
 }
 
+const SEVERITY_BADGE = {
+  High:     { color: "#ef4444", bg: "#1c0a0a" },
+  Moderate: { color: "#f59e0b", bg: "#1c1a10" },
+  Low:      { color: "#22c55e", bg: "#0f1c0f" },
+};
+
 export default function DtcPage() {
   const { code } = useParams();
+  const [searchParams] = useSearchParams();
   const dtc = getDtcInfo(code);
+
+  // Read optional vehicle context from query params (?year=2011&make=Chevrolet…)
+  const vehicle = parseVehicleParams(searchParams);
+  const hasVehicle = vehicle.year || vehicle.make || vehicle.model;
+
+  const vehicleMatch = hasVehicle
+    ? getVehicleSpecificDtc({ ...vehicle, code })
+    : null;
 
   useEffect(() => {
     if (dtc) {
@@ -79,6 +96,34 @@ export default function DtcPage() {
         </nav>
 
         <DtcLookup className="dtcPageLookup" />
+
+        {/* Vehicle-specific diagnosis card */}
+        {hasVehicle && vehicleMatch && (
+          <VehicleSpecificCard match={vehicleMatch} vehicle={vehicle} />
+        )}
+        {hasVehicle && !vehicleMatch && (
+          <div className="vdsNoMatch">
+            <div className="vdsNoMatchIcon">ℹ️</div>
+            <div>
+              <div className="vdsNoMatchTitle">Vehicle-specific guidance not available yet</div>
+              <p className="vdsNoMatchText">
+                Showing general DTC information for {dtc?.code}. Vehicle-specific guidance for{" "}
+                {[vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(" ")} is not in
+                the database yet. General causes and diagnostic steps are shown below.
+              </p>
+            </div>
+          </div>
+        )}
+        {!hasVehicle && (
+          <details className="vdsPrompt">
+            <summary className="vdsPromptSummary">
+              Have your vehicle info? Get vehicle-specific diagnosis →
+            </summary>
+            <div className="vdsPromptBody">
+              <VehicleDtcSearch compact />
+            </div>
+          </details>
+        )}
 
         <div className="dtcHeader">
           <div className="dtcCodeBadge">{dtc.code}</div>
@@ -180,6 +225,61 @@ export default function DtcPage() {
       </div>
 
       <DtcFooter />
+    </div>
+  );
+}
+
+// ── Vehicle-specific card ─────────────────────────────────────────────────────
+
+function VehicleSpecificCard({ match: m, vehicle }) {
+  const vehicleStr = [vehicle.year, vehicle.make, vehicle.model, vehicle.engine]
+    .filter(Boolean).join(" ");
+  const sev = SEVERITY_BADGE[m.severity] || SEVERITY_BADGE.Moderate;
+
+  return (
+    <div className="vdsCard">
+      <div className="vdsCardTop">
+        <div className="vdsCardBadge">Common causes for your vehicle</div>
+        <div className="vdsCardVehicle">{vehicleStr}</div>
+        <div className="vdsCardTitle">{m.title}</div>
+        <div className="vdsCardMeta">
+          <span className="vdsCardSeverity" style={{ color: sev.color, background: sev.bg }}>
+            {m.severity} severity
+          </span>
+          <span className="vdsCardDrive">{m.canDrive}</span>
+        </div>
+      </div>
+
+      {m.likelyCauses?.length > 0 && (
+        <div className="vdsCardSection">
+          <div className="vdsCardSectionTitle">Likely causes — ranked</div>
+          <ol className="vdsCardList vdsCardListOrdered">
+            {m.likelyCauses.map((c, i) => <li key={i}>{c}</li>)}
+          </ol>
+        </div>
+      )}
+
+      {m.checkFirst?.length > 0 && (
+        <div className="vdsCardSection">
+          <div className="vdsCardSectionTitle">What to check first</div>
+          <ol className="vdsCardList vdsCardListOrdered">
+            {m.checkFirst.map((c, i) => <li key={i}>{c}</li>)}
+          </ol>
+        </div>
+      )}
+
+      {m.avoid?.length > 0 && (
+        <div className="vdsCardSection vdsCardAvoidSection">
+          <div className="vdsCardSectionTitle vdsCardAvoidTitle">What NOT to replace first</div>
+          <ul className="vdsCardList">
+            {m.avoid.map((a, i) => <li key={i}>{a}</li>)}
+          </ul>
+        </div>
+      )}
+
+      <div className="vdsCardFooter">
+        General DTC information for {m.code} continues below.
+      </div>
     </div>
   );
 }

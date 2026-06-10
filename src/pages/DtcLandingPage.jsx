@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DtcLookup } from "../components/DtcLookup";
+import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
 import { track } from "../analytics";
 
 function setMeta(title, description) {
@@ -70,6 +71,11 @@ export default function DtcLandingPage() {
             causes, symptoms, and diagnostic steps.
           </p>
           <DtcLookup autoFocus />
+        </div>
+
+        {/* Vehicle-specific diagnosis form */}
+        <div className="dtcLandingSection">
+          <VehicleDtcSearch />
         </div>
 
         <div className="dtcSystemGrid">
