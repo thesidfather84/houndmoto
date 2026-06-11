@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { ManualResources } from "../components/ManualResources";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 import { getMakeCoverage, slugify } from "../utils/getVehicleCoverage";
@@ -166,6 +167,9 @@ export default function MakePage() {
           Specific data varies by model year, trim, and engine. Always verify against your
           vehicle's service manual or a qualified technician before performing repairs.
         </div>
+
+        {/* Manual resources for this make */}
+        <ManualResources vehicle={{ make: mc.make }} compact />
       </div>
 
       <MakeFooter />

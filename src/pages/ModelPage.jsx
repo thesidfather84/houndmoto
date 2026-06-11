@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { ManualResources } from "../components/ManualResources";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 import {
@@ -257,6 +258,9 @@ export default function ModelPage() {
           Specs vary by year, trim, and engine. Always verify against your vehicle's service manual
           or a qualified technician before performing any repairs.
         </div>
+
+        {/* Manual resources for this make/model */}
+        <ManualResources vehicle={{ make: mc.make, model: modelName }} compact />
       </div>
 
       <ModelFooter />

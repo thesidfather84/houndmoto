@@ -4,7 +4,6 @@ import { slugify } from "./utils/getVehicleCoverage";
 import { useVehicle } from "./context/VehicleContext";
 import "./App.css";
 import { track } from "./analytics";
-import { findManualRefsForVehicle, buildManualSearchLinks, MANUAL_ATTRIBUTION } from "./manualRefsData";
 import { TipSubmitForm } from "./TipSubmitForm";
 import { loadTips, saveTip, searchTips } from "./tipsData";
 import { toVehicleSpecs } from "./fluidDatabase";
@@ -16,6 +15,7 @@ import { Navbar } from "./components/Navbar";
 import { RightToRepairBanner } from "./components/RightToRepairBanner";
 import { DtcLookup } from "./components/DtcLookup";
 import { ActiveVehicleBar } from "./components/ActiveVehicleBar";
+import { ManualResources } from "./components/ManualResources";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
@@ -1306,7 +1306,7 @@ function App() {
           )}
 
           <p className="note">{vehicle.notes}</p>
-          <ManualRefsBlock vehicle={vehicle} />
+          <ManualResources vehicle={vehicle} />
           <BidWrenxBtn context="vehicle_result" />
         </section>
       ))}
@@ -1472,43 +1472,6 @@ function App() {
   );
 }
 
-function ManualRefsBlock({ vehicle }) {
-  const refs = findManualRefsForVehicle(vehicle);
-  const searchLinks = buildManualSearchLinks(vehicle);
-  if (refs.length === 0 && searchLinks.length === 0) return null;
-
-  return (
-    <div className="manualRefsBlock">
-      <div className="manualRefsTitle">Service Manuals</div>
-      {refs.length > 0 && (
-        <div className="manualRefsList">
-          {refs.map((ref) => (
-            <div key={ref.id} className="manualRefRow">
-              <span className="manualRefCategory">{ref.category}</span>
-              <span className="manualRefYears">{ref.yearStart}–{ref.yearEnd}</span>
-              {ref.variant && <span className="manualRefVariant">{ref.variant}</span>}
-            </div>
-          ))}
-        </div>
-      )}
-      <div className="manualRefLinks">
-        {searchLinks.map((link) => (
-          <a
-            key={link.source}
-            className="manualRefLink"
-            href={link.url}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => track("manual_reference_clicked", { source: link.source, make: vehicle.make, model: vehicle.model, year: vehicle.year })}
-          >
-            Search {link.name} →
-          </a>
-        ))}
-      </div>
-      <p className="manualRefAttribution">{MANUAL_ATTRIBUTION}</p>
-    </div>
-  );
-}
 
 function NoResultsPanel({ query }) {
   if (!looksLikeVehicleQuery(query)) {
@@ -1643,6 +1606,9 @@ function VehicleActionDashboard({ vinResult, vin }) {
           <div className="vaCardDesc">OEM and aftermarket part lookup</div>
         </Link>
       </div>
+
+      {/* Manual resources for this vehicle */}
+      <ManualResources vehicle={{ year: y, make: mk, model: mo, engine: eng }} />
     </section>
   );
 }
