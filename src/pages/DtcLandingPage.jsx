@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DtcLookup } from "../components/DtcLookup";
 import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 
@@ -54,6 +55,7 @@ export default function DtcLandingPage() {
           <Link to="/right-to-repair" className="dtcNavLink">Right to Repair</Link>
         </nav>
       </header>
+      <ActiveVehicleBar />
 
       <div className="dtcContainer">
         <div className="dtcLandingHero">

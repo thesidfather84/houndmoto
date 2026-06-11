@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 
@@ -24,6 +25,7 @@ export default function RightToRepairPage() {
           <Link to="/right-to-repair" className="rtrNavLink rtrNavLinkActive">Right to Repair</Link>
         </nav>
       </header>
+      <ActiveVehicleBar />
 
       <div className="rtrContainer">
         <div className="rtrHero">

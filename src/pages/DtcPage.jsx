@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { getDtcInfo } from "../data/dtcData";
 import { track } from "../analytics";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { DtcLookup } from "../components/DtcLookup";
 import { getVehicleSpecificDtc, parseVehicleParams } from "../utils/getVehicleSpecificDtc";
 import { VehicleDtcSearch } from "../components/VehicleDtcSearch";
@@ -65,6 +66,7 @@ export default function DtcPage() {
   return (
     <div className="dtcPage">
       <Navbar />
+      <ActiveVehicleBar />
 
       {/* Structured data for Google */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

@@ -15,6 +15,7 @@ import { SymptomDiagnosisWizard } from "./SymptomDiagnosisWizard";
 import { Navbar } from "./components/Navbar";
 import { RightToRepairBanner } from "./components/RightToRepairBanner";
 import { DtcLookup } from "./components/DtcLookup";
+import { ActiveVehicleBar } from "./components/ActiveVehicleBar";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
@@ -751,6 +752,7 @@ function looksLikeVehicleQuery(query) {
 }
 
 function App() {
+  const { vehicle } = useVehicle();
   const { setActiveVehicle } = useVehicle();
   const [query, setQuery] = useState("");
   const [tips, setTips] = useState([]);
@@ -783,6 +785,25 @@ function App() {
   }, []);
 
   useEffect(() => { track("page_view", {}); }, []);
+
+  // Restore VIN decoder state from context on mount (for back-button navigation)
+  useEffect(() => {
+    if (vehicle?.vin && vehicle?.year && vehicle?.make && vehicle?.model) {
+      // Build a synthetic vinResult object from context
+      const synthResult = {
+        ModelYear: vehicle.year,
+        Make: vehicle.make,
+        Model: vehicle.model,
+        Trim: vehicle.trim || "",
+        DisplacementL: vehicle.engine?.replace(/[^0-9.]/g, "") || "",
+      };
+      setVinResult(synthResult);
+      setDecodedVin(vehicle.vin);
+      // Auto-populate query with decoded vehicle name
+      const decodedLabel = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(" ");
+      if (decodedLabel) setQuery(decodedLabel);
+    }
+  }, []);
 
   useEffect(() => {
     if (!query.trim()) { setIsTracking(false); return; }
@@ -952,6 +973,7 @@ function App() {
   return (
     <main className="app">
       <Navbar />
+      <ActiveVehicleBar />
       <section className="hero">
         <div className="brand">HoundMoto</div>
         <h1>One search bar for auto specs, fluids, tires, parts, and trouble codes.</h1>

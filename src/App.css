@@ -3885,12 +3885,18 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
 .activeVehicleBar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: #0d1f0d;
   border-bottom: 1px solid #1a3a1a;
-  padding: 8px 20px;
+  padding: 10px 20px;
   font-size: 0.86rem;
   flex-wrap: wrap;
+}
+.activeVehicleBar.secondary {
+  padding: 8px 16px;
+  font-size: 0.83rem;
+  background: #0f1f0f;
+  border-bottom: 1px solid #151f15;
 }
 .activeVehicleLabel {
   color: #6b9e6b;
@@ -3900,25 +3906,53 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
 .activeVehicleName {
   color: #c8f0c8;
   font-weight: 600;
-  flex: 1;
-  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
+}
+.activeVehicleQuickActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.activeVehicleQuickBtn {
+  background: none;
+  border: 1px solid #2a4a5a;
+  color: #7eb8f7;
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.activeVehicleQuickBtn:hover {
+  background: #0a2040;
+  border-color: #4a8ad9;
+}
+.activeVehicleBar.secondary .activeVehicleQuickBtn {
+  font-size: 0.76rem;
+  padding: 2px 7px;
+  border-color: #2a3a4a;
 }
 .activeVehicleActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 .activeVehicleChange {
+  background: none;
+  border: 1px solid #2a4a6a;
   color: #7eb8f7;
-  text-decoration: none;
   font-size: 0.82rem;
   padding: 3px 10px;
-  border: 1px solid #2a4a6a;
   border-radius: 6px;
+  cursor: pointer;
   transition: background 0.15s;
 }
 .activeVehicleChange:hover {
@@ -3937,9 +3971,23 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
 .activeVehicleClear:hover {
   background: #2a1010;
 }
+.activeVehicleBar.secondary .activeVehicleChange,
+.activeVehicleBar.secondary .activeVehicleClear {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+}
+@media (max-width: 900px) {
+  .activeVehicleBar { gap: 10px; padding: 9px 16px; }
+  .activeVehicleQuickActions { gap: 5px; }
+  .activeVehicleQuickBtn { font-size: 0.76rem; padding: 2px 7px; }
+  .activeVehicleChange, .activeVehicleClear { font-size: 0.78rem; padding: 2px 8px; }
+}
 @media (max-width: 600px) {
-  .activeVehicleBar { padding: 8px 14px; gap: 8px; }
-  .activeVehicleName { font-size: 0.84rem; }
+  .activeVehicleBar { padding: 8px 12px; gap: 8px; }
+  .activeVehicleName { font-size: 0.83rem; }
+  .activeVehicleQuickActions { gap: 4px; }
+  .activeVehicleQuickBtn { font-size: 0.74rem; padding: 2px 6px; }
+  .activeVehicleActions { margin-left: 0; }
 }
 
 /* ─── Make / Model Pages ──────────────────────────────────────────── */

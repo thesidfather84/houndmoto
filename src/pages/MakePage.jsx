@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 import { getMakeCoverage, slugify } from "../utils/getVehicleCoverage";
@@ -38,6 +39,7 @@ export default function MakePage() {
   return (
     <div className="makePage">
       <Navbar />
+      <ActiveVehicleBar secondary />
 
       <div className="makeContainer">
         <nav className="dtcBreadcrumb">

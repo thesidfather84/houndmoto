@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 
@@ -26,6 +27,7 @@ export default function PartsPage() {
           <Link to="/right-to-repair" className="csNavLink">Right to Repair</Link>
         </nav>
       </header>
+      <ActiveVehicleBar />
 
       <div className="csContainer">
         {partNum && (

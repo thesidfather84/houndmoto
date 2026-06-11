@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
 import { DtcLookup } from "../components/DtcLookup";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
@@ -55,6 +56,7 @@ export default function Obd2ScanPage() {
   return (
     <div className="obd2Page">
       <Navbar />
+      <ActiveVehicleBar />
 
       <div className="obd2Container">
 
