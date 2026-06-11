@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { FeedbackForm } from "../components/FeedbackForm";
 import { useVehicle } from "../context/VehicleContext";
 import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
@@ -291,6 +292,11 @@ export default function VinRecallPage() {
           </div>
         )}
       </div>
+
+      {/* Feedback section */}
+      <section style={{ padding: "20px", borderTop: "1px solid #2a2a2a" }}>
+        <FeedbackForm page="vin-recall-check" compact />
+      </section>
 
       <RecallFooter />
     </div>

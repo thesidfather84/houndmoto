@@ -16,6 +16,7 @@ import { RightToRepairBanner } from "./components/RightToRepairBanner";
 import { DtcLookup } from "./components/DtcLookup";
 import { ActiveVehicleBar } from "./components/ActiveVehicleBar";
 import { ManualResources } from "./components/ManualResources";
+import { FeedbackForm } from "./components/FeedbackForm";
 const VinScanner = lazy(() => import("./VinScanner").then((m) => ({ default: m.VinScanner })));
 import {
   vendors, repairResources,
@@ -1467,6 +1468,22 @@ function App() {
       )}
 
       <RightToRepairBanner />
+
+      {/* Feedback section */}
+      <section className="siteSection feedbackSection">
+        <div className="sectionContainer">
+          <div style={{ marginBottom: "12px" }}>
+            <h2 style={{ margin: "0 0 8px", fontSize: "1rem", fontWeight: 600, color: "#c8f0c8" }}>
+              Help Us Improve
+            </h2>
+            <p style={{ margin: 0, fontSize: "0.85rem", color: "#888", lineHeight: 1.5 }}>
+              Share your feedback to help us make HoundMoto better. <Link to="/feedback" style={{ color: "#7eb8f7", textDecoration: "none" }}>View all reviews →</Link>
+            </p>
+          </div>
+          <FeedbackForm page="home" compact />
+        </div>
+      </section>
+
       <SiteFooter />
     </main>
   );
@@ -1538,6 +1555,7 @@ function SiteFooter() {
         <Link to="/privacy"      className="footerLink">Privacy Policy</Link>
         <Link to="/disclaimer"   className="footerLink">Disclaimer</Link>
         <Link to="/contact"      className="footerLink">Contact</Link>
+        <Link to="/feedback"     className="footerLink">Feedback</Link>
         <Link to="/right-to-repair" className="footerLink">Right to Repair</Link>
       </nav>
       {count != null && (

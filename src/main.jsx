@@ -15,6 +15,7 @@ import VinRecallPage from "./pages/VinRecallPage.jsx";
 import Obd2ScanPage from "./pages/Obd2ScanPage.jsx";
 import MakePage from "./pages/MakePage.jsx";
 import ModelPage from "./pages/ModelPage.jsx";
+import FeedbackPage from "./pages/FeedbackPage.jsx";
 import { TermsPage, PrivacyPage, DisclaimerPage, ContactPage } from "./LegalPages.jsx";
 
 function LegalRoute({ Page }) {
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/obd2-scan" element={<Obd2ScanPage />} />
         <Route path="/vehicles/:make" element={<MakePage />} />
         <Route path="/vehicles/:make/:model" element={<ModelPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/terms" element={<LegalRoute Page={TermsPage} />} />
         <Route path="/privacy" element={<LegalRoute Page={PrivacyPage} />} />
         <Route path="/disclaimer" element={<LegalRoute Page={DisclaimerPage} />} />

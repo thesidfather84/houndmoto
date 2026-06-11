@@ -136,7 +136,25 @@ export function TermsPage({ onClose }) {
         property rights. HoundMoto may remove, edit, or decline to publish user content at any time without notice.
       </p>
 
-      <h2>10. Limitation of Liability</h2>
+      <h2>10. User Feedback and Reviews</h2>
+      <p>
+        When you submit feedback, ratings, reviews, or comments to HoundMoto (via the feedback form, contact
+        form, or other channels), you grant HoundMoto permission to:
+      </p>
+      <ul>
+        <li>Store, review, and moderate your feedback</li>
+        <li>Edit for clarity, privacy, safety, or spam removal</li>
+        <li>Display your feedback publicly on the Site, testimonials pages, or in marketing materials</li>
+        <li>Use your feedback for website improvement and quality control</li>
+      </ul>
+      <p>
+        HoundMoto may choose not to display reviews, including low-star ratings, spam, unsafe content,
+        personal information, or inappropriate content. Do not submit personal, private, medical, legal,
+        unsafe repair information, or other sensitive data in reviews. Feedback submitted to HoundMoto may
+        be stored, reviewed, and used for the purposes stated above.
+      </p>
+
+      <h2>11. Limitation of Liability</h2>
       <p>
         HoundMoto, its operators, contributors, and affiliates shall not be liable for any direct, indirect,
         incidental, consequential, or punitive damages arising from use of this Site, including but not
@@ -145,21 +163,21 @@ export function TermsPage({ onClose }) {
         (contract, tort, negligence, strict liability, or otherwise).
       </p>
 
-      <h2>11. No Warranty</h2>
+      <h2>12. No Warranty</h2>
       <p>
         HoundMoto is provided "as is" and "as available" without warranty of any kind, express or implied,
         including but not limited to warranties of accuracy, completeness, uptime, repair success, part
         fitment, recall completeness, or diagnostic correctness.
       </p>
 
-      <h2>12. No Manufacturer Affiliation</h2>
+      <h2>13. No Manufacturer Affiliation</h2>
       <p>
         HoundMoto is an independent project. HoundMoto is not affiliated with, endorsed by, sponsored by,
         or approved by any vehicle manufacturer, parts manufacturer, dealer network, manual publisher, or
         external website unless clearly stated on this Site.
       </p>
 
-      <h2>13. DMCA / Copyright Complaint Procedure</h2>
+      <h2>14. DMCA / Copyright Complaint Procedure</h2>
       <p>
         If you believe that content on HoundMoto infringes on copyright or intellectual property rights,
         you may contact HoundMoto through the <Link to="/contact" className="legalLink">Contact page</Link> with
@@ -177,13 +195,13 @@ export function TermsPage({ onClose }) {
         HoundMoto will review the complaint and may remove or disable access to alleged infringing content.
       </p>
 
-      <h2>14. Modifications to Terms</h2>
+      <h2>15. Modifications to Terms</h2>
       <p>
         These Terms may be updated at any time without prior notice. Continued use of the Site after any
         update constitutes acceptance of the revised Terms.
       </p>
 
-      <h2>15. Governing Law</h2>
+      <h2>16. Governing Law</h2>
       <p>
         These Terms are governed by applicable law. Any disputes shall be resolved in a court of competent
         jurisdiction.
@@ -244,7 +262,18 @@ export function PrivacyPage({ onClose }) {
       <h2>Data Retention</h2>
       <p>
         Anonymized usage data may be retained for up to 24 months for analytics purposes. Contact form
-        inquiries are retained only as long as necessary to resolve your request.
+        inquiries are retained only as long as necessary to resolve your request. Feedback and reviews
+        submitted through the feedback form are retained indefinitely for quality control, website improvement,
+        and testimonial purposes, unless you request deletion through the contact form.
+      </p>
+
+      <h2>Feedback and Reviews</h2>
+      <p>
+        When you submit feedback or reviews to HoundMoto, we collect the rating, comment, name (optional),
+        email (optional), and page visited. This information is stored in local storage on your device or
+        on HoundMoto's servers (future). HoundMoto uses this data to improve the Site, display public
+        testimonials (ratings 4–5 stars only), and for quality control purposes. Low-rating feedback
+        (1–3 stars) is stored but not displayed publicly.
       </p>
 
       <h2>Third-Party Services</h2>

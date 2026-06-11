@@ -4429,3 +4429,285 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
   .manualLinksList { gap: 6px; }
   .manualSearchLink { font-size: 0.80rem; padding: 5px 10px; }
 }
+
+/* ─── Feedback Form ────────────────────────────────────────────────────────── */
+.feedbackForm {
+  background: #0f1a0f;
+  border: 1px solid #1a3a1a;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.feedbackForm.compact {
+  padding: 14px;
+  margin: 12px 0;
+  background: #0d1d0d;
+}
+.feedbackHeader {
+  margin-bottom: 14px;
+}
+.feedbackTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c8f0c8;
+  margin: 0 0 4px;
+}
+.feedbackSubtitle {
+  font-size: 0.82rem;
+  color: #8bb08b;
+  margin: 0;
+}
+.feedbackFormFields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.feedbackRatingRow {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+}
+.feedbackStar {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #444;
+  cursor: pointer;
+  padding: 8px;
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.feedbackStar:hover {
+  color: #f0a500;
+}
+.feedbackStar.active {
+  color: #f0a500;
+}
+.feedbackComment {
+  background: #0a1a0a;
+  border: 1px solid #1a3a1a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #ddd;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+  min-height: 60px;
+}
+.feedbackComment:focus {
+  outline: none;
+  border-color: #2a5a2a;
+  background: #0d1f0d;
+}
+.feedbackNameEmail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.feedbackInput {
+  background: #0a1a0a;
+  border: 1px solid #1a3a1a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #ddd;
+  font-size: 0.85rem;
+}
+.feedbackInput:focus {
+  outline: none;
+  border-color: #2a5a2a;
+  background: #0d1f0d;
+}
+.feedbackSubmitBtn {
+  background: #1a3a1a;
+  border: 1px solid #2a5a2a;
+  color: #7eb8f7;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.87rem;
+  min-height: 48px;
+  transition: background 0.15s;
+}
+.feedbackSubmitBtn:hover:not(:disabled) {
+  background: #0a2a0a;
+  border-color: #4a8a4a;
+}
+.feedbackSubmitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.feedbackPrivacyNote {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+.feedbackSuccess {
+  text-align: center;
+  padding: 16px;
+}
+.feedbackSuccessIcon {
+  font-size: 2rem;
+  color: #7eb8f7;
+  margin-bottom: 8px;
+}
+.feedbackSuccessMsg {
+  color: #8bb08b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ─── Testimonials ────────────────────────────────────────────────────────── */
+.testimonials {
+  margin-top: 24px;
+  padding: 20px 0;
+}
+.testimonialsHeader {
+  margin-bottom: 16px;
+}
+.testimonialsTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c8f0c8;
+  margin: 0 0 4px;
+}
+.testimonialsNote {
+  font-size: 0.80rem;
+  color: #666;
+  margin: 0;
+}
+.testimonialsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.testimonialCard {
+  background: #0a1a0a;
+  border: 1px solid #1a3a1a;
+  border-radius: 8px;
+  padding: 14px;
+}
+.testimonialRating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.testimonialStar {
+  color: #333;
+  font-size: 0.95rem;
+}
+.testimonialStar.filled {
+  color: #f0a500;
+}
+.testimonialRatingText {
+  font-size: 0.75rem;
+  color: #666;
+  margin-left: 4px;
+}
+.testimonialComment {
+  font-size: 0.84rem;
+  color: #bbb;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+.testimonialFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #1a3a1a;
+  padding-top: 6px;
+}
+.testimonialName {
+  font-size: 0.78rem;
+  color: #888;
+  font-weight: 500;
+}
+.testimonialDate {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+/* ─── Feedback Page ───────────────────────────────────────────────────────── */
+.feedbackPage {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #e8e8e8;
+  display: flex;
+  flex-direction: column;
+}
+.feedbackPageContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  flex: 1;
+}
+.feedbackPageHero {
+  margin-bottom: 32px;
+}
+.feedbackPageTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin: 0 0 8px;
+}
+.feedbackPageSubtitle {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin: 0;
+  line-height: 1.5;
+}
+.feedbackPageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.feedbackSection {
+  background: #0f0f0f;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 24px;
+}
+.feedbackTestimonialsSection {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.feedbackPageFootnote {
+  margin-top: 20px;
+  padding: 14px;
+  background: #0f1f0f;
+  border: 1px solid #1a3a1a;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.6;
+}
+.feedbackPageFootnote p {
+  margin: 0;
+}
+.feedbackPageFootnote strong {
+  color: #aaa;
+}
+
+@media (max-width: 900px) {
+  .feedbackPageContainer { padding: 24px 16px 48px; }
+  .feedbackPageTitle { font-size: 1.4rem; }
+  .feedbackNameEmail { grid-template-columns: 1fr; }
+  .testimonialsList { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .feedbackPageContainer { padding: 16px 12px 40px; }
+  .feedbackPageTitle { font-size: 1.2rem; }
+  .feedbackForm { padding: 12px; margin: 16px 0; }
+  .feedbackRatingRow { gap: 4px; }
+  .feedbackStar { font-size: 1.8rem; padding: 6px; min-width: 44px; min-height: 44px; }
+  .feedbackSubmitBtn { min-height: 44px; padding: 10px 16px; font-size: 0.84rem; }
+  .feedbackPageFootnote { font-size: 0.78rem; padding: 10px 12px; }
+}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { ActiveVehicleBar } from "../components/ActiveVehicleBar";
+import { FeedbackForm } from "../components/FeedbackForm";
 import { useVehicle } from "../context/VehicleContext";
 import { diagnose } from "../services/diagnosticService";
 import { track } from "../analytics";
@@ -249,6 +250,11 @@ export default function DiagnosticAssistantPage() {
           </div>
         )}
       </div>
+
+      {/* Feedback section */}
+      <section style={{ padding: "20px", borderTop: "1px solid #2a2a2a" }}>
+        <FeedbackForm page="diagnostic-assistant" compact />
+      </section>
 
       <DiagFooter />
     </div>
