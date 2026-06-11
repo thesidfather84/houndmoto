@@ -7,6 +7,27 @@ import { track } from "../analytics";
 import { setPageSEO, resetPageSEO } from "../utils/seo";
 
 const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/;
+const DEV = import.meta.env.DEV;
+
+function toTitleCase(str) {
+  return (str || "").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+// Returns array on success, null on 400 (model name mismatch), throws on network/5xx
+async function fetchRecallsFor(make, model, year) {
+  const url = `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&modelYear=${encodeURIComponent(year)}`;
+  if (DEV) console.log("[HoundMoto] recall fetch →", url);
+  const res = await fetch(url);
+  if (DEV) console.log("[HoundMoto] recall status", res.status);
+  if (res.status === 400) {
+    if (DEV) console.log("[HoundMoto] recall 400 — no match for this make/model name");
+    return null;
+  }
+  if (!res.ok) throw new Error(`Recall API returned HTTP ${res.status}`);
+  const data = await res.json();
+  if (DEV) console.log("[HoundMoto] recall results count:", data.results?.length ?? 0);
+  return data.results || [];
+}
 
 export default function VinRecallPage() {
   const [searchParams] = useSearchParams();
@@ -71,15 +92,17 @@ export default function VinRecallPage() {
       if (!decodeRes.ok) throw new Error("VIN decode failed");
       const decodeData = await decodeRes.json();
       const r = decodeData.Results?.[0];
-      const year  = r?.ModelYear?.trim();
-      const make  = r?.Make?.trim();
-      const model = r?.Model?.trim();
+      const year  = (r?.ModelYear || "").trim();
+      const make  = (r?.Make || "").trim();
+      const model = (r?.Model || "").trim();
 
       if (!year || !make || !model || year === "0") {
         setFetchError("Could not identify this vehicle. Verify the VIN is correct and try again.");
         setLoading(false);
         return;
       }
+
+      if (DEV) console.log("[HoundMoto] VIN decoded:", { year, make, model });
 
       const decoded = { year, make, model };
       setRecallVehicle(decoded);
@@ -97,13 +120,26 @@ export default function VinRecallPage() {
         decodedAt: new Date().toISOString(),
       });
 
-      const recallRes = await fetch(
-        `https://api.nhtsa.gov/recalls/recallsByVehicle?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&modelYear=${encodeURIComponent(year)}`
-      );
-      if (!recallRes.ok) throw new Error("Recall lookup failed");
-      const recallData = await recallRes.json();
-      setRecalls(recallData.results || []);
-    } catch {
+      // Try recall lookup with original NHTSA values first
+      let recalls = await fetchRecallsFor(make, model, year);
+
+      // If 400 (no match), retry with normalized names
+      if (recalls === null) {
+        if (DEV) console.log("[HoundMoto] first recall call returned 400, retrying with normalized names");
+        const makeTitleCase = toTitleCase(make);
+        const modelTitleCase = toTitleCase(model);
+        recalls = await fetchRecallsFor(makeTitleCase, modelTitleCase, year);
+      }
+
+      // If still null (second 400), treat as "no recalls found" instead of error
+      if (recalls === null) {
+        if (DEV) console.log("[HoundMoto] second recall call also returned 400, treating as no recalls");
+        setRecalls([]);
+      } else {
+        setRecalls(recalls);
+      }
+    } catch (err) {
+      if (DEV) console.error("[HoundMoto] VIN recall check failed:", err.message);
       setFetchError(
         "Recall data could not be reached right now. Try again later or check NHTSA directly at nhtsa.gov."
       );
