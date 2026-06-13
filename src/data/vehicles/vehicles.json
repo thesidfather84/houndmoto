@@ -9741,7 +9741,19 @@
               "group": "Group H5 or H6 commonly used"
             },
             "wipers": "24 inch driver / 17 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.0-16.3 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.95 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "1.9-2.3 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -9767,9 +9779,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Transmission shudder (6-speed)",
+              "severity": "moderate",
+              "cost": "$800-1500"
+            },
+            {
+              "name": "Water pump failure",
+              "severity": "moderate",
+              "cost": "$300-600"
+            },
+            {
+              "name": "Engine sludge (poor oil changes)",
+              "severity": "moderate",
+              "cost": "$500-1500"
+            },
+            {
+              "name": "Door latch issues",
+              "severity": "low",
+              "cost": "$100-300"
             }
           ],
-          "dtcNotes": "P0420 catalyst, P0300 misfires, P0128 thermostat, P0017 cam/crank correlation",
+          "dtcNotes": "P0420 catalyst, P0300 misfires, P0128 thermostat, P0017 cam/crank correlation, P0016 Crank/Cam Correlation, P0300 Random Misfire, P0449 EVAP Vent, P0128 Thermostat",
           "maintenanceNotes": "3.6L V6 direct injection benefits from walnut blasting intake valves every 60-80k. Thermostat housing is plastic and prone to cracking — check for coolant loss.",
           "notes": "Generation estimate for 2008–2012 Chevrolet Malibu. Verify before service.",
           "confidenceLevel": "estimated"
@@ -9799,7 +9831,19 @@
               "group": "Group H6 / 48 commonly used"
             },
             "wipers": "24 inch driver / 17 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.0-16.3 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.95 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "1.9-2.3 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -9851,7 +9895,19 @@
               "group": "Group H6 / 48 commonly used"
             },
             "wipers": "24 inch driver / 17 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.0-16.3 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.95 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "1.9-2.3 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -26825,7 +26881,19 @@
               "group": "Group 34 commonly used"
             },
             "wipers": "20 inch driver / 20 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "20.0-27.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Mopar PSF",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -26857,9 +26925,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Transfer case failure",
+              "severity": "high",
+              "cost": "$1500-2500"
+            },
+            {
+              "name": "Transmission shudder (4L60E)",
+              "severity": "high",
+              "cost": "$1500-3000"
+            },
+            {
+              "name": "Door hinge corrosion",
+              "severity": "moderate",
+              "cost": "$200-400"
+            },
+            {
+              "name": "Engine sludge buildup",
+              "severity": "moderate",
+              "cost": "$500-1500"
             }
           ],
-          "dtcNotes": "P0320 crank sensor (4.0L common), P0300 misfires, P0740 TCC, 4WD transfer case codes",
+          "dtcNotes": "P0320 crank sensor (4.0L common), P0300 misfires, P0740 TCC, 4WD transfer case codes, P0320 Ignition Timing, P0449 EVAP Vent, P0128 Thermostat, P0300 Random Misfire",
           "maintenanceNotes": "4.0L I6 is extremely reliable if maintained. Crank sensor failure is the most common no-start cause — relatively easy DIY fix. Transfer case fluid change every 30k.",
           "notes": "Generation estimate for 1999–2004 Jeep Grand Cherokee. Verify before service.",
           "confidenceLevel": "estimated"
@@ -26889,7 +26977,19 @@
               "group": "Group 34 commonly used"
             },
             "wipers": "22 inch driver / 20 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "20.0-27.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Mopar PSF",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -26953,7 +27053,19 @@
               "group": "Group H6 / 48 commonly used"
             },
             "wipers": "24 inch driver / 18 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "20.0-27.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Mopar PSF",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33861,7 +33973,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "26 inch driver / 16 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.0-16.2 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33887,9 +34011,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "CVT transmission shudder",
+              "severity": "high",
+              "cost": "$2000-4000"
+            },
+            {
+              "name": "Timing chain rattle",
+              "severity": "moderate",
+              "cost": "$300-800"
+            },
+            {
+              "name": "Evaporative canister leak",
+              "severity": "low",
+              "cost": "$200-400"
+            },
+            {
+              "name": "Door lock actuator failure",
+              "severity": "low",
+              "cost": "$100-200"
             }
           ],
-          "dtcNotes": "CVT codes, P0340 cam sensor, P0014 cam timing, P0420 catalyst",
+          "dtcNotes": "CVT codes, P0340 cam sensor, P0014 cam timing, P0420 catalyst, P0340 Cam Sensor A, P0335 Crankshaft Position, P0420 Catalyst, P0128 Thermostat",
           "maintenanceNotes": "CVT fluid change every 30k with NS-2 is mandatory to prevent shudder and failure.",
           "notes": "Generation estimate for 2008–2013 Nissan Rogue. Verify before service.",
           "confidenceLevel": "estimated"
@@ -33919,7 +34063,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "26 inch driver / 16 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.0-16.2 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -52718,5 +52874,5 @@
       "manuals": []
     }
   ],
-  "updated": "2026-06-13T16:01:38.286Z"
+  "updated": "2026-06-13T16:04:18.222Z"
 }

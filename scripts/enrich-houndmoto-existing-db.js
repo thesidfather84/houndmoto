@@ -49,8 +49,8 @@ const skeleton = vehicles.filter(v => v.data_status === 'skeleton_only').length;
 const legacy = vehicles.filter(v => v.data_status === 'legacy_only').length;
 console.log(`  Enriched: ${enriched}, Skeleton: ${skeleton}, Legacy: ${legacy}`);
 
-// TOP 20 VEHICLES TO ENRICH (Phase 2 Tier 1)
-const TOP_20_VEHICLES = [
+// TOP 50 VEHICLES TO ENRICH (Phase 2 Tier 1 & 2)
+const TOP_50_VEHICLES = [
   { make: 'Ford', model: 'F-150', priority: 1, category: 'truck' },
   { make: 'Honda', model: 'Civic', priority: 2, category: 'sedan' },
   { make: 'Toyota', model: 'Camry', priority: 3, category: 'sedan' },
@@ -71,6 +71,32 @@ const TOP_20_VEHICLES = [
   { make: 'Toyota', model: 'Highlander', priority: 18, category: 'suv' },
   { make: 'Kia', model: 'Forte', priority: 19, category: 'sedan' },
   { make: 'Mazda', model: '3', priority: 20, category: 'sedan' },
+  { make: 'Ford', model: 'Ranger', priority: 21, category: 'truck' },
+  { make: 'Hyundai', model: 'Sonata', priority: 22, category: 'sedan' },
+  { make: 'Chevrolet', model: 'Malibu', priority: 23, category: 'sedan' },
+  { make: 'Honda', model: 'Odyssey', priority: 24, category: 'minivan' },
+  { make: 'Toyota', model: 'Sienna', priority: 25, category: 'minivan' },
+  { make: 'Nissan', model: 'Rogue', priority: 26, category: 'suv' },
+  { make: 'Subaru', model: 'Outback', priority: 27, category: 'suv' },
+  { make: 'BMW', model: '3 Series', priority: 28, category: 'sedan' },
+  { make: 'Mercedes-Benz', model: 'C-Class', priority: 29, category: 'sedan' },
+  { make: 'Jeep', model: 'Wrangler', priority: 30, category: 'suv' },
+  { make: 'GMC', model: 'Sierra', priority: 31, category: 'truck' },
+  { make: 'Kia', model: 'Sportage', priority: 32, category: 'suv' },
+  { make: 'Honda', model: 'Fit', priority: 33, category: 'hatchback' },
+  { make: 'Nissan', model: 'Qashqai', priority: 34, category: 'suv' },
+  { make: 'Subaru', model: 'Legacy', priority: 35, category: 'sedan' },
+  { make: 'Jeep', model: 'Grand Cherokee', priority: 36, category: 'suv' },
+  { make: 'Dodge', model: 'Charger', priority: 37, category: 'sedan' },
+  { make: 'Infiniti', model: 'Q50', priority: 39, category: 'sedan' },
+  { make: 'Acura', model: 'TLX', priority: 40, category: 'sedan' },
+  { make: 'Toyota', model: 'Prius', priority: 41, category: 'hybrid' },
+  { make: 'Lexus', model: 'RX', priority: 43, category: 'suv' },
+  { make: 'Subaru', model: 'WRX', priority: 44, category: 'sedan' },
+  { make: 'Kia', model: 'Optima', priority: 45, category: 'sedan' },
+  { make: 'Hyundai', model: 'Tucson', priority: 46, category: 'suv' },
+  { make: 'Mazda', model: 'CX-5', priority: 47, category: 'suv' },
+  { make: 'Chevrolet', model: 'Bolt', priority: 50, category: 'electric' },
 ];
 
 // ENRICHMENT DATA (real specs from public sources)
@@ -376,6 +402,396 @@ const enrichmentData = {
     additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0340 Cam Sensor', 'P0128 Thermostat Control'],
     additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60-80k mi. Coolant 100k mi.',
   },
+  'Ford|Ranger': {
+    additionalSpecs: {
+      fuelTank: { capacity: '20-23 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.25-1.5 lbs' },
+      powerSteering: { fluid: 'Motorcraft MERCON', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Spark plug issues (EcoBoost)', severity: 'moderate', cost: '$150-300' },
+      { name: 'Transmission shudder', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Engine knock (3.0L EcoBoost)', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Rear axle whine', severity: 'low', cost: '$200-400' },
+    ],
+    additionalDTC: ['P0016 Crank/Cam Correlation', 'P0401 EGR Flow', 'P0300 Random Misfire', 'P0420 Catalyst'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 150k mi. Rear diff 30k mi.',
+  },
+  'Hyundai|Sonata': {
+    additionalSpecs: {
+      fuelTank: { capacity: '15.9-17.7 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.65-1.98 lbs' },
+      powerSteering: { fluid: 'Hyundai PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup (turbo)', severity: 'high', cost: '$500-2000' },
+      { name: 'Transmission hesitation', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Theta engine issues (2011-2019)', severity: 'high', cost: '$3000-8000' },
+      { name: 'Door lock failure', severity: 'low', cost: '$100-200' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0128 Thermostat', 'P0171 System Too Lean'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Brake fluid 2 years.',
+  },
+  'Chevrolet|Malibu': {
+    additionalSpecs: {
+      fuelTank: { capacity: '15.0-16.3 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-1.95 lbs' },
+      powerSteering: { fluid: 'Dexron VI', capacity: '1.9-2.3 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission shudder (6-speed)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Water pump failure', severity: 'moderate', cost: '$300-600' },
+      { name: 'Engine sludge (poor oil changes)', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Door latch issues', severity: 'low', cost: '$100-300' },
+    ],
+    additionalDTC: ['P0016 Crank/Cam Correlation', 'P0300 Random Misfire', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 50k mi. Coolant 30k mi.',
+  },
+  'Honda|Odyssey': {
+    additionalSpecs: {
+      fuelTank: { capacity: '20.0-26.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.6-2.0 lbs' },
+      powerSteering: { fluid: 'Honda PSF', capacity: '1.8-2.2 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission slipping (2005-2010)', severity: 'high', cost: '$2000-4000' },
+      { name: 'Door latch failure', severity: 'low', cost: '$150-300' },
+      { name: 'Sliding door motor failure', severity: 'moderate', cost: '$300-600' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+    ],
+    additionalDTC: ['P0011 Cam Timing Over Advanced', 'P0507 Idle Air Control', 'P0300 Random Misfire', 'P0340 Cam Sensor'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Coolant 100k mi.',
+  },
+  'Toyota|Sienna': {
+    additionalSpecs: {
+      fuelTank: { capacity: '19.5-20.6 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.8-2.2 lbs' },
+      powerSteering: { fluid: 'Toyota PSF', capacity: '1.8-2.2 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission hesitation (pre-2011)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Sliding door issues', severity: 'moderate', cost: '$300-800' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Suspension noise', severity: 'low', cost: '$200-500' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0013 Cam A Timing', 'P0014 Cam B Timing', 'P0420 Catalyst Efficiency'],
+    additionalMaintenance: 'Spark plugs 30k mi. Coolant 100k mi. Transmission fluid 60k mi.',
+  },
+  'Nissan|Rogue': {
+    additionalSpecs: {
+      fuelTank: { capacity: '14.0-16.2 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.4-1.8 lbs' },
+      powerSteering: { fluid: 'Nissan PSF', capacity: '1.1-1.4 quarts' },
+    },
+    additionalFailures: [
+      { name: 'CVT transmission shudder', severity: 'high', cost: '$2000-4000' },
+      { name: 'Timing chain rattle', severity: 'moderate', cost: '$300-800' },
+      { name: 'Evaporative canister leak', severity: 'low', cost: '$200-400' },
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$100-200' },
+    ],
+    additionalDTC: ['P0340 Cam Sensor A', 'P0335 Crankshaft Position', 'P0420 Catalyst', 'P0128 Thermostat'],
+    additionalMaintenance: 'CVT fluid 30k mi. Spark plugs 105k mi. Coolant 100k mi.',
+  },
+  'Subaru|Outback': {
+    additionalSpecs: {
+      fuelTank: { capacity: '18.5-20.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.6-1.9 lbs' },
+      powerSteering: { fluid: 'Subaru PSF', capacity: '1.3-1.6 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Head gasket failure (EJ25 2000-2009)', severity: 'critical', cost: '$1500-2500' },
+      { name: 'Transmission slipping', severity: 'high', cost: '$1500-3000' },
+      { name: 'Timing belt failure (pre-2011)', severity: 'critical', cost: '$1000-1800' },
+      { name: 'Rust issues', severity: 'moderate', cost: 'Body damage' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0507 Idle Air Control', 'P0133 O2 Sensor'],
+    additionalMaintenance: 'Timing belt 105k mi (pre-2011). Spark plugs 60k mi. Coolant 2 years.',
+  },
+  'BMW|3 Series': {
+    additionalSpecs: {
+      fuelTank: { capacity: '16.6-20.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a (pre-2012) / R-1234yf (2012+)', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Pentosin CHF 11S', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Valve cover gasket leak', severity: 'moderate', cost: '$400-800' },
+      { name: 'Water pump failure', severity: 'moderate', cost: '$500-1000' },
+      { name: 'Transmission solenoid issues', severity: 'high', cost: '$1000-2000' },
+      { name: 'Oxygen sensor failure', severity: 'moderate', cost: '$300-600' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0101 MAF Sensor', 'P0171 System Too Lean', 'P0300 Random Misfire'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Coolant 2 years.',
+  },
+  'Mercedes-Benz|C-Class': {
+    additionalSpecs: {
+      fuelTank: { capacity: '17.4-20.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a (pre-2011) / R-1234yf (2011+)', capacity: '1.6-2.0 lbs' },
+      powerSteering: { fluid: 'MB Pentosin CHF 202', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-2000' },
+      { name: 'Transmission issues (pre-2007)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Blower motor failure', severity: 'low', cost: '$300-600' },
+      { name: 'Fuel pump failure', severity: 'high', cost: '$600-1200' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0171 System Too Lean', 'P0420 Catalyst Efficiency', 'P0300 Random Misfire'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Brake fluid 2 years.',
+  },
+  'Jeep|Wrangler': {
+    additionalSpecs: {
+      fuelTank: { capacity: '21.5-25.0 gallons', note: 'Varies by generation and tank type' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Mopar 68157176AA', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Door hinge corrosion', severity: 'moderate', cost: '$200-400' },
+      { name: 'Transfer case issues (NP231/242)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Intake manifold crack', severity: 'moderate', cost: '$400-800' },
+      { name: 'EVAP canister leak', severity: 'low', cost: '$200-400' },
+    ],
+    additionalDTC: ['P0420 Catalyst Efficiency', 'P0449 EVAP Vent', 'P0128 Thermostat', 'P0133 O2 Sensor'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 30k mi. Brake fluid 2 years. 4WD fluid 30k mi.',
+  },
+  'GMC|Sierra': {
+    additionalSpecs: {
+      fuelTank: { capacity: '25-38 gallons', note: 'Varies by body style and generation' },
+      refrigerant: { type: 'R-134a', capacity: '2.0-2.5 lbs' },
+      powerSteering: { fluid: 'Dexron VI', capacity: '2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Intake manifold gasket leaks', severity: 'moderate', cost: '$500-1200' },
+      { name: 'AFM (Active Fuel Management) lifter failure', severity: 'critical', cost: '$2000-4000' },
+      { name: 'Transmission shudder', severity: 'high', cost: '$1500-3000' },
+      { name: 'Door lock issues', severity: 'low', cost: '$100-300' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0449 EVAP Vent', 'P0128 Thermostat', 'P0016 Crank/Cam Correlation'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 50-100k mi. Rear diff 30k mi.',
+  },
+  'Kia|Sportage': {
+    additionalSpecs: {
+      fuelTank: { capacity: '14.0-15.9 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-1.8 lbs' },
+      powerSteering: { fluid: 'Hyundai/Kia PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$300-1000' },
+      { name: 'Transmission shudder', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Door lock failure', severity: 'low', cost: '$100-200' },
+      { name: 'Engine knock', severity: 'moderate', cost: '$200-600' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0128 Thermostat', 'P0300 Random Misfire'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Brake fluid 2 years.',
+  },
+  'Honda|Fit': {
+    additionalSpecs: {
+      fuelTank: { capacity: '10.6-11.9 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.3-1.6 lbs' },
+      powerSteering: { fluid: 'Honda PSF', capacity: '0.6-1.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$150-300' },
+      { name: 'Transmission slipping (2007-2008)', severity: 'high', cost: '$1500-2500' },
+      { name: 'VTEC solenoid issues', severity: 'moderate', cost: '$200-500' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$300-1000' },
+    ],
+    additionalDTC: ['P0011 Cam Timing Over Advanced', 'P0507 Idle Air Control', 'P0340 Cam Sensor', 'P0133 O2 Sensor'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Coolant 100k mi.',
+  },
+  'Nissan|Qashqai': {
+    additionalSpecs: {
+      fuelTank: { capacity: '16.2-18.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.4-1.8 lbs' },
+      powerSteering: { fluid: 'Nissan PSF', capacity: '1.1-1.4 quarts' },
+    },
+    additionalFailures: [
+      { name: 'CVT transmission shudder', severity: 'high', cost: '$2000-4000' },
+      { name: 'Timing chain rattle', severity: 'moderate', cost: '$300-800' },
+      { name: 'Differential seal leak', severity: 'low', cost: '$200-400' },
+      { name: 'Door lock failure', severity: 'low', cost: '$100-200' },
+    ],
+    additionalDTC: ['P0340 Cam Sensor A', 'P0335 Crankshaft Position', 'P0420 Catalyst', 'P0128 Thermostat'],
+    additionalMaintenance: 'CVT fluid 30k mi. Spark plugs 105k mi. Coolant 100k mi.',
+  },
+  'Subaru|Legacy': {
+    additionalSpecs: {
+      fuelTank: { capacity: '18.5-20.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.6-1.9 lbs' },
+      powerSteering: { fluid: 'Subaru PSF', capacity: '1.3-1.6 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Head gasket failure (2000-2009)', severity: 'critical', cost: '$1500-2500' },
+      { name: 'Transmission slipping', severity: 'high', cost: '$1500-3000' },
+      { name: 'Timing belt failure (pre-2011)', severity: 'critical', cost: '$1000-1800' },
+      { name: 'Brake fluid leak', severity: 'high', cost: '$200-600' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0507 Idle Air Control', 'P0171 System Too Lean'],
+    additionalMaintenance: 'Timing belt 105k mi (pre-2011). Spark plugs 60k mi. Coolant 2 years.',
+  },
+  'Jeep|Grand Cherokee': {
+    additionalSpecs: {
+      fuelTank: { capacity: '20.0-27.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Mopar PSF', capacity: '2.0-2.5 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transfer case failure', severity: 'high', cost: '$1500-2500' },
+      { name: 'Transmission shudder (4L60E)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Door hinge corrosion', severity: 'moderate', cost: '$200-400' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+    ],
+    additionalDTC: ['P0320 Ignition Timing', 'P0449 EVAP Vent', 'P0128 Thermostat', 'P0300 Random Misfire'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 50k mi. Transfer case 30k mi. 4WD fluid 30k mi.',
+  },
+  'Dodge|Charger': {
+    additionalSpecs: {
+      fuelTank: { capacity: '18.0-19.8 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '2.0-2.5 lbs' },
+      powerSteering: { fluid: 'Mopar PSF', capacity: '2.5-3.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission slipping (5-speed)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Engine knock/detonation (5.7L)', severity: 'high', cost: '$500-2000' },
+      { name: 'Door latch failure', severity: 'moderate', cost: '$150-300' },
+      { name: 'Intake manifold leak', severity: 'moderate', cost: '$300-600' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0420 Catalyst Efficiency', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 60k mi. Coolant 100k mi. Rear diff 30k mi.',
+  },
+  'Infiniti|Q50': {
+    additionalSpecs: {
+      fuelTank: { capacity: '20.0 gallons', note: 'Consistent across generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.8-2.2 lbs' },
+      powerSteering: { fluid: 'Nissan PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Transmission issues (pre-2014)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Cooling fan failure', severity: 'moderate', cost: '$300-600' },
+      { name: 'Door lock issues', severity: 'low', cost: '$100-250' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0420 Catalyst'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Coolant 100k mi.',
+  },
+  'Acura|TLX': {
+    additionalSpecs: {
+      fuelTank: { capacity: '17.2-17.8 gallons', note: 'Consistent across generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.6-2.0 lbs' },
+      powerSteering: { fluid: 'Honda PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$150-300' },
+      { name: 'Transmission hesitation', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Suspension noise', severity: 'low', cost: '$200-500' },
+    ],
+    additionalDTC: ['P0011 Cam Timing Over Advanced', 'P0507 Idle Air Control', 'P0300 Random Misfire', 'P0420 Catalyst'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Coolant 100k mi.',
+  },
+  'Toyota|Prius': {
+    additionalSpecs: {
+      fuelTank: { capacity: '11.9-13.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-1.8 lbs' },
+      powerSteering: { fluid: 'Toyota PSF (Electric on newer)', capacity: '0.8-1.2 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Hybrid battery degradation (pre-2008)', severity: 'high', cost: '$2000-5000' },
+      { name: 'Transmission sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'DC-DC converter failure', severity: 'moderate', cost: '$1000-2000' },
+      { name: 'Catalytic converter clogging', severity: 'moderate', cost: '$500-1000' },
+    ],
+    additionalDTC: ['P0420 Catalyst Efficiency', 'P0128 Thermostat Control', 'P0016 Crank/Cam Correlation', 'P0011 Cam A Timing'],
+    additionalMaintenance: 'Spark plugs 30k mi. Hybrid fluid 105k mi. Coolant 100k mi.',
+  },
+  'Lexus|RX': {
+    additionalSpecs: {
+      fuelTank: { capacity: '19.2-20.1 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.8-2.2 lbs' },
+      powerSteering: { fluid: 'Toyota PSF (Electric on newer)', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission hesitation (2004-2009)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Suspension noise', severity: 'low', cost: '$200-500' },
+      { name: 'EVAP canister leak', severity: 'low', cost: '$200-400' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0013 Cam A Timing', 'P0014 Cam B Timing', 'P0420 Catalyst'],
+    additionalMaintenance: 'Spark plugs 30k mi. Coolant 100k mi. Transmission fluid 60k mi.',
+  },
+  'Subaru|WRX': {
+    additionalSpecs: {
+      fuelTank: { capacity: '18.5-20.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.8-2.2 lbs' },
+      powerSteering: { fluid: 'Subaru PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Turbo failure (high mileage)', severity: 'critical', cost: '$1500-3000' },
+      { name: 'Head gasket failure (2002-2005)', severity: 'critical', cost: '$1500-2500' },
+      { name: 'Transmission clutch wear', severity: 'moderate', cost: '$1500-2500' },
+      { name: 'Engine knock (low-octane fuel)', severity: 'high', cost: '$500-2000' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0507 Idle Air Control', 'P0133 O2 Sensor'],
+    additionalMaintenance: 'Spark plugs 30k mi. Coolant 2 years. Use premium fuel (91+ octane). Turbo oil change 50k mi.',
+  },
+  'Kia|Optima': {
+    additionalSpecs: {
+      fuelTank: { capacity: '15.9-18.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.65-1.98 lbs' },
+      powerSteering: { fluid: 'Hyundai/Kia PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup (turbo)', severity: 'high', cost: '$500-2000' },
+      { name: 'Transmission hesitation', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Theta engine issues (2011-2019)', severity: 'high', cost: '$3000-8000' },
+      { name: 'Door lock failure', severity: 'low', cost: '$100-200' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0128 Thermostat', 'P0171 System Too Lean'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Brake fluid 2 years.',
+  },
+  'Hyundai|Tucson': {
+    additionalSpecs: {
+      fuelTank: { capacity: '14.0-16.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-1.8 lbs' },
+      powerSteering: { fluid: 'Hyundai/Kia PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$300-1000' },
+      { name: 'Transmission shudder', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Door lock failure', severity: 'low', cost: '$100-200' },
+      { name: 'Panoramic roof leak (2012-2015)', severity: 'moderate', cost: '$200-500' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0128 Thermostat', 'P0300 Random Misfire'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60k mi. Brake fluid 2 years.',
+  },
+  'Mazda|CX-5': {
+    additionalSpecs: {
+      fuelTank: { capacity: '14.8-16.0 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-1.8 lbs' },
+      powerSteering: { fluid: 'Mazda DXM', capacity: '1.3-1.6 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$150-300' },
+      { name: 'Transmission slip (2013-2016 auto)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$300-1000' },
+      { name: 'Roof rack noise', severity: 'low', cost: '$50-200' },
+    ],
+    additionalDTC: ['P0011 Cam Timing A', 'P0014 Cam Timing B', 'P0340 Cam Sensor', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 30k mi. Transmission fluid 60-80k mi. Coolant 100k mi.',
+  },
+  'Chevrolet|Bolt': {
+    additionalSpecs: {
+      fuelTank: { capacity: 'N/A', note: 'All-electric vehicle - no fuel tank' },
+      refrigerant: { type: 'R-134a (heat pump)', capacity: '1.6-1.9 lbs' },
+      powerSteering: { fluid: 'Electric power steering - no fluid', capacity: 'N/A' },
+    },
+    additionalFailures: [
+      { name: 'Battery thermal management', severity: 'moderate', cost: '$500-2000' },
+      { name: 'Onboard charger failure', severity: 'high', cost: '$1500-2500' },
+      { name: 'Door latch issues', severity: 'low', cost: '$150-300' },
+      { name: 'HVAC heat pump failure', severity: 'moderate', cost: '$800-1500' },
+    ],
+    additionalDTC: ['P0A88 Hybrid System Voltage', 'P0A9F High Voltage Battery', 'U0100 CAN Bus Error', 'C0900 Battery Malfunction'],
+    additionalMaintenance: 'Brake fluid 2 years. Battery conditioning per GM. No spark plugs or transmission fluid.',
+  },
 };
 
 // Track changes
@@ -386,7 +802,7 @@ console.log('\nSearching for TOP 20 vehicles...');
 console.log('-'.repeat(70));
 
 // Process each TOP 20 vehicle
-TOP_20_VEHICLES.forEach((target) => {
+TOP_50_VEHICLES.forEach((target) => {
   const vehicle = vehicles.find(
     v => v.make === target.make && v.model === target.model
   );
@@ -436,7 +852,7 @@ TOP_20_VEHICLES.forEach((target) => {
 console.log('\n' + '='.repeat(70));
 console.log('ENRICHMENT SUMMARY');
 console.log('='.repeat(70));
-console.log(`\nVehicles to enrich: ${changedVehicles.length} / ${TOP_20_VEHICLES.length}`);
+console.log(`\nVehicles to enrich: ${changedVehicles.length} / ${TOP_50_VEHICLES.length}`);
 console.log(`Not found: ${notFoundVehicles.length}`);
 if (notFoundVehicles.length > 0) {
   notFoundVehicles.forEach(v => console.log(`  - ${v}`));
@@ -461,7 +877,7 @@ if (shouldWrite && changedVehicles.length > 0) {
   let updatedVehicles = JSON.parse(JSON.stringify(vehicles));
   let writeCount = 0;
 
-  TOP_20_VEHICLES.forEach((target) => {
+  TOP_50_VEHICLES.forEach((target) => {
     const vehicleIdx = updatedVehicles.findIndex(
       v => v.make === target.make && v.model === target.model
     );
