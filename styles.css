@@ -86,3 +86,125 @@
   .vendorRow{flex-direction:column;align-items:flex-start;gap:8px}
   .priceBtn{align-self:flex-start}
 }
+
+/* Phase 1 Data Migration Styles */
+
+.vpDataQuality {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 12px 14px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.vpQualityBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.vpQualityBadge.quality-json {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.vpQualityBadge.quality-legacy {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.vpConfidenceBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vpWarning {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #fecaca;
+  color: #7f1d1d;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.vpDataNotAvailable {
+  color: #6b7280;
+  font-style: italic;
+  margin: 0;
+}
+
+.vpFailuresList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.vpFailureItem {
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.vpFailureItem h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vpFailureItem p {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.vpSeverityBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.vpSeverityBadge.severity-critical {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.vpSeverityBadge.severity-high {
+  background: #fed7aa;
+  color: #92400e;
+}
+
+.vpSeverityBadge.severity-moderate {
+  background: #fef08a;
+  color: #713f12;
+}
+
+.vpSeverityBadge.severity-low {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.vpMaintenanceNotes {
+  background: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
