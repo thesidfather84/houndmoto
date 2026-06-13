@@ -10251,9 +10251,43 @@
           "yearStart": 1999,
           "yearEnd": 2026,
           "engine": null,
-          "specs": {},
-          "commonFailures": [],
-          "dtcNotes": null,
+          "specs": {
+            "fuelTank": {
+              "capacity": "25-38 gallons",
+              "note": "Varies by body style and generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "2.0-2.5 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "2.0 quarts"
+            }
+          },
+          "commonFailures": [
+            {
+              "name": "Intake manifold gasket leaks",
+              "severity": "moderate",
+              "cost": "$500-1200"
+            },
+            {
+              "name": "AFM (Active Fuel Management) lifter failure",
+              "severity": "critical",
+              "cost": "$2000-4000"
+            },
+            {
+              "name": "Transmission shudder (4L60E/4L80E)",
+              "severity": "high",
+              "cost": "$1500-3000"
+            },
+            {
+              "name": "Door lock issues",
+              "severity": "low",
+              "cost": "$100-300"
+            }
+          ],
+          "dtcNotes": "P0300 Random Misfire, P0449 EVAP Vent Valve, P0128 Thermostat, P0016 Crank/Cam Correlation",
           "maintenanceNotes": null,
           "confidence": "estimated"
         }
@@ -13585,7 +13619,19 @@
               "group": "Group 58R or 65 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.7-17.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.3-1.7 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Motorcraft MERCON ULV",
+              "capacity": "1.5-2.0 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -13611,9 +13657,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Transmission shudder (PowerShift)",
+              "severity": "high",
+              "cost": "$2000-3500"
+            },
+            {
+              "name": "Rear suspension squeak",
+              "severity": "low",
+              "cost": "$200-400"
+            },
+            {
+              "name": "Spark plug issues (1.6L EcoBoost)",
+              "severity": "moderate",
+              "cost": "$150-300"
+            },
+            {
+              "name": "Door latch problems",
+              "severity": "low",
+              "cost": "$150-300"
             }
           ],
-          "dtcNotes": "P0171/P0174 lean (vacuum leaks), P0300 misfires, P0128 thermostat",
+          "dtcNotes": "P0171/P0174 lean (vacuum leaks), P0300 misfires, P0128 thermostat, P0016 Crank/Cam Correlation, P0401 EGR Flow, P0300 Random Misfire, P0420 Catalyst",
           "maintenanceNotes": "Inspect coolant crossover hose regularly — prone to cracking and causing coolant loss. Spark plugs every 60k.",
           "notes": "Generation estimate for 2001–2007 Ford Escape. Verify before service.",
           "confidenceLevel": "estimated"
@@ -13643,7 +13709,19 @@
               "group": "Group 65 or H6 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.7-17.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.3-1.7 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Motorcraft MERCON ULV",
+              "capacity": "1.5-2.0 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -13701,7 +13779,19 @@
               "group": "Group H6 / 48 commonly used"
             },
             "wipers": "24 inch driver / 18 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "15.7-17.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.3-1.7 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Motorcraft MERCON ULV",
+              "capacity": "1.5-2.0 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -19202,7 +19292,19 @@
               "group": "Group 51R commonly used"
             },
             "wipers": "24 inch driver / 18 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "12.3-13.2 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Honda PSF",
+              "capacity": "0.8-1.2 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -19228,9 +19330,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Door lock actuator failure",
+              "severity": "low",
+              "cost": "$150-300"
+            },
+            {
+              "name": "VTEC solenoid issues (K-series)",
+              "severity": "moderate",
+              "cost": "$200-500"
+            },
+            {
+              "name": "Transmission slipping (CVT 2014+)",
+              "severity": "high",
+              "cost": "$2000-4000"
+            },
+            {
+              "name": "Rust (2001-2005)",
+              "severity": "moderate",
+              "cost": "Body damage"
             }
           ],
-          "dtcNotes": "P0301-P0304 cylinder misfires (coil issues), P0420 catalyst, P1457 EVAP (common)",
+          "dtcNotes": "P0301-P0304 cylinder misfires (coil issues), P0420 catalyst, P1457 EVAP (common), P0011 Cam Timing Over Advanced, P0014 Cam Timing Over Retarded, P0507 Idle Air Control High, P0340 Cam Sensor Circuit",
           "maintenanceNotes": "1.7L VTEC/non-VTEC: Iridium spark plugs at 60k. Honda ATF-Z1 for automatic only — do not substitute generic ATF. Manual: Honda MTF or equivalent only.",
           "notes": "Generation estimate for 2001–2005 Honda Civic. Verify before service.",
           "confidenceLevel": "estimated"
@@ -19497,7 +19619,19 @@
               "group": "Group 51R commonly used"
             },
             "wipers": "26 inch driver / 14 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.0-16.2 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.9 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Honda PSF",
+              "capacity": "1.4-1.8 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -19523,9 +19657,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Door lock actuator failure",
+              "severity": "low",
+              "cost": "$150-300"
+            },
+            {
+              "name": "Transmission slipping (2007-2011)",
+              "severity": "high",
+              "cost": "$2000-3500"
+            },
+            {
+              "name": "Engine sludge buildup (poor maintenance)",
+              "severity": "moderate",
+              "cost": "$500-1500"
+            },
+            {
+              "name": "Seat belt pretensioner issues",
+              "severity": "moderate",
+              "cost": "$200-400"
             }
           ],
-          "dtcNotes": "P0300 misfires, P0420 catalyst, P1457 EVAP (common on older Honda)",
+          "dtcNotes": "P0300 misfires, P0420 catalyst, P1457 EVAP (common on older Honda), P0011 Cam Timing Over Advanced, P0014 Cam Timing Over Retarded, P0507 Idle Air Control, P0133 O2 Sensor",
           "maintenanceNotes": "AWD rear differential requires Honda Dual Pump Fluid II — do not substitute. Honda ATF DW-1 for automatic only. Oil change every 5k.",
           "notes": "Generation estimate for 2007–2011 Honda CR-V. Verify before service.",
           "confidenceLevel": "estimated"
@@ -19555,7 +19709,19 @@
               "group": "Group 51R commonly used"
             },
             "wipers": "26 inch driver / 14 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.0-16.2 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-1.9 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Honda PSF",
+              "capacity": "1.4-1.8 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -32994,7 +33160,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "16.2-20.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33026,9 +33204,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "CVT transmission shudder (2007-2012)",
+              "severity": "high",
+              "cost": "$2500-4000"
+            },
+            {
+              "name": "Timing chain guide wear (2002-2006)",
+              "severity": "critical",
+              "cost": "$1500-2500"
+            },
+            {
+              "name": "Cam sensor failure",
+              "severity": "moderate",
+              "cost": "$150-300"
+            },
+            {
+              "name": "Door lock actuator failure",
+              "severity": "low",
+              "cost": "$100-200"
             }
           ],
-          "dtcNotes": "P0340 cam sensor, P0420 catalyst, P0335 crank sensor, P0300 misfires",
+          "dtcNotes": "P0340 cam sensor, P0420 catalyst, P0335 crank sensor, P0300 misfires, P0340 Cam Sensor A, P0335 Crankshaft Position, P0420 Catalyst Efficiency, P0128 Thermostat Control",
           "maintenanceNotes": "The 2.5L QR25DE had timing chain issues — check for rattle at startup. Use fresh 5W-30 to keep chain and tensioner properly oiled.",
           "notes": "Generation estimate for 2002–2006 Nissan Altima. Verify before service.",
           "confidenceLevel": "estimated"
@@ -33058,7 +33256,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "26 inch driver / 17 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "16.2-20.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33116,7 +33326,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "26 inch driver / 17 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "16.2-20.0 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33808,7 +34030,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "13.2-15.9 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33840,9 +34074,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "CVT transmission shudder (2007-2012)",
+              "severity": "high",
+              "cost": "$2000-3500"
+            },
+            {
+              "name": "Coolant temp sensor failure",
+              "severity": "moderate",
+              "cost": "$100-250"
+            },
+            {
+              "name": "Timing chain rattle (2000-2006)",
+              "severity": "moderate",
+              "cost": "$300-800"
+            },
+            {
+              "name": "Rear wheel bearing wear",
+              "severity": "moderate",
+              "cost": "$300-500"
             }
           ],
-          "dtcNotes": "P0340 cam sensor, P0420 catalyst efficiency, P0507 idle control high, P0011 cam timing",
+          "dtcNotes": "P0340 cam sensor, P0420 catalyst efficiency, P0507 idle control high, P0011 cam timing, P0340 Cam Sensor A, P0420 Catalyst Efficiency, P0128 Thermostat, P0507 Idle Air Control",
           "maintenanceNotes": "Oil change every 3,750–5,000 mi with conventional oil. Manual trans fluid change every 30k. Inspect CVT fluid condition at every oil change — dark or burnt smell is a warning sign.",
           "notes": "Generation estimate for 2000–2006 Nissan Sentra. Specs vary by trim. Verify before service.",
           "confidenceLevel": "estimated"
@@ -33872,7 +34126,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "13.2-15.9 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -33936,7 +34202,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "26 inch driver / 16 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "13.2-15.9 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.4-1.8 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Nissan PSF",
+              "capacity": "1.1-1.4 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -47601,7 +47879,19 @@
               "group": "Group H5 or 35 commonly used"
             },
             "wipers": "26 inch driver / 18 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.5-18.5 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.65-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Toyota PSF",
+              "capacity": "1.3-1.7 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -47627,9 +47917,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "SiR (Secondary Air) sensor failure",
+              "severity": "low",
+              "cost": "$150-250"
+            },
+            {
+              "name": "VVT-i gear noise (4-cylinder)",
+              "severity": "moderate",
+              "cost": "$300-800"
+            },
+            {
+              "name": "Transmission slipping (2007-2011)",
+              "severity": "high",
+              "cost": "$2000-3500"
+            },
+            {
+              "name": "Water pump failure",
+              "severity": "moderate",
+              "cost": "$300-600"
             }
           ],
-          "dtcNotes": "P0013/P0014 cam timing (rare), P0420 catalyst, P0300 misfires (usually ignition coil)",
+          "dtcNotes": "P0013/P0014 cam timing (rare), P0420 catalyst, P0300 misfires (usually ignition coil), P0014 Cam Timing Over Retarded, P0325 Knock Sensor, P0128 Thermostat Control, P0013 Cam Timing Over Advanced A",
           "maintenanceNotes": "0W-20 is specified — do not substitute heavier oil. Check oil level between oil changes — some 2.5L units have higher consumption. Toyota WS transmission fluid is lifetime-fill per Toyota but many shops recommend changing at 60-90k.",
           "notes": "Generation estimate for 2012–2017 Toyota Camry (XV50). Verify before service.",
           "confidenceLevel": "estimated"
@@ -48280,7 +48590,19 @@
               "group": "Group 35 commonly used"
             },
             "wipers": "28 inch driver / 16 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "14.5-19.2 gallons",
+              "note": "Varies by generation and model"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.65-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Toyota PSF",
+              "capacity": "1.5-2.0 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -48306,9 +48628,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Transmission hesitation (2009-2012 V6)",
+              "severity": "moderate",
+              "cost": "$800-1500"
+            },
+            {
+              "name": "Rear lower control arm bushing wear",
+              "severity": "moderate",
+              "cost": "$400-600"
+            },
+            {
+              "name": "Engine sludge (poor maintenance)",
+              "severity": "moderate",
+              "cost": "$500-1500"
+            },
+            {
+              "name": "EVAP canister leak (2006-2012)",
+              "severity": "low",
+              "cost": "$200-400"
             }
           ],
-          "dtcNotes": "P0014/P0013 cam timing, P0420 catalyst, P0300 misfires",
+          "dtcNotes": "P0014/P0013 cam timing, P0420 catalyst, P0300 misfires, P0128 Thermostat, P0013 Cam A Timing Over Advanced, P0014 Cam B Timing Over Retarded, P0420 Catalyst Efficiency",
           "maintenanceNotes": "AWD models need rear differential fluid change every 30k. Toyota WS ATF: Toyota recommends lifetime, shops recommend changing at 60-90k to prevent shudder.",
           "notes": "Generation estimate for 2013–2018 Toyota RAV4 (XA40). Verify before service.",
           "confidenceLevel": "estimated"
@@ -52375,5 +52717,6 @@
       "dtcMappings": {},
       "manuals": []
     }
-  ]
+  ],
+  "updated": "2026-06-13T16:01:38.286Z"
 }
