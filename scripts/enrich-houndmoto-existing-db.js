@@ -96,7 +96,14 @@ const TOP_50_VEHICLES = [
   { make: 'Kia', model: 'Optima', priority: 45, category: 'sedan' },
   { make: 'Hyundai', model: 'Tucson', priority: 46, category: 'suv' },
   { make: 'Mazda', model: 'CX-5', priority: 47, category: 'suv' },
-  { make: 'Chevrolet', model: 'Bolt', priority: 50, category: 'electric' },
+  { make: 'Chevrolet', model: 'Tahoe', priority: 48, category: 'suv' },
+  { make: 'Ford', model: 'Expedition', priority: 49, category: 'suv' },
+  { make: 'Dodge', model: 'Dakota', priority: 51, category: 'truck' },
+  { make: 'Ford', model: 'Taurus', priority: 52, category: 'sedan' },
+  { make: 'Nissan', model: 'Pathfinder', priority: 53, category: 'suv' },
+  { make: 'Toyota', model: '4Runner', priority: 54, category: 'suv' },
+  { make: 'Chevrolet', model: 'Impala', priority: 55, category: 'sedan' },
+  { make: 'Buick', model: 'LaCrosse', priority: 56, category: 'sedan' },
 ];
 
 // ENRICHMENT DATA (real specs from public sources)
@@ -791,6 +798,126 @@ const enrichmentData = {
     ],
     additionalDTC: ['P0A88 Hybrid System Voltage', 'P0A9F High Voltage Battery', 'U0100 CAN Bus Error', 'C0900 Battery Malfunction'],
     additionalMaintenance: 'Brake fluid 2 years. Battery conditioning per GM. No spark plugs or transmission fluid.',
+  },
+  'Chevrolet|Tahoe': {
+    additionalSpecs: {
+      fuelTank: { capacity: '25-31 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '2.0-2.5 lbs' },
+      powerSteering: { fluid: 'Dexron VI', capacity: '2.5-3.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Intake manifold gasket leaks', severity: 'moderate', cost: '$500-1200' },
+      { name: 'AFM lifter failure (5.3L)', severity: 'critical', cost: '$2000-4000' },
+      { name: 'Transmission shudder', severity: 'high', cost: '$1500-3000' },
+      { name: 'Front brake pad wear', severity: 'moderate', cost: '$300-600' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0449 EVAP Vent', 'P0128 Thermostat', 'P0016 Crank/Cam Correlation'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 50-100k mi. Coolant 30k mi. Rear diff 30k mi.',
+  },
+  'Ford|Expedition': {
+    additionalSpecs: {
+      fuelTank: { capacity: '30-33 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a (pre-2017) / R-1234yf (2017+)', capacity: '2.0-2.5 lbs' },
+      powerSteering: { fluid: 'Motorcraft MERCON', capacity: '2.5-3.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Spark plug blowout (3.5L EcoBoost)', severity: 'critical', cost: '$300-800' },
+      { name: 'Transmission shudder', severity: 'high', cost: '$1500-3000' },
+      { name: 'Door latch failure', severity: 'moderate', cost: '$200-400' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-2000' },
+    ],
+    additionalDTC: ['P0016 Crank/Cam Correlation', 'P0401 EGR Flow', 'P0300 Random Misfire', 'P0420 Catalyst'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 100-150k mi. Coolant 100k mi. Rear diff 30k mi.',
+  },
+  'Dodge|Dakota': {
+    additionalSpecs: {
+      fuelTank: { capacity: '19-26 gallons', note: 'Varies by generation and cab' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Mopar PSF', capacity: '1.5-2.0 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission slipping (5-speed)', severity: 'high', cost: '$1500-2500' },
+      { name: 'Engine knock (5.7L V8)', severity: 'moderate', cost: '$300-1000' },
+      { name: 'Transfer case noise', severity: 'low', cost: '$100-300' },
+      { name: 'Door latch issues', severity: 'low', cost: '$100-250' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0420 Catalyst Efficiency', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 60k mi. Coolant 100k mi. 4WD fluid 30k mi.',
+  },
+  'Ford|Taurus': {
+    additionalSpecs: {
+      fuelTank: { capacity: '18.0-19.8 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Motorcraft MERCON', capacity: '2.0-2.5 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission slipping (2000-2006)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Water pump failure', severity: 'moderate', cost: '$300-600' },
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$150-300' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0420 Catalyst Efficiency', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 100k mi. Coolant 100k mi.',
+  },
+  'Nissan|Pathfinder': {
+    additionalSpecs: {
+      fuelTank: { capacity: '20.0-26.6 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.6-2.0 lbs' },
+      powerSteering: { fluid: 'Nissan PSF', capacity: '1.5-1.9 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission shudder (2005-2012)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Timing chain rattle', severity: 'moderate', cost: '$300-800' },
+      { name: 'Evaporative canister leak', severity: 'low', cost: '$200-400' },
+      { name: 'Drive belt noise', severity: 'low', cost: '$150-300' },
+    ],
+    additionalDTC: ['P0340 Cam Sensor A', 'P0335 Crankshaft Position', 'P0420 Catalyst', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 105k mi. Transmission fluid 60k mi. Coolant 100k mi. 4WD fluid 30k mi.',
+  },
+  'Toyota|4Runner': {
+    additionalSpecs: {
+      fuelTank: { capacity: '17.0-27.8 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.8-2.2 lbs' },
+      powerSteering: { fluid: 'Toyota PSF', capacity: '1.8-2.2 quarts' },
+    },
+    additionalFailures: [
+      { name: 'VVT-i noise (4-cylinder)', severity: 'low', cost: '$150-400' },
+      { name: 'Transfer case issues (2003-2009)', severity: 'moderate', cost: '$1000-2000' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Suspension noise (rear)', severity: 'low', cost: '$200-500' },
+    ],
+    additionalDTC: ['P0128 Thermostat Control', 'P0013 Cam A Timing', 'P0014 Cam B Timing', 'P0420 Catalyst Efficiency'],
+    additionalMaintenance: 'Spark plugs 30k mi. Coolant 100k mi. Transfer case 30k mi. 4WD fluid 30k mi.',
+  },
+  'Chevrolet|Impala': {
+    additionalSpecs: {
+      fuelTank: { capacity: '17.0-18.5 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Dexron VI', capacity: '2.0-2.5 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission slipping (2000-2005)', severity: 'high', cost: '$1500-3000' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Door lock issues', severity: 'low', cost: '$100-300' },
+      { name: 'Water pump failure', severity: 'moderate', cost: '$300-600' },
+    ],
+    additionalDTC: ['P0300 Random Misfire', 'P0420 Catalyst Efficiency', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 50-100k mi. Coolant 30k mi.',
+  },
+  'Buick|LaCrosse': {
+    additionalSpecs: {
+      fuelTank: { capacity: '17.0-18.8 gallons', note: 'Varies by generation' },
+      refrigerant: { type: 'R-134a', capacity: '1.5-2.0 lbs' },
+      powerSteering: { fluid: 'Dexron VI', capacity: '2.0-2.5 quarts' },
+    },
+    additionalFailures: [
+      { name: 'Transmission hesitation (early models)', severity: 'moderate', cost: '$800-1500' },
+      { name: 'Engine sludge buildup', severity: 'moderate', cost: '$500-1500' },
+      { name: 'Door lock actuator failure', severity: 'low', cost: '$150-300' },
+      { name: 'Water pump failure', severity: 'moderate', cost: '$300-600' },
+    ],
+    additionalDTC: ['P0016 Crank/Cam Correlation', 'P0300 Random Misfire', 'P0449 EVAP Vent', 'P0128 Thermostat'],
+    additionalMaintenance: 'Spark plugs 100k mi. Transmission fluid 100k mi. Coolant 30k mi.',
   },
 };
 

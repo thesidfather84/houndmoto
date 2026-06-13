@@ -9428,7 +9428,19 @@
               "group": "Group 75 or 78 commonly used"
             },
             "wipers": "24 inch driver / 21 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "17.0-18.5 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -9454,9 +9466,29 @@
               "description": null,
               "severity": "unknown",
               "cost": null
+            },
+            {
+              "name": "Transmission slipping (2000-2005)",
+              "severity": "high",
+              "cost": "$1500-3000"
+            },
+            {
+              "name": "Engine sludge buildup",
+              "severity": "moderate",
+              "cost": "$500-1500"
+            },
+            {
+              "name": "Door lock issues",
+              "severity": "low",
+              "cost": "$100-300"
+            },
+            {
+              "name": "Water pump failure",
+              "severity": "moderate",
+              "cost": "$300-600"
             }
           ],
-          "dtcNotes": "P0300 misfires, P0128 thermostat, P0420 catalyst, P1626 antitheft, P0741 TCC solenoid",
+          "dtcNotes": "P0300 misfires, P0128 thermostat, P0420 catalyst, P1626 antitheft, P0741 TCC solenoid, P0300 Random Misfire, P0420 Catalyst Efficiency, P0449 EVAP Vent, P0128 Thermostat",
           "maintenanceNotes": "3.4L and 3.8L both have intake manifold gasket failures that cause coolant leaks into the intake. This is a known issue — inspect gaskets and check oil for coolant contamination.",
           "notes": "Generation estimate for 2000–2005 Chevrolet Impala. Verify before service.",
           "confidenceLevel": "estimated"
@@ -9486,7 +9518,19 @@
               "group": "Group 78 commonly used"
             },
             "wipers": "24 inch driver / 21 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "17.0-18.5 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -9544,7 +9588,19 @@
               "group": "Group H6 / 48 commonly used"
             },
             "wipers": "22 inch driver / 19 inch passenger",
-            "bulbs": "Verify by trim"
+            "bulbs": "Verify by trim",
+            "fuelTank": {
+              "capacity": "17.0-18.5 gallons",
+              "note": "Varies by generation"
+            },
+            "refrigerant": {
+              "type": "R-134a",
+              "capacity": "1.5-2.0 lbs"
+            },
+            "powerSteering": {
+              "fluid": "Dexron VI",
+              "capacity": "2.0-2.5 quarts"
+            }
           },
           "commonFailures": [
             {
@@ -52874,5 +52930,5 @@
       "manuals": []
     }
   ],
-  "updated": "2026-06-13T16:04:18.222Z"
+  "updated": "2026-06-13T16:13:28.455Z"
 }
