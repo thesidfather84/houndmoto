@@ -21,21 +21,17 @@ import { manualRefs } from '../manualRefsData';
 export function getVehicleBySlug(slug) {
   try {
     // Try to find in vehicle index
-    const vehicleKey = vehicleIndex.by_slug[slug];
-    if (!vehicleKey) {
+    const vehicleIdx = vehicleIndex.by_slug[slug];
+    if (vehicleIdx === undefined) {
       console.warn(`[VehicleDataLoader] Slug not found in index: ${slug}`);
       return null;
     }
 
-    const [make, model] = vehicleKey.split('|');
-
-    // Find in new JSON data
-    const jsonVehicle = vehiclesData.vehicles.find(
-      (v) => v.make === make && v.model === model
-    );
+    // Get vehicle directly from array by index
+    const jsonVehicle = vehiclesData.vehicles[vehicleIdx];
 
     if (!jsonVehicle) {
-      console.warn(`[VehicleDataLoader] Vehicle not in JSON: ${make} ${model}`);
+      console.warn(`[VehicleDataLoader] Vehicle not found at index ${vehicleIdx}`);
       return null;
     }
 
