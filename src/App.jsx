@@ -1563,6 +1563,9 @@ function SiteFooter() {
           Total Visits: <strong>{count.toLocaleString()}</strong>
         </div>
       )}
+      <div className="footerBetaNotice">
+        <strong>HoundMoto Beta:</strong> We're actively expanding vehicle coverage and diagnostic data. Some vehicles may have limited information while our database grows. Always verify specifications with your owner's manual or manufacturer documentation.
+      </div>
       <div className="footerCopy">© HoundMoto. All Rights Reserved.</div>
     </footer>
   );

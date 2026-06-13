@@ -108,12 +108,17 @@ export default function VehiclePage() {
         <p className="vpSubtitle">Vehicle information, common problems, and diagnostic reference</p>
       </div>
 
-      {/* Data Quality Indicator */}
+      {/* Data Quality & Coverage Indicator */}
       {dataQuality && (
         <div className="vpDataQuality">
           <span className={`vpQualityBadge quality-${dataQuality.source}`}>
-            {dataQuality.source === 'json' ? '✅ Phase 1 Data' : '⚠️ Legacy Data'}
+            {dataQuality.source === 'json' ? '✅ Enriched Data' : '⚠️ Limited Data'}
           </span>
+          {vehicleData?.data_status && (
+            <span className={`vpCoverageBadge coverage-${vehicleData.data_status}`}>
+              {vehicleData.data_status === 'enriched' ? '📊 Complete Coverage' : '🚧 Expanding Coverage'}
+            </span>
+          )}
           <span className="vpConfidenceBadge">{dataQuality.confidence}</span>
           {!dataQuality.hasSpecs && (
             <span className="vpWarning">📝 Specs incomplete — verify in owner's manual</span>

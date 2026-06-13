@@ -4711,3 +4711,91 @@ details[open] .vdsPromptSummary::before { content: "▼ "; }
   .feedbackSubmitBtn { min-height: 44px; padding: 10px 16px; font-size: 0.84rem; }
   .feedbackPageFootnote { font-size: 0.78rem; padding: 10px 12px; }
 }
+
+/* ─── HoundMoto Beta Notice Styles ─────────────────────────────────────── */
+
+/* BETA Badge in Header */
+.betaBadge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+  vertical-align: super;
+  position: relative;
+  top: -2px;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
+
+/* Footer Beta Notice */
+.footerBetaNotice {
+  margin: 12px 0 8px;
+  padding: 12px;
+  background: rgba(255, 150, 50, 0.08);
+  border-left: 3px solid #ff9632;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.6;
+  border-radius: 4px;
+}
+
+.footerBetaNotice strong {
+  color: #ff9632;
+  font-weight: 600;
+}
+
+/* Coverage Status Badge on Vehicle Pages */
+.vpCoverageBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 0 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.vpCoverageBadge.coverage-enriched {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.vpCoverageBadge.coverage-skeleton_only {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9632;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.vpCoverageBadge.coverage-legacy_only {
+  background: rgba(158, 158, 158, 0.15);
+  color: #888;
+  border: 1px solid rgba(158, 158, 158, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .betaBadge {
+    display: block;
+    margin: 4px 0 0 0;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+  
+  .footerBetaNotice {
+    font-size: 0.75rem;
+    margin: 10px 0 6px;
+    padding: 10px;
+  }
+  
+  .vpCoverageBadge {
+    display: block;
+    margin: 4px 0;
+    font-size: 0.75rem;
+  }
+}
+

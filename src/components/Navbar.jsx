@@ -18,7 +18,10 @@ export function Navbar() {
   return (
     <header className="navbar">
       <div className="navInner">
-        <Link to="/" className="navBrand" onClick={() => setOpen(false)}>HoundMoto</Link>
+        <Link to="/" className="navBrand" onClick={() => setOpen(false)}>
+          HoundMoto
+          <span className="betaBadge">BETA</span>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="navDesktop">
